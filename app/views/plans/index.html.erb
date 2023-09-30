@@ -1,14 +1,59 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Plans</h1>
+<div style="margin: 3em">
+  <div style="display:flex; ">
+    <h1>Plans Management</h1>
+    <%= link_to "Create a new plan", new_plan_path, class:"btn btn-primary", style:"margin:auto;margin-right:0;background-color: #478ac9;"%>
+    <button class="btn btn-primary" style="margin:auto;margin-left:1em; margin-right:0;background-color: #478ac9;">Import an existing plan</button>
+  </div>
+  <table class="table" style="margin-top: 2em;">
+  <thead style="background-color:#478ac9; ">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Owner</th>
+      <th scope="col">Created</th>
+      <th scope="col">Updated</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @plans.each do |plan| %>    
+      <tr>
+        <td>
+          <%= plan.name %>
+        </td>
+        <td>
+          <%= plan.owner %>
+        </td>
+        <td>
+          <%= plan.created_at.strftime("%B %d, %Y %H:%M") %>
+        </td>
+        <td>
+          <%= plan.updated_at.strftime("%B %d, %Y %H:%M")  %>
+        </td>
 
-<div id="plans">
-  <% @plans.each do |plan| %>
-    <%= render plan %>
-    <p>
-      <%= link_to "Show this plan", plan %>
-    </p>
-  <% end %>
+        <td>
+          <%= button_to plan, method: :delete, class: "btn btn-danger" do %>
+            <i class="fa fa-trash"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Total <%=@plans.length%> plans</h3>
+<br/>
+<%= link_to "Back", root_path, class:"btn btn-secondary"%>
 </div>
 
-<%= link_to "New plan", new_plan_path %>
+<style>
+  th {
+    color: white;
+  }
+
+  .table td {
+    vertical-align: middle;
+  }
+</style>
+

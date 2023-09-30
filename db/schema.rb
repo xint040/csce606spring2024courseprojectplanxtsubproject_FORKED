@@ -10,12 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_29_163914) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_29_221122) do
   create_table "plans", force: :cascade do |t|
     t.string "name"
     t.string "owner"
     t.float "venue_length"
     t.float "venue_width"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "steps", force: :cascade do |t|
+    t.date "start_date"
+    t.time "start_time"
+    t.time "end_time"
+    t.time "break1_start_time"
+    t.time "break1_end_time"
+    t.time "break2_start_time"
+    t.time "break2_end_time"
+    t.integer "plan_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

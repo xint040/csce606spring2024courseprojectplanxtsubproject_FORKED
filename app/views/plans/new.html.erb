@@ -1,9 +1,186 @@
-<h1>New plan</h1>
+<%= form_with(model: @plan, url: plans_path) do |form| %>
+  <div class="center" style="margin: 5em 0">
+    <div class="card custom-card">
+      <h1>Create a New Plan</h1>
+      <div class="card-body custom-card-body">
+        <p>Welcome to PLANXT, a tool to set up an event venue – all furniture and staff placements chronologically, and track the actual setup progress real-time. Let’s get started..</p>
 
-<%= render "form", plan: @plan %>
+        <div class="form-group row justify-content-md-center">
+          <label class="col-form-label"><b>Plan Name</b></label>
+          <div class="col-sm-4">
+            <%= form.text_field :name, class: "form-control", id: "plan-name", placeholder: "Enter plan name" %>
+          </div>
+        </div>
 
-<br>
+        <div>
+          <b>Event Days: Setup through Breakdown</b>
+        </div>
 
-<div>
-  <%= link_to "Back to plans", plans_path %>
-</div>
+        <!-- Table structure -->
+        <table class="table" style="margin-top: 1em"> 
+          <thead class="thead-light">
+            <tr>
+              <th rowspan="2" style="vertical-align: middle;">Start Date</th>
+              <th rowspan="2" style="vertical-align: middle;">Start Time</th>
+              <th rowspan="2" style="vertical-align: middle;">End Time</th>
+              <th colspan="2">Break 1 (Optional)</th>
+              <th colspan="2">Break 2 (Optional)</th>
+              <th rowspan="2" style="vertical-align: middle; width:100px">Actions</th>
+            </tr>
+            <tr>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+            </tr>
+          </thead>
+          <tbody id="step-table-body">
+            <td>
+              <input type="date" id="start-date" />
+            </td>
+            <td>
+              <input type="time" id="start-time" />
+            </td>
+            <td>
+              <input type="time" id="end-time" />
+            </td>
+            <td>
+              <input type="time" id="break1-start-time" />
+            </td>
+            <td>
+              <input type="time" id="break1-end-time" />
+            </td>
+            <td>
+              <input type="time" id="break2-start-time" />
+            </td>
+            <td>
+              <input type="time" id="break2-end-time" />
+            </td>
+            <td style="display: inline-block;">
+              <button type="button" class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tbody>
+        </table>
+
+        <button id="add-step-button" type="button" class="btn btn-secondary">Add Step</button>
+
+        <div class="row row-center">
+          <h5 style="margin-right: 2em"> Dimensions of the Venue (approximate):</h5>
+          <h5> Length:</h5>
+          <div class="col-sm-2">
+            <%= form.text_field :venue_length, class: "form-control", id: "plan-venue-length", placeholder: "Length" %>
+          </div>
+          <h5> Width:</h5>
+          <div class="col-sm-2">
+            <%= form.text_field :venue_width, class: "form-control", id: "plan-venue-width", placeholder: "Width" %>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <%= form.submit "Create", class: "btn btn-primary", style:"margin-right: 1em; background-color:#478ac9" %>
+          <%= link_to "Back", plans_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<style>
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  h5 {
+    margin: 0px;
+  }
+
+  /* Custom CSS class for the card container */
+  .center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  /* Custom CSS class for the card */
+  .custom-card {
+    width: 80%;
+    text-align: center;
+    padding: 2em;
+  }
+
+  /* Custom CSS class for the card body (content container) */
+  .custom-card-body {
+    padding: 0rem 2rem;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  .row-center {
+    margin: 2em 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .button-container {
+    text-align: center;
+  }
+
+  th {
+    font-size: 0.8rem;
+    padding: 2px;
+  }
+</style>
+
+<script>  
+  $(document).ready(function() {
+    $('#add-step-button').click(function() {
+      // Create a new table row
+      var newRow = $('<tr>');
+
+      // Add table cells (columns) to the new row
+      newRow.append('<td> \
+          <input type="date" id="start-date" /> \
+        </td>' 
+      );
+      newRow.append('<td> \
+          <input type="time" id="start-time" /> \
+        </td>' 
+      );
+      newRow.append('<td> \
+          <input type="time" id="end-time" /> \
+        </td>' 
+      );
+      newRow.append('<td> \
+          <input type="time" id="break1-start-time" /> \
+        </td>' 
+      );
+      newRow.append('<td> \
+          <input type="time" id="break1-end-time" /> \
+        </td>' 
+      );
+      newRow.append('<td> \
+          <input type="time" id="break2-start-time" /> \
+        </td>' 
+      );
+      newRow.append('<td> \
+          <input type="time" id="break2-end-time" /> \
+        </td>' 
+      );
+      newRow.append('<td style="display: inline-block;"> \
+              <button type="button" class="btn btn-danger"> \
+                <i class="fa fa-trash"></i> \
+              </button> \
+            </td>');
+
+      // Append the new row to the table body
+      $('#step-table-body').append(newRow);
+    });
+  });
+
+</script>
+

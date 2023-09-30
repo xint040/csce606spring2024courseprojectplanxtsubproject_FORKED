@@ -1,6 +1,8 @@
 class PlansController < ApplicationController
   before_action :set_plan, only: %i[ show edit update destroy ]
 
+  layout "layouts/empty", only: [:new] 
+
   # GET /plans or /plans.json
   def index
     @plans = Plan.all
@@ -13,6 +15,7 @@ class PlansController < ApplicationController
   # GET /plans/new
   def new
     @plan = Plan.new
+    @plan.steps.build # Build an empty Step associated with the new Plan
   end
 
   # GET /plans/1/edit
@@ -65,6 +68,6 @@ class PlansController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def plan_params
-      params.require(:plan).permit(:name, :owner, :venue_length, :venue_width)
+      params.require(:plan).permit(:name, :owner, :venue_length, :venue_width, steps_attributes: [:description])
     end
 end
