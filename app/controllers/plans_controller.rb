@@ -28,8 +28,7 @@ class PlansController < ApplicationController
 
     respond_to do |format|
       if @plan.save
-        format.html { redirect_to plan_url(@plan), notice: "Plan was successfully created." }
-        format.json { render :show, status: :created, location: @plan }
+        format.html { redirect_to plans_path, notice: "Plan was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @plan.errors, status: :unprocessable_entity }
