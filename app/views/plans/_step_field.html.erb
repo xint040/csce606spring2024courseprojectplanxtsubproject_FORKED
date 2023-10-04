@@ -1,0 +1,30 @@
+<!-- app/views/plans/_step_field.html.erb -->
+<tr class="step-field">
+  <td>
+    <%= step_form.date_field :start_date %>
+  </td>
+  <td>
+    <%= step_form.time_field :start_time %>
+  </td>
+  <td>
+    <%= step_form.time_field :end_time %>
+  </td>
+  <td>
+    <%= step_form.time_field :break1_start_time %>
+  </td>
+  <td>
+    <%= step_form.time_field :break1_end_time %>
+  </td>
+  <td>
+    <%= step_form.time_field :break2_start_time %>
+  </td>
+  <td>
+    <%= step_form.time_field :break2_end_time %>
+  </td>
+  <td style="display: inline-block;">
+    <button type="button" class="btn btn-danger delete-step">
+      <i class="fa fa-trash"></i>
+    </button>
+  </td>
+</tr>
+

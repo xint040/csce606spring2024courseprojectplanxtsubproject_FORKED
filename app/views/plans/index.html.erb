@@ -32,7 +32,10 @@
           <%= plan.updated_at.strftime("%B %d, %Y %H:%M")  %>
         </td>
 
-        <td>
+        <td style="display:flex">
+          <%= link_to(edit_plan_path(plan), class: "btn btn-primary", style:"margin:0 1em 0 0") do %>
+            <i class="fa fa-edit"></i>
+          <% end %>
           <%= button_to plan, method: :delete, class: "btn btn-danger" do %>
             <i class="fa fa-trash"></i>
           <% end %>

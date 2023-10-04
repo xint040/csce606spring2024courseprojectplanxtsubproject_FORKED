@@ -8,7 +8,6 @@ class Steps < ActiveRecord::Migration[7.0]
       t.time 'break1_end_time'
       t.time 'break2_start_time'
       t.time 'break2_end_time'
-      t.integer 'plan_id'
       # Add fields that let Rails automatically keep track
       # of when movies are added or modified:
       t.timestamps

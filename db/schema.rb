@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_29_221122) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_04_072415) do
   create_table "plans", force: :cascade do |t|
     t.string "name"
     t.string "owner"
@@ -33,4 +33,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_221122) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "steps", "plans"
 end

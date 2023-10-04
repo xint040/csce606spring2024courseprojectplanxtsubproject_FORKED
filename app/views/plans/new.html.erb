@@ -12,60 +12,6 @@
           </div>
         </div>
 
-        <div>
-          <b>Event Days: Setup through Breakdown</b>
-        </div>
-
-        <!-- Table structure -->
-        <table class="table" style="margin-top: 1em"> 
-          <thead class="thead-light">
-            <tr>
-              <th rowspan="2" style="vertical-align: middle;">Start Date</th>
-              <th rowspan="2" style="vertical-align: middle;">Start Time</th>
-              <th rowspan="2" style="vertical-align: middle;">End Time</th>
-              <th colspan="2">Break 1 (Optional)</th>
-              <th colspan="2">Break 2 (Optional)</th>
-              <th rowspan="2" style="vertical-align: middle; width:100px">Actions</th>
-            </tr>
-            <tr>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-            </tr>
-          </thead>
-          <tbody id="step-table-body">
-            <td>
-              <input type="date" id="start-date" />
-            </td>
-            <td>
-              <input type="time" id="start-time" />
-            </td>
-            <td>
-              <input type="time" id="end-time" />
-            </td>
-            <td>
-              <input type="time" id="break1-start-time" />
-            </td>
-            <td>
-              <input type="time" id="break1-end-time" />
-            </td>
-            <td>
-              <input type="time" id="break2-start-time" />
-            </td>
-            <td>
-              <input type="time" id="break2-end-time" />
-            </td>
-            <td style="display: inline-block;">
-              <button type="button" class="btn btn-danger">
-                <i class="fa fa-trash"></i>
-              </button>
-            </td>
-          </tbody>
-        </table>
-
-        <button id="add-step-button" type="button" class="btn btn-secondary">Add Step</button>
-
         <div class="row row-center">
           <h5 style="margin-right: 2em"> Dimensions of the Venue (approximate):</h5>
           <h5> Length:</h5>
@@ -136,51 +82,4 @@
   }
 </style>
 
-<script>  
-  $(document).ready(function() {
-    $('#add-step-button').click(function() {
-      // Create a new table row
-      var newRow = $('<tr>');
-
-      // Add table cells (columns) to the new row
-      newRow.append('<td> \
-          <input type="date" id="start-date" /> \
-        </td>' 
-      );
-      newRow.append('<td> \
-          <input type="time" id="start-time" /> \
-        </td>' 
-      );
-      newRow.append('<td> \
-          <input type="time" id="end-time" /> \
-        </td>' 
-      );
-      newRow.append('<td> \
-          <input type="time" id="break1-start-time" /> \
-        </td>' 
-      );
-      newRow.append('<td> \
-          <input type="time" id="break1-end-time" /> \
-        </td>' 
-      );
-      newRow.append('<td> \
-          <input type="time" id="break2-start-time" /> \
-        </td>' 
-      );
-      newRow.append('<td> \
-          <input type="time" id="break2-end-time" /> \
-        </td>' 
-      );
-      newRow.append('<td style="display: inline-block;"> \
-              <button type="button" class="btn btn-danger"> \
-                <i class="fa fa-trash"></i> \
-              </button> \
-            </td>');
-
-      // Append the new row to the table body
-      $('#step-table-body').append(newRow);
-    });
-  });
-
-</script>
 
