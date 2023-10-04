@@ -144,6 +144,7 @@ $(document).ready(function() {
       '</td>' +
       '<td style="display: inline-block;">' +
       '<button type="button" class="btn btn-danger delete-step"><i class="fa fa-trash"></i></button>' +
+      `<input type="hidden" name="plan[steps_attributes][${time}][_destroy]" value="false" class="step-destroy-field" />` +
       '</td>' +
       '</tr>';
 
