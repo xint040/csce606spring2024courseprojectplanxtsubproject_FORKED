@@ -118,28 +118,29 @@
 
 $(document).ready(function() {
   $('#add-step-button').click(function() {
+    var time = new Date().getTime();
     // Create a new table row with empty step fields
     var newRow = '<tr>' +
       '<td>' +
-      '<input type="date" name="plan[steps_attributes][][start_date]" />' +
+      `<input type="date" name="plan[steps_attributes][${time}][start_date]" />` +
       '</td>' +
       '<td>' +
-      '<input type="time" name="plan[steps_attributes][][start_time]" />' +
+      `<input type="time" name="plan[steps_attributes][${time}][start_time]" />` +
       '</td>' +
       '<td>' +
-      '<input type="time" name="plan[steps_attributes][][end_time]" />' +
+      `<input type="time" name="plan[steps_attributes][${time}][end_time]" />` +
       '</td>' +
       '<td>' +
-      '<input type="time" name="plan[steps_attributes][][break1_start_time]" />' +
+      `<input type="time" name="plan[steps_attributes][${time}][break1_start_time]" />` +
       '</td>' +
       '<td>' +
-      '<input type="time" name="plan[steps_attributes][][break1_end_time]" />' +
+      `<input type="time" name="plan[steps_attributes][${time}][break1_end_time]" />` +
       '</td>' +
       '<td>' +
-      '<input type="time" name="plan[steps_attributes][][break2_start_time]" />' +
+      `<input type="time" name="plan[steps_attributes][${time}][break2_start_time]" />` +
       '</td>' +
       '<td>' +
-      '<input type="time" name="plan[steps_attributes][][break2_end_time]" />' +
+      `<input type="time" name="plan[steps_attributes][${time}][break2_end_time]" />` +
       '</td>' +
       '<td style="display: inline-block;">' +
       '<button type="button" class="btn btn-danger delete-step"><i class="fa fa-trash"></i></button>' +
@@ -153,7 +154,14 @@ $(document).ready(function() {
 
   // Delete step row when delete button is clicked
   $('#step-table-body').on('click', '.delete-step', function() {
-    $(this).closest('tr').remove();
+    var row = $(this).closest('tr');
+    var hiddenInput = row.find('.step-destroy-field');
+    // Set the _destroy attribute to 1
+    hiddenInput.val('1');
+    // Mark the row for deletion
+    row.data('delete-step', true);
+    // Hide the row (optional)
+    row.hide();
   });
 
 });
