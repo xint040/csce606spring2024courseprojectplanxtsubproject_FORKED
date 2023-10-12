@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   
   root "home#index"
   
-  resources :plans
+  resources :plans do
+    member do
+      get 'floorplans2d'
+    end
+  end
   # Defines the root path route ("/")
   # root "articles#index"
 end

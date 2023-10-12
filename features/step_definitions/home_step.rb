@@ -7,3 +7,7 @@ end
 Then("I should be on the plan page") do
   expect(current_path).to eq('/plans') # Replace with the actual URL of the plan page
 end
+
+Then("I should be on the floor 2d plan page") do
+  expect(current_path).to eq("/#{plan_id}/floor2d_plan")
+end
