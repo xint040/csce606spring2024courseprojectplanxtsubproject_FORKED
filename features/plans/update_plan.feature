@@ -8,7 +8,7 @@ Given the following plans exist:
 
     Scenario: Update an existed plan
         Given I am on the "plans" page
-        Then I click on the button with "edit" icon for the plan "My Plan" to enter the edit page
+        Then I click on the button with "edit" icon for the plan "My Plan" to enter the "edit" page
         When I fill in "Plan Name" with "My Plan - Updated"
         And I fill in "Venue Length" with "20"
         And I fill in "Venue Width" with "20"
@@ -18,7 +18,7 @@ Given the following plans exist:
 
     Scenario: Add steps to the existed plan
         Given I am on the "plans" page
-        Then I click on the button with "edit" icon for the plan "My Plan" to enter the edit page
+        Then I click on the button with "edit" icon for the plan "My Plan" to enter the "edit" page
         When I click on the "Add Step" button
         Then I should see a template of step being added
         When I fill in "Start Date" with "2016-01-01"

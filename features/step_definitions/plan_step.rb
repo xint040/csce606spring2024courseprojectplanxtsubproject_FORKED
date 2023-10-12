@@ -4,12 +4,14 @@ Given('the following plans exist:') do |table|
   end
 end
 
-When('I click on the button with {string} icon for the plan {string} to enter the {} page') do |string, string2, string3|
+When('I click on the button with {string} icon for the plan {string} to enter the {string} page') do |string, string2, string3|
   plan = Plan.find_by(name: string2)
   # Find the link with the specific id and click it
   find("##{string}_plan_#{plan.id}").click
   if string3 == 'edit'
     expect(current_path).to eq(edit_plan_path(plan))
+  elsif string3 == 'edit floorplans 2d'
+    expect(current_path).to eq(floorplans2d_plan_path(plan))
   end
 end
 
@@ -21,22 +23,6 @@ end
 
 When('I click on the {string} button') do |string|
   click_on(string)
-end
-
-Given('I am on the {string} page') do |string|
-  if string == 'new plan'
-    visit(new_plan_path)
-  else
-    visit(string)
-  end
-end
-
-Then('I should be on the {string} page') do |string|
-  if string == 'new plan'
-    visit(new_plan_path)
-  else
-    visit(string)
-  end
 end
 
 Then('I fill in {string} with {string}') do |string, string2|
@@ -54,4 +40,27 @@ end
 
 Then('I should see a template of step being added') do
   pending # Write code here that turns the phrase above into concrete actions
+end
+
+Given('I am on the {string} page') do |string|
+  if string == 'new plan'
+    visit(new_plan_path)
+    expect(current_path).to eq('/plans/new')
+  elsif string == 'home'
+    visit(root_path)
+    expect(current_path).to eq('/')
+  else
+    visit(string)
+    expect(current_path).to eq('/'+string)
+  end
+end
+
+Then('I should be on the {string} page') do |string|
+  if string == 'new plan'
+    expect(current_path).to eq('/plans/new')
+  elsif string == 'home'
+    expect(current_path).to eq('/')
+  else
+    expect(current_path).to eq('/'+string)
+  end
 end
