@@ -1,25 +1,25 @@
 <!-- app/views/plans/_step_field.html.erb -->
 <tr class="step-field" data-delete-step="<%= step_form.object.marked_for_destruction? %>">
   <td>
-    <%= step_form.date_field :start_date %>
+    <%= step_form.date_field :start_date, id: 'start_date'%>
   </td>
   <td>
-    <%= step_form.time_field :start_time %>
+    <%= step_form.time_field :start_time, id: 'start_time' %>
   </td>
   <td>
-    <%= step_form.time_field :end_time %>
+    <%= step_form.time_field :end_time, id: 'end_time' %>
   </td>
   <td>
-    <%= step_form.time_field :break1_start_time %>
+    <%= step_form.time_field :break1_start_time, id: 'break1_start_time' %>
   </td>
   <td>
-    <%= step_form.time_field :break1_end_time %>
+    <%= step_form.time_field :break1_end_time, id: 'break1_end_time' %>
   </td>
   <td>
-    <%= step_form.time_field :break2_start_time %>
+    <%= step_form.time_field :break2_start_time, id: 'break2_start_time' %>
   </td>
   <td>
-    <%= step_form.time_field :break2_end_time %>
+    <%= step_form.time_field :break2_end_time, id: 'break2_end_time' %>
   </td>
 
   <td style="display: inline-block;">
