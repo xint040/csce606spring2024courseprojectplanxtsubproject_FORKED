@@ -38,8 +38,13 @@ Then('I should see {string} in the list of plans') do |string|
   expect(plan).not_to be_nil
 end
 
-Then('I should see a template of step being added') do
-  pending # Write code here that turns the phrase above into concrete actions
+Then('I should see a template of step being added')  do
+  # button_id = 'add-step-button' 
+  # page.execute_script("document.getElementById('#{button_id}').click();")
+
+  puts body
+  initial_row_count = page.all('tbody#step-table-body tr').count
+  expect(page.all('tbody#step-table-body tr').count).to eq(initial_row_count + 1)
 end
 
 Given('I am on the {string} page') do |string|
