@@ -8,6 +8,7 @@ When('I click on the button with {string} icon for the plan {string} to enter th
   plan = Plan.find_by(name: string2)
   # Find the link with the specific id and click it
   find("##{string}_plan_#{plan.id}").click
+  sleep(1)
   if string3 == 'edit'
     expect(current_path).to eq(edit_plan_path(plan))
   elsif string3 == 'edit floorplans 2d'
@@ -23,10 +24,15 @@ end
 
 When('I click on the {string} button') do |string|
   click_on(string)
+  sleep(1)
 end
 
 Then('I fill in {string} with {string}') do |string, string2|
   fill_in(string, with: string2)
+end
+
+When('I set {string} with {string}') do |string, string2|
+  page.execute_script("document.getElementById('#{string}').value = '#{string2}';")
 end
 
 Then('I fill in {string} with {double}') do |string, double|
@@ -39,12 +45,7 @@ Then('I should see {string} in the list of plans') do |string|
 end
 
 Then('I should see a template of step being added')  do
-  # button_id = 'add-step-button' 
-  # page.execute_script("document.getElementById('#{button_id}').click();")
-
-  puts body
-  initial_row_count = page.all('tbody#step-table-body tr').count
-  expect(page.all('tbody#step-table-body tr').count).to eq(initial_row_count + 1)
+  expect(page.all('tbody#step-table-body tr').count).to eq(1)
 end
 
 Given('I am on the {string} page') do |string|
@@ -68,4 +69,9 @@ Then('I should be on the {string} page') do |string|
   else
     expect(current_path).to eq('/'+string)
   end
+end
+
+Then('I should see {string} to have {int} step\(s)') do |string, int|
+  plan = Plan.find_by(name:string)
+  expect(plan.steps.count).to eq(int)
 end

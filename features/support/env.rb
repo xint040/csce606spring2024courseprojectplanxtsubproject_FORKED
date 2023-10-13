@@ -3,9 +3,12 @@
 # newer version of cucumber-rails. Consider adding your own code to a new file
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
-
+require 'bundler/setup'
 require 'cucumber/rails'
 require 'selenium-webdriver'
+require 'webdrivers'
+
+driver = Selenium::WebDriver.for :chrome  # no need to specify driver_path
 
 Capybara.default_driver = :rack_test
 Capybara.javascript_driver = :selenium_chrome

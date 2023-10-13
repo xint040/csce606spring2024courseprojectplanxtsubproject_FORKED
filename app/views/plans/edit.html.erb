@@ -122,25 +122,25 @@ $(document).ready(function() {
     // Create a new table row with empty step fields
     var newRow = '<tr>' +
       '<td>' +
-      `<input type="date" name="plan[steps_attributes][${time}][start_date]" />` +
+      `<input type="date" id="start_date" name="plan[steps_attributes][${time}][start_date]" />` +
       '</td>' +
       '<td>' +
-      `<input type="time" name="plan[steps_attributes][${time}][start_time]" />` +
+      `<input type="time" id="start_time" name="plan[steps_attributes][${time}][start_time]" />` +
       '</td>' +
       '<td>' +
-      `<input type="time" name="plan[steps_attributes][${time}][end_time]" />` +
+      `<input type="time" id="end_time" name="plan[steps_attributes][${time}][end_time]" />` +
       '</td>' +
       '<td>' +
-      `<input type="time" name="plan[steps_attributes][${time}][break1_start_time]" />` +
+      `<input type="time" id="break1_start_time" name="plan[steps_attributes][${time}][break1_start_time]" />` +
       '</td>' +
       '<td>' +
-      `<input type="time" name="plan[steps_attributes][${time}][break1_end_time]" />` +
+      `<input type="time" id="break1_end_time" name="plan[steps_attributes][${time}][break1_end_time]" />` +
       '</td>' +
       '<td>' +
-      `<input type="time" name="plan[steps_attributes][${time}][break2_start_time]" />` +
+      `<input type="time" id="break2_start_time" name="plan[steps_attributes][${time}][break2_start_time]" />` +
       '</td>' +
       '<td>' +
-      `<input type="time" name="plan[steps_attributes][${time}][break2_end_time]" />` +
+      `<input type="time" id="break2_end_time" name="plan[steps_attributes][${time}][break2_end_time]" />` +
       '</td>' +
       '<td style="display: inline-block;">' +
       '<button type="button" class="btn btn-danger delete-step"><i class="fa fa-trash"></i></button>' +
