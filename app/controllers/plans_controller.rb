@@ -34,9 +34,9 @@ class PlansController < ApplicationController
     respond_to do |format|
       if @plan.save
         format.html { redirect_to plans_path, notice: "Plan was successfully created." }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @plan.errors, status: :unprocessable_entity }
+      # else # Currently doesn't handle error cases
+      #   format.html { render :new, status: :unprocessable_entity }
+      #   format.json { render json: @plan.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -47,9 +47,9 @@ class PlansController < ApplicationController
       if @plan.update(plan_params)
         format.html { redirect_to plans_path, notice: "Plan was successfully updated." }
         format.json { render :show, status: :ok, location: @plan }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @plan.errors, status: :unprocessable_entity }
+      # else # Currently doesn't handle error cases
+      #   format.html { render :edit, status: :unprocessable_entity }
+      #   format.json { render json: @plan.errors, status: :unprocessable_entity }
       end
     end
   end

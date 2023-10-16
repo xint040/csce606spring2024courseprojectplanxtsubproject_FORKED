@@ -53,6 +53,15 @@ RSpec.describe PlansController, type: :controller do
         end
     end
 
+    describe "when trying to delete a plan" do
+        it 'deletes a plan' do
+            delete :destroy, params: { id: plan1.id }
+            plan = Plan.find_by(id: plan1.id)
+            expect(plan).to be_nil
+        end
+    end
+
+
     describe "when trying to update a plan" do
         it 'updates a plan and add steps' do
             put :update, params: { id: plan1.id, plan: { name: 'Test4', owner: 'Morris', venue_length: 100, venue_width: 100 ,
