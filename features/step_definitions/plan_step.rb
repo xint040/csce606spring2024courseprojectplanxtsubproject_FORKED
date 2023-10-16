@@ -29,14 +29,17 @@ end
 
 Then('I fill in {string} with {string}') do |string, string2|
   fill_in(string, with: string2)
+  sleep(1)
 end
 
 When('I set {string} with {string}') do |string, string2|
   page.execute_script("document.getElementById('#{string}').value = '#{string2}';")
+  sleep(1)
 end
 
 Then('I fill in {string} with {double}') do |string, double|
   fill_in(string, with: double)
+  sleep(1)
 end
 
 Then('I should see {string} in the list of plans') do |string|

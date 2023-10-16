@@ -6,7 +6,6 @@ Given the following plans exist:
     | My Plan     | user    | 10               | 10          |
     | My Plan 2   | user    | 20               | 20          |
 
-
     Scenario: Navigate to home page
         Given I am on the "plans" page
         When I click on the "Back" button
