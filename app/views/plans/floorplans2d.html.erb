@@ -1,3 +1,180 @@
-<div class="board">
-    
+<div class="main-container">
+  <div class="row main-row">
+    <div class="accordion accordion-container accordion-flush col-3">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            Top Layer
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse items">
+          <div class="draggable" draggable="true" id="item-T1">T1</div>
+          <div class="draggable" draggable="true" id="item-T2">T2</div>
+          <div class="draggable" draggable="true" id="item-T3">T3</div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+            Furniture Layer
+          </button>
+        </h2>
+        <div id="flush-collapseTwo" class="accordion-collapse collapse items">
+          <div class="draggable" draggable="true" id="item-F1">F1</div>
+          <div class="draggable" draggable="true" id="item-F2">F2</div>
+          <div class="draggable" draggable="true" id="item-F3">F3</div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+            Electric Layer
+          </button>
+        </h2>
+        <div id="flush-collapseThree" class="accordion-collapse collapse items">
+          <div class="draggable" draggable="true" id="item-E1">E1</div>
+          <div class="draggable" draggable="true" id="item-E2">E2</div>
+          <div class="draggable" draggable="true" id="item-E3">E3</div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+            Staff Layer
+          </button>
+        </h2>
+        <div id="flush-collapseFour" class="accordion-collapse collapse items">
+          <div class="draggable" draggable="true" id="item-S1">S1</div>
+          <div class="draggable" draggable="true" id="item-S2">S2</div>
+          <div class="draggable" draggable="true" id="item-S3">S3</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 dropzone-container">
+      <div id="dropzone"></div>
+    </div>
+    <div class="accordion-container col-3"></div>
+  </div>
+
+  <div class="container">
+    <div> 
+      <table class="table" style="margin-top: 3em">   
+        <thead class="thead-light">
+          <th style="vertical-align: middle;">Name</th>
+          <th style="vertical-align: middle;">Item Type</th>
+          <th style="vertical-align: middle;">Start Time</th>
+          <th style="vertical-align: middle;">End Time</th>
+        </thead>
+        <tbody id="items-table-body">
+          <!-- Table rows will be added dynamically -->
+
+        </tbody>
+      </table>
+    <div>
+
+    <div class="button-container" style="margin-top: 3em">
+      <%= link_to "Back", plans_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
 </div>
+
+<style>
+  .main-container {
+    margin-bottom: 3em;
+  }
+  .main-row {
+    height: 80vh;
+  }
+  .accordion-container {
+    overflow-y: auto;
+    height: 100%;
+  }
+  .accordion-collapse {
+    padding: 1em;
+    width: 100% !important;
+  }
+
+  .dropzone-container {
+    background: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #dropzone {
+    background: white;
+    width: 80%;
+    height: 80%;
+    position: relative;
+  }
+  .items {
+    display: flex;
+    flex-wrap: wrap;
+    width: 200px;
+    border: 1px solid #000;
+  }
+  .draggable {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #aaa;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+
+<script>
+  const draggables = document.querySelectorAll('.draggable');
+  let offsetX, offsetY;
+
+  function handleDragStart(e) {
+    e.dataTransfer.setData('text/plain', this.id);
+    const rect = this.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    const droppedElementId = e.dataTransfer.getData('text/plain');
+    const element = document.getElementById(droppedElementId);
+
+    const boundingBox = dropzone.getBoundingClientRect();
+    const x = e.clientX - boundingBox.left - offsetX;
+    const y = e.clientY - boundingBox.top - offsetY;
+
+    if (!element.getAttribute('data-cloned')) {
+      const clonedElement = element.cloneNode(true);
+
+      clonedElement.style.position = 'absolute';
+      clonedElement.style.left = `${x}px`;
+      clonedElement.style.top = `${y}px`;
+
+      const newID = `cloned-${Math.floor(Math.random() * 10000)}`;
+      clonedElement.id = newID;
+      clonedElement.setAttribute('data-cloned', 'true');
+
+      dropzone.appendChild(clonedElement);
+      makeDraggable(clonedElement);
+    } else {
+      element.style.position = 'absolute';
+      element.style.left = `${x}px`;
+      element.style.top = `${y}px`;
+      makeDraggable(element);
+    }
+  }
+
+  function makeDraggable(element) {
+    element.draggable = true;
+    element.addEventListener('dragstart', handleDragStart);
+  }
+
+  draggables.forEach(makeDraggable);
+
+  const dropzone = document.getElementById('dropzone');
+  dropzone.addEventListener('dragover', e => e.preventDefault());
+  dropzone.addEventListener('drop', handleDrop);
+</script>

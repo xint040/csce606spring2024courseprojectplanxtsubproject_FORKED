@@ -9,11 +9,11 @@
   <table class="table" style="margin-top: 2em;">
   <thead style="background-color:#478ac9; ">
     <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Owner</th>
-      <th scope="col">Created</th>
-      <th scope="col">Updated</th>
-      <th scope="col">Actions</th>
+      <th class="col-2" scope="col">Name</th>
+      <th class="col-2" scope="col">Owner</th>
+      <th class="col" scope="col">Created</th>
+      <th class="col" scope="col">Updated</th>
+      <th class="col-2" scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -33,11 +33,11 @@
         </td>
 
         <td style="display:flex">
-          <%= link_to(floorplans2d_plan_path(plan), id: "play_plan_#{plan.id}", class: "btn btn-primary", style:"margin:0 1em 0 0") do %>
+          <%= link_to(floorplans2d_plan_path(plan), id: "play_plan_#{plan.id}", class: "btn btn-primary", style:"margin:0 1em 0 0; background-color: #478ac9;") do %>
             <i class="fa fa-play"></i>
           <% end %>
 
-          <%= link_to(edit_plan_path(plan), id: "edit_plan_#{plan.id}", class: "btn btn-primary", style:"margin:0 1em 0 0") do %>
+          <%= link_to(edit_plan_path(plan), id: "edit_plan_#{plan.id}", class: "btn btn-primary", style:"margin:0 1em 0 0; background-color: #478ac9;") do %>
             <i class="fa fa-edit"></i>
           <% end %>
           <%= button_to plan, method: :delete, class: "btn btn-danger" do %>
