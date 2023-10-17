@@ -127,54 +127,56 @@
 </style>
 
 <script>
-  const draggables = document.querySelectorAll('.draggable');
-  let offsetX, offsetY;
+  (function() {
+    const draggables = document.querySelectorAll('.draggable');
+    let offsetX, offsetY;
 
-  function handleDragStart(e) {
-    e.dataTransfer.setData('text/plain', this.id);
-    const rect = this.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-  }
-
-  function handleDrop(e) {
-    e.preventDefault();
-    const droppedElementId = e.dataTransfer.getData('text/plain');
-    const element = document.getElementById(droppedElementId);
-
-    const boundingBox = dropzone.getBoundingClientRect();
-    const x = e.clientX - boundingBox.left - offsetX;
-    const y = e.clientY - boundingBox.top - offsetY;
-
-    if (!element.getAttribute('data-cloned')) {
-      const clonedElement = element.cloneNode(true);
-
-      clonedElement.style.position = 'absolute';
-      clonedElement.style.left = `${x}px`;
-      clonedElement.style.top = `${y}px`;
-
-      const newID = `cloned-${Math.floor(Math.random() * 10000)}`;
-      clonedElement.id = newID;
-      clonedElement.setAttribute('data-cloned', 'true');
-
-      dropzone.appendChild(clonedElement);
-      makeDraggable(clonedElement);
-    } else {
-      element.style.position = 'absolute';
-      element.style.left = `${x}px`;
-      element.style.top = `${y}px`;
-      makeDraggable(element);
+    function handleDragStart(e) {
+      e.dataTransfer.setData('text/plain', this.id);
+      const rect = this.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
     }
-  }
 
-  function makeDraggable(element) {
-    element.draggable = true;
-    element.addEventListener('dragstart', handleDragStart);
-  }
+    function handleDrop(e) {
+      e.preventDefault();
+      const droppedElementId = e.dataTransfer.getData('text/plain');
+      const element = document.getElementById(droppedElementId);
 
-  draggables.forEach(makeDraggable);
+      const boundingBox = dropzone.getBoundingClientRect();
+      const x = e.clientX - boundingBox.left - offsetX;
+      const y = e.clientY - boundingBox.top - offsetY;
 
-  const dropzone = document.getElementById('dropzone');
-  dropzone.addEventListener('dragover', e => e.preventDefault());
-  dropzone.addEventListener('drop', handleDrop);
+      if (!element.getAttribute('data-cloned')) {
+        const clonedElement = element.cloneNode(true);
+
+        clonedElement.style.position = 'absolute';
+        clonedElement.style.left = `${x}px`;
+        clonedElement.style.top = `${y}px`;
+
+        const newID = `cloned-${Math.floor(Math.random() * 10000)}`;
+        clonedElement.id = newID;
+        clonedElement.setAttribute('data-cloned', 'true');
+
+        dropzone.appendChild(clonedElement);
+        makeDraggable(clonedElement);
+      } else {
+        element.style.position = 'absolute';
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+        makeDraggable(element);
+      }
+    }
+
+    function makeDraggable(element) {
+      element.draggable = true;
+      element.addEventListener('dragstart', handleDragStart);
+    }
+
+    draggables.forEach(makeDraggable);
+
+    const dropzone = document.getElementById('dropzone');
+    dropzone.addEventListener('dragover', e => e.preventDefault());
+    dropzone.addEventListener('drop', handleDrop);
+  })();
 </script>
