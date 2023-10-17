@@ -182,6 +182,30 @@
 
 <script>
   (function() {
+    $(document).ready(function() {
+      // your code here
+      console.log("Page fully loaded and DOM is ready!");
+      // can plan's id
+      const planId = <%= @plan.id %>;
+      // get plan's venue width and height
+      const planWidth = <%= @plan.venue_width %>;
+      const planLength = <%= @plan.venue_length %>; 
+      
+
+      
+      // change dropzone width and height
+      const dropzone = document.getElementById('dropzone');
+      const boundingBox = dropzone.getBoundingClientRect();
+      const dropzoneWidth = boundingBox.width;
+      const dropzoneHeight = boundingBox.height;
+
+      var ratio_width = dropzoneWidth / planWidth;
+      var ratio_length = dropzoneHeight / planLength;
+      var ratio = Math.min(ratio_width, ratio_length);
+      dropzone.style.width = `${planWidth * ratio}px`;
+      dropzone.style.height = `${planLength * ratio}px`;      
+    });
+
     const draggables = document.querySelectorAll('.draggable');
     let offsetX, offsetY;
 
