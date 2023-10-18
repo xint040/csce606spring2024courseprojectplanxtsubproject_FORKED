@@ -218,7 +218,7 @@
       const boundingBox = dropzone.getBoundingClientRect();
       const x = e.clientX - boundingBox.left - offsetX;
       const y = e.clientY - boundingBox.top - offsetY;
-
+      
       if (!element.getAttribute('data-cloned')) {
         const clonedElement = element.cloneNode(true);
 
@@ -232,6 +232,10 @@
 
         dropzone.appendChild(clonedElement);
         makeDraggable(clonedElement);
+        
+        // Add table row when new item is dragged and placed with newly generated ID
+        addTableRow(clonedElement.id, element.getAttribute('data-type'), '', '');
+        
       } else {
         element.style.position = 'absolute';
         element.style.left = `${x}px`;
@@ -260,9 +264,38 @@
 
       // Attach a one-time event listener to the "Delete" button in the modal
       document.getElementById('confirmDeleteBtn').onclick = function() {
+        // Call to removeTableRow function when item is deleted
+        removeTableRow(clickedElement.id);
         dropzone.removeChild(clickedElement);
         editModal.hide();
       };
+    }
+    
+    // Get the table body element
+    const tableBody = document.getElementById('items-table-body');
+    
+    // Function to add a new row to the table
+    function addTableRow(itemId, itemType, startTime, endTime) {
+      const newRow = tableBody.insertRow();
+      newRow.innerHTML = `
+        <td>${itemId}</td>
+        <td>${itemType}</td>
+        <td>${startTime}</td>
+        <td>${endTime}</td>
+      `;
+    }
+    
+    // Function to remove a row from the table
+    function removeTableRow(itemId) {
+      const rows = tableBody.getElementsByTagName('tr');
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const cellText = row.cells[0].textContent.trim();
+        if (cellText === itemId) {
+          tableBody.deleteRow(i);
+          break;
+        }
+      }
     }
 
     draggables.forEach(makeDraggable);
