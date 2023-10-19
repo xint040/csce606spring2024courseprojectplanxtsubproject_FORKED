@@ -8,54 +8,37 @@
           </button>
         </h2>
         <div id="flush-collapseTopLayer" class="accordion-collapse collapse items">
-          <div class="draggable" draggable="true" id="item-T1">T1</div>
-          <div class="draggable" draggable="true" id="item-T2">T2</div>
-          <div class="draggable" draggable="true" id="item-T3">T3</div>
+          <!-- Dynamically rendered -->
         </div>
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFurniture" aria-expanded="false" aria-controls="flush-collapseFurniture">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFurnitureLayer" aria-expanded="false" aria-controls="flush-collapseFurnitureLayer">
             Furniture Layer
           </button>
         </h2>
-        <div id="flush-collapseFurniture" class="accordion-collapse collapse items">
-          <div class="draggable" draggable="true" id="item-F1">
-            <div class="draggable-chair"></div>
-          </div>
-          <div class="draggable" draggable="true" id="item-F2">
-            <div class="draggable-chair-red"></div>
-          </div>
-          <div class="draggable" draggable="true" id="item-F3">
-            <div class="draggable-chair-blue"></div>
-          </div>
+        <div id="flush-collapseFurnitureLayer" class="accordion-collapse collapse items">
+          <!-- Dynamically rendered -->
         </div>
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseElectric" aria-expanded="false" aria-controls="flush-collapseElectric">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseElectricLayer" aria-expanded="false" aria-controls="flush-collapseElectricLayer">
             Electric Layer
           </button>
         </h2>
-        <div id="flush-collapseElectric" class="accordion-collapse collapse items">
-          <div class="draggable" draggable="true" id="item-E1">
-            <div class="draggable-camera"></div>
-          </div>
+        <div id="flush-collapseElectricLayer" class="accordion-collapse collapse items">
+          <!-- Dynamically rendered -->
         </div>
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseStaff" aria-expanded="false" aria-controls="flush-collapseStaff">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseStaffLayer" aria-expanded="false" aria-controls="flush-collapseStaffLayer">
             Staff Layer
           </button>
         </h2>
-        <div id="flush-collapseStaff" class="accordion-collapse collapse items">
-          <div class="draggable" draggable="true" id="item-S1">
-            <div class="draggable-man"></div>
-          </div>
-          <div class="draggable" draggable="true" id="item-S2">
-            <div class="draggable-woman"></div>
-          </div>
+        <div id="flush-collapseStaffLayer" class="accordion-collapse collapse items">
+          <!-- Dynamically rendered -->
         </div>
       </div>
     </div>
@@ -140,6 +123,7 @@
       </div>
   </div>
 </div>
+<%=javascript_include_tag "items"%>
 </div>
 
 <style>
@@ -180,9 +164,12 @@
 
 </style>
 
+
 <script>
   (function() {
+    var ratio = 1;
     $(document).ready(function() {
+      generateItems();
       // get plan's venue width and height
       const planWidth = <%= @plan.venue_width %>;
       const planLength = <%= @plan.venue_length %>; 
@@ -195,13 +182,37 @@
 
       var ratio_width = dropzoneWidth / planWidth;
       var ratio_length = dropzoneHeight / planLength;
-      var ratio = Math.min(ratio_width, ratio_length);
+      ratio = Math.min(ratio_width, ratio_length);
       dropzone.style.width = `${planWidth * ratio}px`;
-      dropzone.style.height = `${planLength * ratio}px`;      
+      dropzone.style.height = `${planLength * ratio}px`;  
+
     });
 
     const draggables = document.querySelectorAll('.draggable');
     let offsetX, offsetY;
+
+    function generateItems() {
+      for (const item_type in items) {
+        const item = items[item_type];
+        const container = document.getElementById(`flush-collapse${item.category}`);
+
+        const div = document.createElement('div');
+        const category = item.category;
+        div.className = 'draggable';
+        div.draggable = 'true';
+        div.id = `item-${item_type}`;
+
+        if (item.image){
+          div.style.backgroundImage = `url(${item.image})`;
+          div.style.backgroundSize = 'contain';
+          div.style.backgroundRepeat = 'no-repeat';
+          div.style.backgroundPosition = 'center';
+        }
+        
+        container.appendChild(div);
+        makeDraggable(div);
+      }
+    }
 
     function handleDragStart(e) {
       e.dataTransfer.setData('text/plain', this.id);
@@ -214,6 +225,9 @@
       e.preventDefault();
       const droppedElementId = e.dataTransfer.getData('text/plain');
       const element = document.getElementById(droppedElementId);
+
+      const item_type = droppedElementId.split('-')[1];
+      const item = items[item_type];
 
       const boundingBox = dropzone.getBoundingClientRect();
       const x = e.clientX - boundingBox.left - offsetX;
@@ -228,13 +242,22 @@
 
         const newID = `item-${Math.floor(Math.random() * 10000)}`;
         clonedElement.id = newID;
+        clonedElement.setAttribute('item-type', item_type);
+        clonedElement.setAttribute('item-name', item.displayName);
+        clonedElement.setAttribute('item-width', item.width);
+        clonedElement.setAttribute('item-depth', item.depth);
         clonedElement.setAttribute('data-cloned', 'true');  
+
+        // set width, height, rotation, description
+        clonedElement.style.width = `${item.width*ratio}px`;
+        clonedElement.style.height = `${item.depth*ratio}px`;
+        
 
         dropzone.appendChild(clonedElement);
         makeDraggable(clonedElement);
-        
+
         // Add table row when new item is dragged and placed with newly generated ID
-        addTableRow(clonedElement.id, element.getAttribute('data-type'), '', '');
+        addTableRow(clonedElement.id, '', '');
         
       } else {
         element.style.position = 'absolute';
@@ -258,9 +281,11 @@
       const editModal = new bootstrap.Modal(document.getElementById('editModal'));
       editModal.show();
 
-      document.getElementById('editModalLabel').innerText = `Details: ${clickedElement.id}`;
-      document.getElementById('itemWidth').value = clickedElement.offsetWidth;
-      document.getElementById('itemHeight').value = clickedElement.offsetHeight;
+      document.getElementById('editModalLabel').innerText = `Details: ${clickedElement.getAttribute('item-name')}`;
+
+      
+      document.getElementById('itemWidth').value = clickedElement.getAttribute('item-width');
+      document.getElementById('itemHeight').value = clickedElement.getAttribute('item-depth');
 
       // Attach a one-time event listener to the "Delete" button in the modal
       document.getElementById('confirmDeleteBtn').onclick = function() {
@@ -275,8 +300,9 @@
     const tableBody = document.getElementById('items-table-body');
     
     // Function to add a new row to the table
-    function addTableRow(itemId, itemType, startTime, endTime) {
+    function addTableRow(itemId, startTime, endTime) {
       const newRow = tableBody.insertRow();
+      itemType = document.getElementById(itemId).getAttribute('item-name');
       newRow.innerHTML = `
         <td>${itemId}</td>
         <td>${itemType}</td>
