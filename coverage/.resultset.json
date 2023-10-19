@@ -1,136 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/helpers/application_helper.rb": {
-        "lines": [
-          1,
-          null,
-          null
-        ]
-      },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/helpers/plans_helper.rb": {
-        "lines": [
-          1,
-          null
-        ]
-      },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/helpers/steps_helper.rb": {
-        "lines": [
-          1,
-          null
-        ]
-      },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/controllers/home_controller.rb": {
-        "lines": [
-          1,
-          1,
-          null,
-          null
-        ]
-      },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/controllers/application_controller.rb": {
-        "lines": [
-          1,
-          null
-        ]
-      },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/controllers/plans_controller.rb": {
-        "lines": [
-          1,
-          1,
-          null,
-          1,
-          null,
-          null,
-          1,
-          1,
-          null,
-          null,
-          null,
-          1,
-          1,
-          null,
-          null,
-          null,
-          1,
-          1,
-          1,
-          null,
-          null,
-          null,
-          1,
-          null,
-          null,
-          1,
-          1,
-          null,
-          null,
-          null,
-          1,
-          1,
-          null,
-          1,
-          1,
-          2,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          1,
-          1,
-          1,
-          2,
-          1,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          1,
-          1,
-          null,
-          1,
-          2,
-          1,
-          null,
-          null,
-          null,
-          1,
-          null,
-          1,
-          4,
-          null,
-          null,
-          null,
-          1,
-          2,
-          null,
-          null
-        ]
-      },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/models/plan.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/models/step.rb": {
-        "lines": [
-          1,
-          1,
-          null
-        ]
-      },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/channels/application_cable/channel.rb": {
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/channels/application_cable/channel.rb": {
         "lines": [
           0,
           0,
@@ -140,7 +11,7 @@
         "branches": {
         }
       },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/channels/application_cable/connection.rb": {
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/channels/application_cable/connection.rb": {
         "lines": [
           0,
           0,
@@ -150,7 +21,151 @@
         "branches": {
         }
       },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/jobs/application_job.rb": {
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/controllers/application_controller.rb": {
+        "lines": [
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/controllers/home_controller.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/controllers/plans_controller.rb": {
+        "lines": [
+          0,
+          0,
+          null,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/controllers/welcome_controller.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/helpers/application_helper.rb": {
+        "lines": [
+          0,
+          null,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/helpers/plans_helper.rb": {
+        "lines": [
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/helpers/steps_helper.rb": {
+        "lines": [
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/helpers/welcome_helper.rb": {
+        "lines": [
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/jobs/application_job.rb": {
         "lines": [
           0,
           null,
@@ -163,7 +178,7 @@
         "branches": {
         }
       },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/mailers/application_mailer.rb": {
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/mailers/application_mailer.rb": {
         "lines": [
           0,
           0,
@@ -173,7 +188,26 @@
         "branches": {
         }
       },
-      "/Users/morris88826/Desktop/TAMU/CSCE-606-Event360/PlaNXT/app/models/application_record.rb": {
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/models/application_record.rb": {
+        "lines": [
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/models/plan.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "/home/ubuntu/environment/Fall2023-PlaNXT/app/models/step.rb": {
         "lines": [
           0,
           0,
@@ -183,6 +217,6 @@
         }
       }
     },
-    "timestamp": 1697495729
+    "timestamp": 1697694729
   }
 }
