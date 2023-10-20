@@ -29,7 +29,7 @@ class PlansController < ApplicationController
   
   def preview3d
     json_content = JSON.parse(File.read(Rails.root.join('lib', 'design.room3d')))
-    @content = json_content["floorplan"] 
+    @content = json_content
   end
 
   # POST /plans or /plans.json

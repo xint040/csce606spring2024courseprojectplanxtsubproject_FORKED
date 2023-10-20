@@ -1,3 +1,8 @@
+Then('It should load all the items in the floorplans 2d page') do 
+    page.execute_script('generateItems();')
+    sleep(1)
+end
+
 When('I click on the {string} Accordion') do |string|
     click_on(string)
 end
@@ -58,4 +63,5 @@ Then('I should see the item {string} appear on the canvas at x={int}, y={int}') 
     # Assert the position
     expect(item_location.x.to_i).to eq(expected_x)
     expect(item_location.y.to_i).to eq(expected_y)
+    sleep(1)
 end

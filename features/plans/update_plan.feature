@@ -1,4 +1,4 @@
-@javascript
+@javascript 
 Feature: Update a new plan
 
 Background:

@@ -169,6 +169,7 @@
 <script>
   (function() {
     var ratio = 1;
+    window.generateItems = generateItems;
     $(document).ready(function() {
       generateItems();
       // get plan's venue width and height
@@ -193,6 +194,12 @@
     let offsetX, offsetY;
 
     function generateItems() {
+      for (const item_type in items) { // Assuming 'categories' is an array or object of all possible categories
+          const item = items[item_type];
+          const container = document.getElementById(`flush-collapse${item.category}`);
+          container.innerHTML = '';
+      }
+
       for (const item_type in items) {
         const item = items[item_type];
         const container = document.getElementById(`flush-collapse${item.category}`);

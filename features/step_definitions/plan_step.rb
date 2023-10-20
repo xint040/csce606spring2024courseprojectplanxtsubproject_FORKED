@@ -69,6 +69,7 @@ Then('I should be on the {string} page') do |string|
   else
     expect(current_path).to eq('/'+string)
   end
+  sleep(1)
 end
 
 Then('I should see {string} to have {int} step\(s)') do |string, int|
