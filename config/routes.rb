@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   
   root "home#index"
+
+  get 'blueprints/preview/docs', to: 'blueprints/preview/docs#index'
   
   resources :plans do
     member do
