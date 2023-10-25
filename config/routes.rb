@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   
   root "home#index"
 
-  get 'blueprints/preview/docs', to: 'blueprints/preview/docs#index'
+  get 'blueprints', to: 'blueprints#index'
   
   resources :plans do
     member do

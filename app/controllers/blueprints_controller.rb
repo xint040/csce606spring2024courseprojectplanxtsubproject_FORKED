@@ -4,5 +4,6 @@ class BlueprintsController < ApplicationController
     def index
         # sending data to 3d module
         # render '/docs/index.html'
+        @snapshot = session[:snapshot]
     end
 end

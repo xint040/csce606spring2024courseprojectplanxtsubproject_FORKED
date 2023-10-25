@@ -507,7 +507,6 @@ var mainControls = function(room3d) {
  */
 
 $(document).ready(function() {
-
   // main setup
   var opts = {
     floorplannerElement: 'floorplanner-canvas',
@@ -528,6 +527,196 @@ $(document).ready(function() {
 
   // This serialization format needs work
   // Load a simple rectangle room
-  data = '{"floorplan":{"corners":{"56d":{"x":630.555,"y":-227.584},"8f":{"x":294.64,"y":-227.584},"4e":{"x":294.64,"y":232.664},"b19":{"x":745.744,"y":232.664},"11d":{"x":1044.702,"y":232.664},"edf":{"x":1044.702,"y":-105.664},"e7":{"x":745.744,"y":-105.664}},"walls":[{"corner1":"4e","corner2":"b19","frontTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0},"backTexture":{"url":"https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/wallmap_yellow.png","stretch":true,"scale":null}},{"corner1":"56d","corner2":"8f","frontTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0},"backTexture":{"url":"https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/wallmap_yellow.png","stretch":true,"scale":null}},{"corner1":"8f","corner2":"4e","frontTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0},"backTexture":{"url":"https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/wallmap_yellow.png","stretch":true,"scale":null}},{"corner1":"b19","corner2":"11d","frontTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0},"backTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0}},{"corner1":"11d","corner2":"edf","frontTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0},"backTexture":{"url":"https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/light_brick.jpg","stretch":false,"scale":100}},{"corner1":"edf","corner2":"e7","frontTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0},"backTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0}},{"corner1":"e7","corner2":"56d","frontTexture":{"url":"rooms/textures/wallmap.png","stretch":true,"scale":0},"backTexture":{"url":"https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/wallmap_yellow.png","stretch":true,"scale":null}}],"wallTextures":[],"floorTextures":{},"newFloorTextures":{"11d,b19,e7,edf":{"url":"https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/light_fine_wood.jpg","scale":300}}},"items":[{"item_name":"Window","item_type":3,"model_url":"models/js/window.js","xpos":886.884,"ypos":139.151,"zpos":-105.164,"rotation":0,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false},{"item_name":"Media Console","item_type":1,"model_url":"models/js/media.js","xpos":658.657,"ypos":67.89,"zpos":-141.5,"rotation":-0.8154,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false},{"item_name":"Color Rug","item_type":8,"model_url":"models/js/rug.js","xpos":905.87,"ypos":0.25,"zpos":44.6,"rotation":-1.57,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false},{"item_name":"Poster","item_type":2,"model_url":"models/js/poster.js","xpos":1038.448,"ypos":146.226,"zpos":148.65,"rotation":-1.57,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false},{"item_name":"Sofa","item_type":1,"model_url":"models/js/sofa.js","xpos":356.9267,"ypos":42.545,"zpos":-21.686,"rotation":1.57,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false},{"item_name":"Coffee Table","item_type":1,"model_url":"models/js/table_coffee.js","xpos":468.479,"ypos":24.015,"zpos":-23.47,"rotation":1.57,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false},{"item_name":"Floor Lamp","item_type":1,"model_url":"models/js/lamp.js","xpos":346.697,"ypos":72.164,"zpos":-175.2,"rotation":0,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false},{"item_name":"Blue Chair","item_type":1,"model_url":"models/js/chair_blue.js","xpos":397.676,"ypos":37.5,"zpos":156.317,"rotation":2.4,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false},{"item_name":"Closed Door","item_type":7,"model_url":"models/js/door_closed.js","xpos":637.21764,"ypos":110.8,"zpos":232.164,"rotation":3.14159265359,"scale_x":1,"scale_y":1,"scale_z":1,"fixed":false}]}'
+
+  function loadDesign() {
+    files = $("#loadFile").get(0).files;
+    var reader = new FileReader();
+    reader.onload = function (event) {
+      var data = event.target.result;
+      room3d.model.loadSerialized(data);
+    };
+    reader.readAsText(files[0]);
+  }
+
+  function convertRubyHashToJSON(rubyHashString) {
+    // Replace => with :
+    let jsonString = rubyHashString.replace(/=>/g, ":");
+
+    // Wrap string keys without double quotes in double quotes
+    jsonString = jsonString.replace(/([\{,\s])([a-zA-Z0-9_]+)(?=:)/g, '$1"$2"');
+
+    // Convert 'nil' to 'null'
+    jsonString = jsonString.replace(/\bnil\b/g, "null");
+
+    return jsonString;
+  }
+
+  data = `{
+    "floorplan": {
+      "corners": {
+        "5e41ae41-49ab-0dad-8f5d-41e7591a8253": {
+          "x": 294.64,
+          "y": -225.04399999999998
+        },
+        "3c17f7d0-358c-5dda-f8a6-bf18f101f07e": {
+          "x": 1044.702,
+          "y": -225.04399999999998
+        },
+        "4f2ebf96-e96e-d1f3-9b88-ff6a879e7019": {
+          "x": 294.64,
+          "y": 232.664
+        },
+        "ca981c17-0d4d-e834-f2f3-300ba7c645bb": {
+          "x": 1044.702,
+          "y": 232.664
+        }
+      },
+      "walls": [
+        {
+          "corner1": "5e41ae41-49ab-0dad-8f5d-41e7591a8253",
+          "corner2": "4f2ebf96-e96e-d1f3-9b88-ff6a879e7019",
+          "frontTexture": {
+            "url": "rooms/textures/wallmap.png",
+            "stretch": true,
+            "scale": 0
+          },
+          "backTexture": {
+            "url": "https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/wallmap_yellow.png",
+            "stretch": true,
+            "scale": null
+          }
+        },
+        {
+          "corner1": "ca981c17-0d4d-e834-f2f3-300ba7c645bb",
+          "corner2": "3c17f7d0-358c-5dda-f8a6-bf18f101f07e",
+          "frontTexture": {
+            "url": "rooms/textures/wallmap.png",
+            "stretch": true,
+            "scale": 0
+          },
+          "backTexture": {
+            "url": "https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/light_brick.jpg",
+            "stretch": false,
+            "scale": 100
+          }
+        },
+        {
+          "corner1": "5e41ae41-49ab-0dad-8f5d-41e7591a8253",
+          "corner2": "3c17f7d0-358c-5dda-f8a6-bf18f101f07e",
+          "frontTexture": {
+            "url": "rooms/textures/wallmap.png",
+            "stretch": true,
+            "scale": 0
+          },
+          "backTexture": {
+            "url": "rooms/textures/wallmap.png",
+            "stretch": true,
+            "scale": 0
+          }
+        },
+        {
+          "corner1": "4f2ebf96-e96e-d1f3-9b88-ff6a879e7019",
+          "corner2": "ca981c17-0d4d-e834-f2f3-300ba7c645bb",
+          "frontTexture": {
+            "url": "rooms/textures/wallmap.png",
+            "stretch": true,
+            "scale": 0
+          },
+          "backTexture": {
+            "url": "rooms/textures/wallmap.png",
+            "stretch": true,
+            "scale": 0
+          }
+        }
+      ],
+      "wallTextures": [],
+      "floorTextures": {},
+      "newFloorTextures": {}
+    },
+    "items": [
+      {
+        "item_name": "Media Console",
+        "item_type": 1,
+        "model_url": "models/js/media.js",
+        "xpos": 636.467945801762,
+        "ypos": 67.88999754395999,
+        "zpos": -121.8183670462854,
+        "rotation": -0.8154,
+        "scale_x": 1,
+        "scale_y": 1,
+        "scale_z": 1,
+        "fixed": false
+      },
+      {
+        "item_name": "Color Rug",
+        "item_type": 8,
+        "model_url": "models/js/rug.js",
+        "xpos": 905.87,
+        "ypos": 0.25000500000000003,
+        "zpos": 44.6,
+        "rotation": -1.57,
+        "scale_x": 1,
+        "scale_y": 1,
+        "scale_z": 1,
+        "fixed": false
+      },
+      {
+        "item_name": "Poster",
+        "item_type": 2,
+        "model_url": "models/js/poster.js",
+        "xpos": 1038.448,
+        "ypos": 146.226,
+        "zpos": 148.65,
+        "rotation": -1.5707963267948966,
+        "scale_x": 1,
+        "scale_y": 1,
+        "scale_z": 1,
+        "fixed": false
+      },
+      {
+        "item_name": "Sofa",
+        "item_type": 1,
+        "model_url": "models/js/sofa.js",
+        "xpos": 356.9267,
+        "ypos": 42.54509923821,
+        "zpos": -21.686,
+        "rotation": 1.57,
+        "scale_x": 1,
+        "scale_y": 1,
+        "scale_z": 1,
+        "fixed": false
+      },
+      {
+        "item_name": "Coffee Table",
+        "item_type": 1,
+        "model_url": "models/js/table_coffee.js",
+        "xpos": 468.479,
+        "ypos": 24.01483158034958,
+        "zpos": -23.47,
+        "rotation": 1.57,
+        "scale_x": 1,
+        "scale_y": 1,
+        "scale_z": 1,
+        "fixed": false
+      },
+      {
+        "item_name": "Floor Lamp",
+        "item_type": 1,
+        "model_url": "models/js/lamp.js",
+        "xpos": 346.697,
+        "ypos": 72.163997943445,
+        "zpos": -175.2,
+        "rotation": 0,
+        "scale_x": 1,
+        "scale_y": 1,
+        "scale_z": 1,
+        "fixed": false
+      }
+    ]
+  }`;
+  var snapshotRubyHash = $("#snapshotData").data("param");
+
+  data = convertRubyHashToJSON(snapshotRubyHash);
+
   room3d.model.loadSerialized(data);
 });
