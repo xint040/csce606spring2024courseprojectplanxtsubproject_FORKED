@@ -28,9 +28,53 @@ class PlansController < ApplicationController
   end
   
   def preview3d
+    snapshot_data_json = params[:snapshot_data]
+    snapshot_data = JSON.parse(snapshot_data_json)
+
+    snapshot_data_json = params[:snapshot_data]
+    snapshot_data = JSON.parse(snapshot_data_json)
+
     json_content = JSON.parse(File.read(Rails.root.join('lib', 'design.room3d')))
-    @content = json_content
+    json_content["floorplan"]["corners"] = {
+      "7922010e-f5f3-2e53-46f4-3819ea8cdc12"=>{
+        "x"=>0,
+        "y"=>0,
+      },
+      "a8b17dd7-026c-de11-3077-01a169d1b795"=>{
+        "x"=> snapshot_data["venue_width"],
+        "y"=> 0,
+      }, 
+      "8039b51e-5a0b-8843-3129-32e647a42002"=>{
+        "x":0,
+        "y":snapshot_data["venue_length"],
+      }, 
+      "8a66d562-2eb4-2147-763c-7962e4208a0a"=>{ 
+        "x": snapshot_data["venue_width"],
+        "y": snapshot_data["venue_length"],
+        }
+      }
+      
+      
+    snapshot_data["items"].each do |item, values| 
+      json_content["items"].append({
+          "item_name":values["item_name"],
+          "item_type":values["item_type"],
+          "model_url":values["item_model"],
+          "xpos":values["item_xpos"],
+          "ypos": 0,
+          "zpos":values["item_zpos"],
+          "rotation":0,
+          "scale_x":1,
+          "scale_y":1,
+          "scale_z":1,
+          "fixed":false
+      })
+    end
+
+    puts json_content
+
     
+
     session[:snapshot] = json_content
     redirect_to blueprints_path
   end

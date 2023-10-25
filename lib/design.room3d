@@ -90,19 +90,5 @@
         "floorTextures":{},
         "newFloorTextures":{}
     },
-    "items":[
-        {
-            "item_name":"Chair",
-            "item_type":1,
-            "model_url":"models/js/chair.js",
-            "xpos":534.3163398128352,
-            "ypos":39.47743068655714,
-            "zpos":95.47572256543276,
-            "rotation":0,
-            "scale_x":1,
-            "scale_y":1,
-            "scale_z":1,
-            "fixed":false
-        }
-    ]
+    "items":[]
 }

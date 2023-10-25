@@ -69,7 +69,7 @@
       <%= link_to "Back", plans_path, class: "btn btn-secondary" %>
       <%= link_to "Save", "", class: "btn btn-primary me-auto", style:"background-color:#478ac9; margin-left: 1em;" %>
       <!--Preview in 3D button that links to Preview in 3D page-->
-      <%= link_to "Preview in 3D", plans_preview3d_path, class: "btn btn-primary", style:"background-color:#478ac9", target: :_blank %> 
+      <button type="button" class="btn btn-primary" id="preview3dLink">Preview in 3D</button>
     </div>
   </div>
 
@@ -252,8 +252,13 @@
         clonedElement.id = newID;
         clonedElement.setAttribute('item-type', item_type);
         clonedElement.setAttribute('item-name', item.displayName);
+        clonedElement.setAttribute('item-model', item.model);
+        clonedElement.setAttribute('item-real-type', item.type);
         clonedElement.setAttribute('item-width', item.width);
         clonedElement.setAttribute('item-depth', item.depth);
+        clonedElement.setAttribute('item-xpos', x/ratio);
+        clonedElement.setAttribute('item-ypos', y/ratio);
+
         clonedElement.setAttribute('data-cloned', 'true');  
 
         // set width, height, rotation, description
@@ -337,5 +342,52 @@
     const dropzone = document.getElementById('dropzone');
     dropzone.addEventListener('dragover', e => e.preventDefault());
     dropzone.addEventListener('drop', handleDrop);
+
+    const preview3dlink = document.getElementById("preview3dLink");
+    preview3dlink.addEventListener("click", function(event) {
+        event.preventDefault();  // Prevent default link behavior
+
+        const planWidth = <%= @plan.venue_width %>;
+        const planLength = <%= @plan.venue_length %>; 
+
+        const snapshot = {
+          venue_length: planLength,
+          venue_width: planWidth,
+          items: {}
+        };
+        const itemList = document.getElementById('dropzone').querySelectorAll('.draggable');
+        for (let i = 0; i < itemList.length; i++) {
+          const item = itemList[i];
+          const itemID = item.id;
+          const itemType = item.getAttribute('item-real-type');
+          const itemName = item.getAttribute('item-name');
+          const itemModel = item.getAttribute('item-model');
+          const itemWidth = item.getAttribute('item-width');
+          const itemDepth = item.getAttribute('item-depth');
+          const itemXPos = parseFloat(item.getAttribute('item-xpos'));
+          const itemZPos = parseFloat(item.getAttribute('item-ypos')); // very weird, ypos is the height in 3D, zpos is the y position in 3D
+          snapshot.items[itemID] = {
+            item_type: itemType,
+            item_name: itemName,
+            item_model: itemModel,
+            item_width: itemWidth,
+            item_depth: itemDepth,
+            item_rotation: itemRotation,
+            item_description: itemDescription,
+            item_xpos: itemXPos,
+            item_zpos: itemZPos
+          };
+        }
+
+
+
+        const encodedData = encodeURIComponent(JSON.stringify(snapshot));
+        // Construct the full URL
+        const baseURL = "/plans/preview3d";
+        const fullURL = baseURL + "?snapshot_data=" + encodedData;
+
+        // Navigate to the URL
+        window.open(fullURL, "_blank");
+    });
   })();
 </script>
