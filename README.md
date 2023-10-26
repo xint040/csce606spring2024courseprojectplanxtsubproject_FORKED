@@ -1,4 +1,4 @@
-# CSCE606 - Project Planxt
+# CSCE606 - Project PlaNXT
 
 **Team Fall 2023**
 
