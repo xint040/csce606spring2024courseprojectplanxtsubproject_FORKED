@@ -276,6 +276,8 @@
         element.style.position = 'absolute';
         element.style.left = `${x}px`;
         element.style.top = `${y}px`;
+        element.setAttribute('item-xpos', x/ratio); // Added to udpate x-pos of object after being moved
+        element.setAttribute('item-ypos', y/ratio); // Added to udpate y-pos of object after being moved
         makeDraggable(element);
       }
     }
@@ -366,6 +368,7 @@
           const itemDepth = item.getAttribute('item-depth');
           const itemXPos = parseFloat(item.getAttribute('item-xpos'));
           const itemZPos = parseFloat(item.getAttribute('item-ypos')); // very weird, ypos is the height in 3D, zpos is the y position in 3D
+          console.log(itemXPos);
           snapshot.items[itemID] = {
             item_type: itemType,
             item_name: itemName,
