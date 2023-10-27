@@ -1,0 +1,141 @@
+{
+  "floorplan": {
+    "corners": {
+      "7922010e-f5f3-2e53-46f4-3819ea8cdc12": {
+        "x": 0,
+        "y": 0
+      },
+      "a8b17dd7-026c-de11-3077-01a169d1b795": {
+        "x": 500,
+        "y": 0
+      },
+      "8039b51e-5a0b-8843-3129-32e647a42002": {
+        "x": 0,
+        "y": 500
+      },
+      "8a66d562-2eb4-2147-763c-7962e4208a0a": {
+        "x": 500,
+        "y": 500
+      }
+    },
+    "walls": [
+      {
+        "corner1": "7922010e-f5f3-2e53-46f4-3819ea8cdc12",
+        "corner2": "8039b51e-5a0b-8843-3129-32e647a42002",
+        "frontTexture": {
+          "url": "rooms/textures/wallmap.png",
+          "stretch": true,
+          "scale": 0
+        },
+        "backTexture": {
+          "url": "https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/wallmap_yellow.png",
+          "stretch": true,
+          "scale": null
+        }
+      },
+      {
+        "corner1": "8a66d562-2eb4-2147-763c-7962e4208a0a",
+        "corner2": "a8b17dd7-026c-de11-3077-01a169d1b795",
+        "frontTexture": {
+          "url": "rooms/textures/wallmap.png",
+          "stretch": true,
+          "scale": 0
+        },
+        "backTexture": {
+          "url": "https://blueprint-dev.s3.amazonaws.com/uploads/floor_wall_texture/file/light_brick.jpg",
+          "stretch": false,
+          "scale": 100
+        }
+      },
+      {
+        "corner1": "7922010e-f5f3-2e53-46f4-3819ea8cdc12",
+        "corner2": "a8b17dd7-026c-de11-3077-01a169d1b795",
+        "frontTexture": {
+          "url": "rooms/textures/wallmap.png",
+          "stretch": true,
+          "scale": 0
+        },
+        "backTexture": {
+          "url": "rooms/textures/wallmap.png",
+          "stretch": true,
+          "scale": 0
+        }
+      },
+      {
+        "corner1": "8039b51e-5a0b-8843-3129-32e647a42002",
+        "corner2": "8a66d562-2eb4-2147-763c-7962e4208a0a",
+        "frontTexture": {
+          "url": "rooms/textures/wallmap.png",
+          "stretch": true,
+          "scale": 0
+        },
+        "backTexture": {
+          "url": "rooms/textures/wallmap.png",
+          "stretch": true,
+          "scale": 0
+        }
+      }
+    ],
+    "wallTextures": [
+
+    ],
+    "floorTextures": {
+    },
+    "newFloorTextures": {
+    }
+  },
+  "items": [
+    {
+      "item_name": "Red Chair",
+      "item_type": "1",
+      "model_url": "models/js/chair_red.js",
+      "xpos": 121.7572740693833,
+      "ypos": 0,
+      "zpos": 108.30173713420477,
+      "rotation": 0,
+      "scale_x": 1,
+      "scale_y": 1,
+      "scale_z": 1,
+      "fixed": false
+    },
+    {
+      "item_name": "Red Chair",
+      "item_type": "1",
+      "model_url": "models/js/chair_red.js",
+      "xpos": 200.4438165130225,
+      "ypos": 0,
+      "zpos": 91.23718576088542,
+      "rotation": 0,
+      "scale_x": 1,
+      "scale_y": 1,
+      "scale_z": 1,
+      "fixed": false
+    },
+    {
+      "item_name": "Blue Chair",
+      "item_type": "1",
+      "model_url": "models/js/chair_blue.js",
+      "xpos": 160.62652997527738,
+      "ypos": 0,
+      "zpos": 288.427557185909,
+      "rotation": 0,
+      "scale_x": 1,
+      "scale_y": 1,
+      "scale_z": 1,
+      "fixed": false
+    },
+    {
+      "item_name": "Blue Chair",
+      "item_type": "1",
+      "model_url": "models/js/chair_blue.js",
+      "xpos": 308.5193085440451,
+      "ypos": 0,
+      "zpos": 271.3630058125897,
+      "rotation": 0,
+      "scale_x": 1,
+      "scale_y": 1,
+      "scale_z": 1,
+      "fixed": false
+    }
+  ]
+}

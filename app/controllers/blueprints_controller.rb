@@ -4,6 +4,7 @@ class BlueprintsController < ApplicationController
     def index
         # sending data to 3d module
         # render '/docs/index.html'
-        @snapshot = session[:snapshot]
+        # ADDED HERE, read the saved floorplan.json from public folder, render in 3D when page is opened
+        @snapshot = JSON.parse(File.read(Rails.root.join('public', 'floorplan.json')))
     end
 end

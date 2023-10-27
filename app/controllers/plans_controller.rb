@@ -31,8 +31,8 @@ class PlansController < ApplicationController
     snapshot_data_json = params[:snapshot_data]
     snapshot_data = JSON.parse(snapshot_data_json)
 
-    snapshot_data_json = params[:snapshot_data]
-    snapshot_data = JSON.parse(snapshot_data_json)
+    # snapshot_data_json = params[:snapshot_data]
+    # snapshot_data = JSON.parse(snapshot_data_json)
 
     json_content = JSON.parse(File.read(Rails.root.join('lib', 'design.room3d')))
     json_content["floorplan"]["corners"] = {
@@ -73,9 +73,9 @@ class PlansController < ApplicationController
 
     puts json_content
 
-    
+    # ADDED HERE, write the updated information to a JSON file stored in the public folder called "floorplan.json"
+    File.write(Rails.root.join('public', 'floorplan.json'), JSON.pretty_generate(json_content))
 
-    session[:snapshot] = json_content
     redirect_to blueprints_path
   end
 
