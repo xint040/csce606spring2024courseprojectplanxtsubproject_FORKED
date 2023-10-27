@@ -85,57 +85,5 @@
     }
   },
   "items": [
-    {
-      "item_name": "Red Chair",
-      "item_type": "1",
-      "model_url": "models/js/chair_red.js",
-      "xpos": 121.7572740693833,
-      "ypos": 0,
-      "zpos": 108.30173713420477,
-      "rotation": 0,
-      "scale_x": 1,
-      "scale_y": 1,
-      "scale_z": 1,
-      "fixed": false
-    },
-    {
-      "item_name": "Red Chair",
-      "item_type": "1",
-      "model_url": "models/js/chair_red.js",
-      "xpos": 200.4438165130225,
-      "ypos": 0,
-      "zpos": 91.23718576088542,
-      "rotation": 0,
-      "scale_x": 1,
-      "scale_y": 1,
-      "scale_z": 1,
-      "fixed": false
-    },
-    {
-      "item_name": "Blue Chair",
-      "item_type": "1",
-      "model_url": "models/js/chair_blue.js",
-      "xpos": 160.62652997527738,
-      "ypos": 0,
-      "zpos": 288.427557185909,
-      "rotation": 0,
-      "scale_x": 1,
-      "scale_y": 1,
-      "scale_z": 1,
-      "fixed": false
-    },
-    {
-      "item_name": "Blue Chair",
-      "item_type": "1",
-      "model_url": "models/js/chair_blue.js",
-      "xpos": 308.5193085440451,
-      "ypos": 0,
-      "zpos": 271.3630058125897,
-      "rotation": 0,
-      "scale_x": 1,
-      "scale_y": 1,
-      "scale_z": 1,
-      "fixed": false
-    }
   ]
 }
