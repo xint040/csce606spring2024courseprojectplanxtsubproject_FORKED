@@ -65,3 +65,8 @@ Then('I should see the item {string} appear on the canvas at x={int}, y={int}') 
     expect(item_location.y.to_i).to eq(expected_y)
     sleep(1)
 end
+
+Then('I should see the item {string} appear in the table') do |string|
+  itemsTable = find('#itemsTable')
+    expect(itemsTable).to have_content(string)
+end
