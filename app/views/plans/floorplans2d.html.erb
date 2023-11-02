@@ -83,7 +83,7 @@
         <div class="modal-body">
           <div class="row g-3 align-items-center">
             <div class="col-auto">
-              <label for="itemWidth" class="col-form-label">Width</label>
+              <label for="itemWidth" class="col-form-label">Width (inch)</label>
             </div>
             <div class="col-auto">
               <input type="number" id="itemWidth" class="form-control">
@@ -91,7 +91,7 @@
           </div>
           <div class="row g-3 align-items-center" style="margin-top:1em">
             <div class="col-auto">
-              <label for="itemHeight" class="col-form-label">Height</label>
+              <label for="itemHeight" class="col-form-label">Height (inch)</label>
             </div>
             <div class="col-auto">
               <input type="number" id="itemHeight" class="form-control">
@@ -241,6 +241,7 @@
       const x = e.clientX - boundingBox.left - offsetX;
       const y = e.clientY - boundingBox.top - offsetY;
       
+      inch2feet = 1/12;
       if (!element.getAttribute('data-cloned')) {
         const clonedElement = element.cloneNode(true);
 
@@ -256,14 +257,13 @@
         clonedElement.setAttribute('item-real-type', item.type);
         clonedElement.setAttribute('item-width', item.width);
         clonedElement.setAttribute('item-depth', item.depth);
-        clonedElement.setAttribute('item-xpos', x/ratio);
-        clonedElement.setAttribute('item-ypos', y/ratio);
-
+        clonedElement.setAttribute('item-xpos', x/(ratio)+inch2feet*item.width/2);
+        clonedElement.setAttribute('item-ypos', y/(ratio)+inch2feet*item.depth/2);
         clonedElement.setAttribute('data-cloned', 'true');  
 
         // set width, height, rotation, description
-        clonedElement.style.width = `${item.width*ratio}px`;
-        clonedElement.style.height = `${item.depth*ratio}px`;
+        clonedElement.style.width = `${inch2feet* item.width*ratio}px`;
+        clonedElement.style.height = `${inch2feet* item.depth*ratio}px`;
         
 
         dropzone.appendChild(clonedElement);
@@ -276,8 +276,10 @@
         element.style.position = 'absolute';
         element.style.left = `${x}px`;
         element.style.top = `${y}px`;
-        element.setAttribute('item-xpos', x/ratio); // Added to udpate x-pos of object after being moved
-        element.setAttribute('item-ypos', y/ratio); // Added to udpate y-pos of object after being moved
+        width = element.getAttribute('item-width');
+        depth = element.getAttribute('item-depth');
+        element.setAttribute('item-xpos', x/ratio+inch2feet*width/2); // Added to udpate x-pos of object after being moved
+        element.setAttribute('item-ypos', y/ratio+inch2feet*depth/2); // Added to udpate y-pos of object after being moved
         makeDraggable(element);
       }
     }
