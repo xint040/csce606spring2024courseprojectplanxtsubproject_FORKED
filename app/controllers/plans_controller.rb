@@ -33,7 +33,7 @@ class PlansController < ApplicationController
 
     # snapshot_data_json = params[:snapshot_data]
     # snapshot_data = JSON.parse(snapshot_data_json)
-
+    scaler = 31.4
     json_content = JSON.parse(File.read(Rails.root.join('lib', 'design.room3d')))
     json_content["floorplan"]["corners"] = {
       "7922010e-f5f3-2e53-46f4-3819ea8cdc12"=>{
@@ -41,28 +41,27 @@ class PlansController < ApplicationController
         "y"=>0,
       },
       "a8b17dd7-026c-de11-3077-01a169d1b795"=>{
-        "x"=> snapshot_data["venue_width"],
+        "x"=> snapshot_data["venue_width"]*scaler,
         "y"=> 0,
       }, 
       "8039b51e-5a0b-8843-3129-32e647a42002"=>{
         "x":0,
-        "y":snapshot_data["venue_length"],
+        "y": snapshot_data["venue_length"]*scaler,
       }, 
       "8a66d562-2eb4-2147-763c-7962e4208a0a"=>{ 
-        "x": snapshot_data["venue_width"],
-        "y": snapshot_data["venue_length"],
+        "x": snapshot_data["venue_width"]*scaler,
+        "y": snapshot_data["venue_length"]*scaler,
         }
       }
-      
       
     snapshot_data["items"].each do |item, values| 
       json_content["items"].append({
           "item_name":values["item_name"],
           "item_type":values["item_type"],
           "model_url":values["item_model"],
-          "xpos":values["item_xpos"],
+          "xpos":values["item_xpos"]*scaler,
           "ypos": 0,
-          "zpos":values["item_zpos"],
+          "zpos":values["item_zpos"]*scaler,
           "rotation":0,
           "scale_x":1,
           "scale_y":1,
@@ -70,8 +69,6 @@ class PlansController < ApplicationController
           "fixed":false
       })
     end
-
-    puts json_content
 
     # ADDED HERE, write the updated information to a JSON file stored in the public folder called "floorplan.json"
     File.write(Rails.root.join('public', 'floorplan.json'), JSON.pretty_generate(json_content))
