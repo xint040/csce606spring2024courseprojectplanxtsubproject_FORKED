@@ -32,10 +32,18 @@ Instructions given below are based on Cloud9 environment. However, you can use y
   * `bin/rails db:environment:set RAILS_ENV=development`
 
 * Create and migrate database
-  *  `rake db:create`
-  *  `rake db:schema:load`
-  *  `rake db:migrate`
-  *  `rake db:seed`
+```console
+rake db:create
+```
+```console
+rake db:schema:load
+```
+```console
+rake db:migrate
+```
+```console
+rake db:seed
+```
 
 * Start server in local development environment
   * `rails server`
