@@ -33,7 +33,7 @@
         </td>
 
         <td style="display:flex">
-          <%= link_to(floorplans2d_plan_path(plan), id: "play_plan_#{plan.id}", class: "btn btn-primary", style:"margin:0 1em 0 0; background-color: #478ac9;") do %>
+          <%= link_to(floorplans2d_plan_path(plan), id: "play_plan_#{plan.id}", class: "btn btn-primary #{'disabled' if plan.steps.length == 0}", style:"margin:0 1em 0 0; background-color: #478ac9;") do %>
             <i class="fa fa-play"></i>
           <% end %>
 

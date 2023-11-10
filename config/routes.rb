@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :items do
+    collection do
+      get :search # Defines a route for the search action on items controller.
+    end
+  end
+  
   # Not sure if this is right, need to reconcile with how you did it -Louis
   get 'plans/preview3d', to: 'plans#preview3d'
 
