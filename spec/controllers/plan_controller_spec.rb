@@ -64,9 +64,26 @@ RSpec.describe PlansController, type: :controller do
 
     describe "when trying to update a plan" do
         it 'updates a plan and add steps' do
-            put :update, params: { id: plan1.id, plan: { name: 'Test4', owner: 'Morris', venue_length: 100, venue_width: 100 ,
-        steps_attributes: [{start_date: '2021-01-01', start_time: '10:00:00', end_time: '11:00:00', break1_start_time: '10:30:00', break1_end_time: '10:45:00', break2_start_time: '10:30:00', break2_end_time: '10:45:00' }]}
-    }
+            put :update, params: { 
+                id: plan1.id, 
+                plan: { 
+                    name: 'Test4', 
+                    owner: 'Morris', 
+                    venue_length: 100, 
+                    venue_width: 100 ,
+                    steps_attributes: [
+                        {start_date: '2021-01-01', 
+                        start_time: '10:00:00', 
+                        end_time: '11:00:00', 
+                        break1_start_time: '10:30:00', 
+                        break1_end_time: '10:45:00',
+                        break2_start_time: '10:30:00', 
+                        break2_end_time: '10:45:00' 
+                        }
+                    ]
+                }
+            }
+
             plan1.reload
             expect(plan1.name).to eq('Test4')
             expect(plan1.owner).to eq('Morris')
@@ -78,6 +95,37 @@ RSpec.describe PlansController, type: :controller do
             expect(plan1.steps.last.break2_start_time.strftime('%H:%M:%S')).to eq('10:30:00')
             expect(plan1.steps.last.break2_end_time.strftime('%H:%M:%S')).to eq('10:45:00')
             expect(response).to redirect_to(plans_path)
+        end
+    end
+
+    # add tests for floorplans2d
+    describe '#preview3d' do
+        let(:snapshot_data_json) { '{"venue_width": 100, "venue_length": 200, "items": {"item1": {"item_name": "Chair", "item_type": "furniture", "item_model": "chair_model", "item_xpos": 10, "item_zpos": 20}}}' }
+        let(:file_path) { Rails.root.join('public', 'floorplan.json') }
+        let(:blueprints_path) { '/path_to_blueprints' } # adjust as necessary
+
+        before do
+            allow(controller).to receive(:blueprints_path).and_return(blueprints_path)
+            allow(File).to receive(:read).and_return('{ "floorplan": {"corners": {}}, "items": [] }')
+            allow(File).to receive(:write)
+            post :preview3d, params: { snapshot_data: snapshot_data_json }
+        end
+
+        it 'parses the snapshot data correctly' do
+            # Test the parsing logic here
+        end
+
+        it 'modifies the json_content based on snapshot_data' do
+            # Test the modifications to json_content
+        end
+
+        it 'writes the correct content to floorplan.json' do
+            expect(File).to have_received(:write).with(file_path, anything)
+            # You can also test the contents written to the file if necessary
+        end
+
+        it 'redirects to the blueprints path' do
+            expect(response).to redirect_to(blueprints_path)
         end
     end
 

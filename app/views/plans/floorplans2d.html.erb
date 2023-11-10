@@ -385,34 +385,7 @@
         })
         .then(data => {
           console.log('Item created successfully:', data);
-
-          const clonedElement = element.cloneNode(true);
-
-          clonedElement.style.position = 'absolute';
-          clonedElement.style.left = `${x}px`;
-          clonedElement.style.top = `${y}px`;
-          const pathSegments = data.url.split('/'); // This will give you ["", "items", "2"]
-          const newID = pathSegments.pop(); 
-          clonedElement.id = parseInt(newID);
-          clonedElement.setAttribute('item-type', type);
-          clonedElement.setAttribute('item-name', name);
-          clonedElement.setAttribute('item-model', model);
-          clonedElement.setAttribute('item-real-type', real_type);
-          clonedElement.setAttribute('item-width', width);
-          clonedElement.setAttribute('item-depth', depth);
-          clonedElement.setAttribute('item-xpos', xpos);
-          clonedElement.setAttribute('item-zpos', zpos);
-          clonedElement.setAttribute('data-cloned', 'true');  
-
-          // set width, height, rotation, description
-          clonedElement.style.width = `${inch2feet* item.width*ratio}px`;
-          clonedElement.style.height = `${inch2feet* item.depth*ratio}px`;
-          
-          dropzone.appendChild(clonedElement);
-          makeDraggable(clonedElement);
-
-          // Add table row when new item is dragged and placed with newly generated ID
-          addTableRow(clonedElement.id, '', '');
+          loadItems(currentStep);
         })
         .catch((error) => {
           console.error('Error updating item:', error);
@@ -482,10 +455,34 @@
 
       // Attach a one-time event listener to the "Delete" button in the modal
       document.getElementById('confirmDeleteBtn').onclick = function() {
+
+        fetch(`/items/${clickedElement.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        }).then(response => {
+          if (response.ok) {
+            // Handle success
+            console.log("Item deleted successfully");
+            loadItems(currentStep);
+          } else {
+            // Handle error
+            console.error("Failed to delete item");
+          }
+        }).catch(error => {
+          // Handle network error
+          console.error("Network error:", error);
+        });
+
         // Call to removeTableRow function when item is deleted
-        removeTableRow(clickedElement.id);
-        dropzone.removeChild(clickedElement);
-        editModal.hide();
+        // removeTableRow(clickedElement.id);
+        // dropzone.removeChild(clickedElement);
+        // items = items.filter(item => item.id != clickedElement.id);
+        
+    
+        // editModal.hide();
       };
     }
     
