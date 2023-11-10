@@ -44,9 +44,65 @@
     </div>
     <div class="col-6 dropzone-container">
       <div id="dropzone"></div>
-      <input type="range" min="1" max="100" value="50" class="slider" id="myRange" style="width: 80%" >
+      <input type="range"  class="slider" id="myRange" style="width: 80%" >
     </div>
-    <div class="accordion-container col-3"></div>
+    <div class="accordion-container col-3">
+      <!-- Plan Deteil -->
+      <div class="accordion-item" style="margin:1em">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsePlanDetail" aria-expanded="false" aria-controls="flush-collapsePlanDetail">
+            Plan Detail
+          </button>
+        </h2>
+        <div id="flush-collapsePlanDetail" class="accordion-collapse collapse show items" style="margin-top:1em">
+          <div class="accordion-body">
+            <div class="row g-3 align-items-center">
+              <div class="col-auto">
+                <label for="planName" class="col-form-label">Name</label>
+              </div>
+              <div class="col-auto">
+                <input type="text" id="planName" class="form-control disabled-label" value="<%= @plan.name %>">
+              </div>
+            </div>
+            <div class="row g-3 align-items-center" style="margin-top:1em">
+              <div class="col-auto">
+                <label for="planVenueWidth" class="col-form-label">Venue Width (ft)</label>
+              </div>
+              <div class="col-auto">
+                <input type="number" id="planVenueWidth" class="form-control disabled-label" value="<%= @plan.venue_width %>">
+              </div>
+            </div>
+            <div class="row g-3 align-items-center" style="margin-top:1em">
+              <div class="col-auto">
+                <label for="planVenueLength" class="col-form-label">Venue Length (ft)</label>
+              </div>
+              <div class="col-auto">
+                <input type="number" id="planVenueLength" class="form-control disabled-label" value="<%= @plan.venue_length %>">
+              </div>
+            </div>
+            <div class="row g-3 align-items-center" style="margin-top:1em">
+              <div class="col-12">
+                <label for="planDescription" class="col-form-label">Steps</label>
+              </div>
+              <div class="col">
+                <div class="dropdown">
+                  <input class="form-control" id="combobox" type="text" data-bs-toggle="dropdown" aria-expanded="false" readonly>
+                  <ul class="dropdown-menu" aria-labelledby="combobox">
+                    <% @plan.steps.each do |step| %>
+                      <% start_minutes = step.start_time.hour * 60 + step.start_time.min %>
+                      <% end_minutes = step.end_time.hour * 60 + step.end_time.min %>
+                      <button class="dropdown-item" type="button" data-id=<%= step.id %> data-start="<%= start_minutes %>" data-end="<%= end_minutes %>">
+                        <%= step.start_date.to_s + " " + step.start_time.strftime('%I:%M %p') + "~" + step.end_time.strftime('%I:%M %p') %>
+                      </button>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="container">
@@ -123,55 +179,21 @@
         </div>
       </div>
   </div>
-</div>
-<%=javascript_include_tag "items"%>
-</div>
 
-<style>
-  .main-container {
-    margin-bottom: 3em;
-  }
-  .main-row {
-    height: 80vh;
-  }
-  .accordion-container {
-    overflow-y: auto;
-    height: 100%;
-  }
-  .accordion-collapse {
-    padding: 1em;
-    width: 100% !important;
-  }
-
-  .dropzone-container {
-    background: lightblue;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-  }
-  #dropzone {
-    background: white;
-    width: 80%;
-    height: 80%;
-    position: relative;
-  }
-  .items {
-    display: flex;
-    flex-wrap: wrap;
-    width: 200px;
-    border: 1px solid #000;
-  }
-
-</style>
-
+<%= javascript_include_tag "items" %>
 
 <script>
   (function() {
     var ratio = 1;
+    var currentStep = -1;
+    var items = [];
+
     window.generateItems = generateItems;
     $(document).ready(function() {
       generateItems();
+      initComboBox();
+      
+
       // get plan's venue width and height
       const planWidth = <%= @plan.venue_width %>;
       const planLength = <%= @plan.venue_length %>; 
@@ -188,20 +210,69 @@
       dropzone.style.width = `${planWidth * ratio}px`;
       dropzone.style.height = `${planLength * ratio}px`;  
 
+      loadItems(currentStep);
     });
 
     const draggables = document.querySelectorAll('.draggable');
     let offsetX, offsetY;
 
+    // JavaScript to call the 'search' action using AJAX with fetch
+    async function searchItemsByStep(stepId) {
+      const response = await fetch(`/items/search?step_id=${stepId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+      })
+
+      if(response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        console.error('Network response was not ok');
+      }
+    }
+
+
+    async function loadItems(stepId) {
+      // clear all items
+      items.length = 0;
+
+      // clear all table rows
+      const tableBody = document.getElementById('items-table-body');
+      tableBody.innerHTML = '';
+
+      // clear all dropped items
+      const droppedItems = document.querySelectorAll('[data-cloned="true"]');
+      droppedItems.forEach(item => {
+        item.remove();
+      });
+
+      var _items = await searchItemsByStep(stepId);
+
+      for( item of _items){
+        var droppedElementId = "item-"
+        for(let itemType in itemTemplates){
+          if (itemTemplates[itemType].displayName == item.name){
+            droppedElementId += itemType;
+            break;
+          }
+        }
+        items.push(item);
+        createItem(droppedElementId, item);
+      }
+    }
+
     function generateItems() {
-      for (const item_type in items) { // Assuming 'categories' is an array or object of all possible categories
-          const item = items[item_type];
+      for (const item_type in itemTemplates) { // Assuming 'categories' is an array or object of all possible categories
+          const item = itemTemplates[item_type];
           const container = document.getElementById(`flush-collapse${item.category}`);
           container.innerHTML = '';
       }
 
-      for (const item_type in items) {
-        const item = items[item_type];
+      for (const item_type in itemTemplates) {
+        const item = itemTemplates[item_type];
         const container = document.getElementById(`flush-collapse${item.category}`);
 
         const div = document.createElement('div');
@@ -229,48 +300,123 @@
       offsetY = e.clientY - rect.top;
     }
 
+    function createItem(droppedElementId, item){
+      const element = document.getElementById(droppedElementId);
+      const clonedElement = element.cloneNode(true);
+      var inch2feet = 1/12;
+
+      var x = (item.xpos - inch2feet*item.width/2)*ratio;
+      var y = (item.zpos - inch2feet*item.depth/2)*ratio;
+
+      clonedElement.style.position = 'absolute';
+      clonedElement.style.left = `${x}px`;
+      clonedElement.style.top = `${y}px`;
+
+      clonedElement.id = parseInt(item.id);
+      // clonedElement.setAttribute('item-type', item.type);
+      clonedElement.setAttribute('item-name', item.name);
+      clonedElement.setAttribute('item-model', item.model);
+      // clonedElement.setAttribute('item-real-type', real_type);
+      clonedElement.setAttribute('item-width', item.width);
+      clonedElement.setAttribute('item-depth', item.depth);
+      clonedElement.setAttribute('item-xpos', item.xpos);
+      clonedElement.setAttribute('item-zpos', item.zpos);
+      clonedElement.setAttribute('data-cloned', 'true');  
+
+      // set width, height, rotation, description
+      clonedElement.style.width = `${inch2feet* item.width*ratio}px`;
+      clonedElement.style.height = `${inch2feet* item.depth*ratio}px`;
+      
+      dropzone.appendChild(clonedElement);
+      makeDraggable(clonedElement);
+
+      // Add table row when new item is dragged and placed with newly generated ID
+      addTableRow(clonedElement.id, '', '');
+    }
+
     function handleDrop(e) {
       e.preventDefault();
       const droppedElementId = e.dataTransfer.getData('text/plain');
       const element = document.getElementById(droppedElementId);
+      const selectedStepId = currentStep;
 
       const item_type = droppedElementId.split('-')[1];
-      const item = items[item_type];
+      const item = itemTemplates[item_type];
 
       const boundingBox = dropzone.getBoundingClientRect();
       const x = e.clientX - boundingBox.left - offsetX;
       const y = e.clientY - boundingBox.top - offsetY;
+
       
       inch2feet = 1/12;
       if (!element.getAttribute('data-cloned')) {
-        const clonedElement = element.cloneNode(true);
+        // set attributes
+        var type = item_type;
+        var real_type = item.type;
+        var name = item.displayName;
+        var model = item.model;
+        var width = item.width;
+        var length = item.length;
+        var depth = item.depth;
+        var xpos = x/(ratio)+inch2feet*width/2;
+        var zpos = y/(ratio)+inch2feet*depth/2;
 
-        clonedElement.style.position = 'absolute';
-        clonedElement.style.left = `${x}px`;
-        clonedElement.style.top = `${y}px`;
+        // AJAX request to update the item with the step_id
+        fetch(`/items`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+          },
+          body: JSON.stringify({ item: {
+              name: name,
+              model: model,
+              width: width,
+              length: length,
+              depth: depth,
+              rotation: 0,
+              description: '',
+              xpos: xpos,
+              ypos: 0,
+              zpos: zpos,
+              step_id: selectedStepId 
+            } 
+          })
+        })
+        .then(data => {
+          console.log('Item created successfully:', data);
 
-        const newID = `item-${Math.floor(Math.random() * 10000)}`;
-        clonedElement.id = newID;
-        clonedElement.setAttribute('item-type', item_type);
-        clonedElement.setAttribute('item-name', item.displayName);
-        clonedElement.setAttribute('item-model', item.model);
-        clonedElement.setAttribute('item-real-type', item.type);
-        clonedElement.setAttribute('item-width', item.width);
-        clonedElement.setAttribute('item-depth', item.depth);
-        clonedElement.setAttribute('item-xpos', x/(ratio)+inch2feet*item.width/2);
-        clonedElement.setAttribute('item-ypos', y/(ratio)+inch2feet*item.depth/2);
-        clonedElement.setAttribute('data-cloned', 'true');  
+          const clonedElement = element.cloneNode(true);
 
-        // set width, height, rotation, description
-        clonedElement.style.width = `${inch2feet* item.width*ratio}px`;
-        clonedElement.style.height = `${inch2feet* item.depth*ratio}px`;
-        
+          clonedElement.style.position = 'absolute';
+          clonedElement.style.left = `${x}px`;
+          clonedElement.style.top = `${y}px`;
+          const pathSegments = data.url.split('/'); // This will give you ["", "items", "2"]
+          const newID = pathSegments.pop(); 
+          clonedElement.id = parseInt(newID);
+          clonedElement.setAttribute('item-type', type);
+          clonedElement.setAttribute('item-name', name);
+          clonedElement.setAttribute('item-model', model);
+          clonedElement.setAttribute('item-real-type', real_type);
+          clonedElement.setAttribute('item-width', width);
+          clonedElement.setAttribute('item-depth', depth);
+          clonedElement.setAttribute('item-xpos', xpos);
+          clonedElement.setAttribute('item-zpos', zpos);
+          clonedElement.setAttribute('data-cloned', 'true');  
 
-        dropzone.appendChild(clonedElement);
-        makeDraggable(clonedElement);
+          // set width, height, rotation, description
+          clonedElement.style.width = `${inch2feet* item.width*ratio}px`;
+          clonedElement.style.height = `${inch2feet* item.depth*ratio}px`;
+          
+          dropzone.appendChild(clonedElement);
+          makeDraggable(clonedElement);
 
-        // Add table row when new item is dragged and placed with newly generated ID
-        addTableRow(clonedElement.id, '', '');
+          // Add table row when new item is dragged and placed with newly generated ID
+          addTableRow(clonedElement.id, '', '');
+        })
+        .catch((error) => {
+          console.error('Error updating item:', error);
+        });
         
       } else {
         element.style.position = 'absolute';
@@ -279,8 +425,38 @@
         width = element.getAttribute('item-width');
         depth = element.getAttribute('item-depth');
         element.setAttribute('item-xpos', x/ratio+inch2feet*width/2); // Added to udpate x-pos of object after being moved
-        element.setAttribute('item-ypos', y/ratio+inch2feet*depth/2); // Added to udpate y-pos of object after being moved
+        element.setAttribute('item-zpos', y/ratio+inch2feet*depth/2); // Added to udpate z-pos of object after being moved
         makeDraggable(element);
+
+        // find the item in the items array
+        var _item = items.find(item => item.id == element.id);
+        _item.xpos = x / ratio + inch2feet * width / 2;
+        _item.zpos = y / ratio + inch2feet * depth / 2;
+
+        fetch(`/items/${_item.id}`, { // Make sure the URL is correct as per your API endpoint
+          method: 'PUT',
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+          },
+          body: JSON.stringify({
+            item: {
+              xpos: _item.xpos, // Updated xpos
+              zpos: _item.zpos  // Updated zpos
+            }
+          })
+        }).then(response => {
+          if (response.ok) {
+            // Handle success
+            console.log("Item updated successfully");
+          } else {
+            // Handle error
+            console.error("Failed to update item");
+          }
+        }).catch(error => {
+          // Handle network error
+          console.error("Network error:", error);
+        });
       }
     }
 
@@ -321,7 +497,7 @@
       const newRow = tableBody.insertRow();
       itemType = document.getElementById(itemId).getAttribute('item-name');
       newRow.innerHTML = `
-        <td>${itemId}</td>
+        <td>item-${items.length}</td>
         <td>${itemType}</td>
         <td>${startTime}</td>
         <td>${endTime}</td>
@@ -340,6 +516,7 @@
         }
       }
     }
+
 
     draggables.forEach(makeDraggable);
 
@@ -369,7 +546,7 @@
           const itemWidth = item.getAttribute('item-width');
           const itemDepth = item.getAttribute('item-depth');
           const itemXPos = parseFloat(item.getAttribute('item-xpos'));
-          const itemZPos = parseFloat(item.getAttribute('item-ypos')); // very weird, ypos is the height in 3D, zpos is the y position in 3D
+          const itemZPos = parseFloat(item.getAttribute('item-zpos')); // very weird, zpos is the height in 3D, zpos is the y position in 3D
           snapshot.items[itemID] = {
             item_type: itemType,
             item_name: itemName,
@@ -391,5 +568,129 @@
         // Navigate to the URL
         window.open(fullURL, "_blank");
     });
-  })();
+
+
+    // for the combobox
+    // Set the first step as the default value if it exists
+    const combobox = document.getElementById("combobox");
+    const dropdownItems = document.querySelectorAll(".dropdown-item");
+
+    // for the slider
+    const slider = document.getElementById('myRange');
+
+    function initComboBox(){
+      if (dropdownItems.length > 0) {
+        const firstStep = dropdownItems[0].textContent.trim();
+        combobox.value = firstStep;
+        updateSlider(dropdownItems[0]);
+        currentStep = parseInt(dropdownItems[0].getAttribute('data-id'));
+      }
+    }
+
+    // Event listener for filtering combobox options based on input
+    combobox.addEventListener("input", function () {
+      var inputVal = this.value.toLowerCase();
+      dropdownItems.forEach(function (item) {
+        var text = item.textContent.toLowerCase();
+        if (text.includes(inputVal)) {
+          item.closest(".dropdown-menu").style.display = "block";
+          item.style.display = "block";
+        } else {
+          item.style.display = "none";
+        }
+      });
+
+      // If the input is empty, hide the dropdown menu
+      if (inputVal === "") {
+        document.querySelector(".dropdown-menu").style.display = "none";
+      }
+    });
+
+    // Event listener to show the dropdown menu when the input gains focus
+    combobox.addEventListener("focus", function () {
+      this.select(); // Optional: Select the input text when clicked
+      var dropdownMenu = document.querySelector(".dropdown-menu");
+      if (this.value) {
+        dropdownMenu.style.display = "block";
+      }
+    });
+
+    // Event listener to set the value when an item is clicked and hide the dropdown
+    dropdownItems.forEach(function (item) {
+      item.addEventListener("click", function () {
+        combobox.value = this.textContent.trim();
+        document.querySelector(".dropdown-menu").style.display = "none";
+      });
+    });
+
+    // Function to update slider based on the step selected
+    function updateSlider(stepElement){
+      const startTime = parseInt(stepElement.getAttribute('data-start'), 10);
+      const endTime = parseInt(stepElement.getAttribute('data-end'), 10);
+      slider.min = startTime;
+      slider.max = endTime;
+      slider.value = startTime; // Set initial slider value to start time
+      console.log(stepElement);
+    };
+
+
+    // Event listener for combobox selections
+    dropdownItems.forEach((item) => {
+      item.addEventListener('click', function() {
+        combobox.value = this.textContent.trim();
+        document.querySelector('.dropdown-menu').style.display = 'none';
+        
+        // Update the slider to match the selected step's time range
+        updateSlider(this);
+        var stepId = this.getAttribute('data-id');
+        currentStep = parseInt(stepId);
+        loadItems(currentStep);
+      });
+    });
+    })();
+
 </script>
+
+
+<style>
+  .main-container {
+    margin-bottom: 3em;
+  }
+  .main-row {
+    height: 80vh;
+  }
+  .accordion-container {
+    overflow-y: auto;
+    height: 100%;
+  }
+  .accordion-collapse {
+    padding: 1em;
+    width: 100% !important;
+  }
+
+  .dropzone-container {
+    background: lightblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  #dropzone {
+    background: white;
+    width: 80%;
+    height: 80%;
+    position: relative;
+  }
+  .items {
+    display: flex;
+    flex-wrap: wrap;
+    width: 200px;
+    border: 1px solid #000;
+  }
+
+  .disabled-label {
+    color: #6c757d; /* This is Bootstrap's default for disabled text */
+    pointer-events: none; /* This prevents the label from receiving mouse events */
+  }
+
+</style>

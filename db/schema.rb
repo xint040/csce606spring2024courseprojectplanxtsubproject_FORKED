@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_04_072415) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_09_181632) do
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.string "model"
+    t.float "width"
+    t.float "length"
+    t.float "depth"
+    t.float "rotation"
+    t.string "description"
+    t.float "xpos"
+    t.float "ypos"
+    t.float "zpos"
+    t.integer "step_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "plans", force: :cascade do |t|
     t.string "name"
     t.string "owner"
@@ -33,5 +49,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_04_072415) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "items", "steps"
   add_foreign_key "steps", "plans"
 end

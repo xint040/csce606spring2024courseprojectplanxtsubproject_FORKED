@@ -25,7 +25,20 @@ class PlansController < ApplicationController
 
   def floorplans2d
     @plan = Plan.find(params[:id])
+
+    @step_datas = {}
+    @plan.steps.each do |step|
+      @step_datas[step.id] = []
+    end
   end
+
+  def add_step_data
+    step_id = params[:step_id]
+    step_data = params[:step_data]
+
+    @step_datas[step_id].append(step_data)
+  end
+
   
   def preview3d
     snapshot_data_json = params[:snapshot_data]

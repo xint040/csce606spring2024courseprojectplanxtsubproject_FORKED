@@ -1,0 +1,72 @@
+<%= form_with(model: item) do |form| %>
+  <% if item.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+        <% item.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :model, style: "display: block" %>
+    <%= form.text_field :model %>
+  </div>
+
+  <div>
+    <%= form.label :width, style: "display: block" %>
+    <%= form.text_field :width %>
+  </div>
+
+  <div>
+    <%= form.label :length, style: "display: block" %>
+    <%= form.text_field :length %>
+  </div>
+
+  <div>
+    <%= form.label :depth, style: "display: block" %>
+    <%= form.text_field :depth %>
+  </div>
+
+  <div>
+    <%= form.label :rotation, style: "display: block" %>
+    <%= form.text_field :rotation %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div>
+    <%= form.label :xpos, style: "display: block" %>
+    <%= form.text_field :xpos %>
+  </div>
+
+  <div>
+    <%= form.label :ypos, style: "display: block" %>
+    <%= form.text_field :ypos %>
+  </div>
+
+  <div>
+    <%= form.label :zpos, style: "display: block" %>
+    <%= form.text_field :zpos %>
+  </div>
+
+  <div>
+    <%= form.label :step_id, style: "display: block" %>
+    <%= form.text_field :step_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
