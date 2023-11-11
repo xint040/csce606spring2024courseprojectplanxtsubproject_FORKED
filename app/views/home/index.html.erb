@@ -12,14 +12,12 @@
         </ul>
 
         
-        <% if !Rails.env.production?%>
+        <% if Rails.env.production?%>
             <%= link_to "Get Started", plans_path, class:"btn btn-primary", name: "Get Started", style:"background-color: #478ac9;"%>
         <% else %>
-            <li>
-            <%= form_tag '/auth/events360', method: :post do %>
-              <%= button_tag "Sign in with Events 360", type: :submit, data: { turbo: "false" }, class: 'u-blue u-btn u-button-style u-custom-font u-font-oswald u-hover-palette-2-base u-btn-1' %>
+            <%= button_to '/auth/events360', method: :post, data: { turbo: "false" }, class:"btn btn-primary" do %>
+                <span>Continue with Events360</span>
             <% end %>
-            <li>
         <% end %>
     </div>
     <div>
