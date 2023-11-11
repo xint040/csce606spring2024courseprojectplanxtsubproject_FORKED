@@ -12,7 +12,7 @@
         </ul>
 
         
-        <% if Rails.env.production?%>
+        <% if !Rails.env.production?%>
             <%= link_to "Get Started", plans_path, class:"btn btn-primary", name: "Get Started", style:"background-color: #478ac9;"%>
         <% else %>
             <%= button_to '/auth/events360', method: :post, data: { turbo: "false" }, class:"btn btn-primary" do %>
