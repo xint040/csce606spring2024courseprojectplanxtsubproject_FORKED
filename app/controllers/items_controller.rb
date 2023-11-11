@@ -5,14 +5,12 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
 
-    respond_to do |format|
-      if @item.save
-        format.html { redirect_to item_url(@item), notice: "Item was successfully created." }
-        format.json { render @item, status: :created, location: @item }
-      else
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.save
+      render json: @item, status: :ok
+    else
+      render json: @item.errors, status: :unprocessable_entity
     end
+    
   end
 
   # search for items by step_id
@@ -24,14 +22,8 @@ class ItemsController < ApplicationController
 
   # PATCH/PUT /items/1 or /items/1.json
   def update
-    respond_to do |format|
-      if @item.update(item_params)
-        format.json { render json: @item, status: :ok }
-      else
-        puts @item.errors
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.update(item_params)
+      render json: @item, status: :ok
     end
   end
 

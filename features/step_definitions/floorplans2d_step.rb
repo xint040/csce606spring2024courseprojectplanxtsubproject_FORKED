@@ -14,7 +14,7 @@ end
 def drag_to_exact_position(source, target, x_offset, y_offset)
     source_size = source.native.size
     target_size = target.native.size
-
+    
     # Calculate offsets to move to the top-left corner of the target
     top_left_x_offset = -(target_size.width / 2).to_i
     top_left_y_offset = -(target_size.height / 2).to_i
@@ -23,7 +23,6 @@ def drag_to_exact_position(source, target, x_offset, y_offset)
     adjusted_x_offset = x_offset + (source_size.width / 2).to_i
     adjusted_y_offset = y_offset + (source_size.height / 2).to_i
 
-    # Perform the drag and drop action
     page.driver.browser.action.click_and_hold(source.native)
                             .move_to(target.native)
                             .move_by(top_left_x_offset + adjusted_x_offset, top_left_y_offset + adjusted_y_offset)
@@ -46,6 +45,8 @@ end
 Then('I should see the item {string} appear on the canvas at x={int}, y={int}') do |string, int, int2|
     dropzone = find('#dropzone')
 
+    # Shows the html
+    puts page.html
     # Check if the element is present on the canvas
     item_on_dropzone = dropzone.find(".draggable")
 

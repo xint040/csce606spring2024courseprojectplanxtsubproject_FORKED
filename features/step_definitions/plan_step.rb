@@ -4,6 +4,13 @@ Given('the following plans exist:') do |table|
   end
 end
 
+When('I add a step for {string} with the following details:') do |string, table|
+  # table is a Cucumber::MultilineArgument::DataTable
+  step_attributes = table.hashes.first
+  plan = Plan.find_by(name: string)
+  @step = plan.steps.create!(step_attributes)
+end
+
 When('I click on the button with {string} icon for the plan {string} to enter the {string} page') do |string, string2, string3|
   plan = Plan.find_by(name: string2)
   # Find the link with the specific id and click it
