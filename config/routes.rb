@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   # user sign up and login
   get 'sign_in', to: 'sessions#new'
   delete 'logout', to: 'sessions#destroy'
-  # if Rails.env.production?
-  get 'auth/events360/callback', to: 'sessions#create'
-  # end
+  if Rails.env.production?
+    get 'auth/events360/callback', to: 'sessions#create'
+  end
 end

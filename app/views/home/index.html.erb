@@ -12,8 +12,8 @@
         </ul>
 
         
-        <% if Rails.env.production?%>
-            <%= link_to "Get Started - debug", plans_path, class:"btn btn-primary", name: "Get Started", style:"background-color: #478ac9;"%>
+        <% if !Rails.env.production?%>
+            <%= link_to "Get Started", plans_path, class:"btn btn-primary", name: "Get Started", style:"background-color: #478ac9;"%>
         <% else %>
             <li>
             <%= form_tag '/auth/events360', method: :post do %>
