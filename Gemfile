@@ -52,6 +52,7 @@ gem "bootsnap", require: false
 # gem "sassc-rails"
 gem "font-awesome-sass", "~> 6.4.2"
 
+gem "bcrypt"
 gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.8.0'
 gem "omniauth-rails_csrf_protection"
