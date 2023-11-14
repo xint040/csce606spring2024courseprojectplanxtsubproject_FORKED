@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     end
   end
   
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # user sign up and login
+  get 'sign_in', to: 'sessions#new'
+  delete 'logout', to: 'sessions#destroy'
+  get '/auth/events360/callback', to: 'sessions#create'
 end

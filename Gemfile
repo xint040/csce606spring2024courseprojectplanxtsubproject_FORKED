@@ -31,6 +31,8 @@ gem 'rspec-rails'
 gem 'rails-controller-testing'
 gem 'sass-rails'
 
+gem 'dotenv-rails', groups: [:development, :test]
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
@@ -49,6 +51,11 @@ gem "bootsnap", require: false
 # Use Sass to process CSS
 # gem "sassc-rails"
 gem "font-awesome-sass", "~> 6.4.2"
+
+gem "bcrypt"
+gem 'omniauth'
+gem 'omniauth-oauth2', '~> 1.8.0'
+gem "omniauth-rails_csrf_protection"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

@@ -11,8 +11,14 @@
             <li><h4>Integrate with all other EVENTS 360 applications.</h4></li>
         </ul>
 
-        <%= link_to "Get Started", plans_path, class:"btn btn-primary", name: "Get Started", style:"background-color: #478ac9;"%>
-        <%# <button class="btn btn-primary" style="background-color: #478ac9;">Get Started</button> %>
+        
+        <% if !Rails.env.production?%>
+            <%= link_to "Get Started", plans_path, class:"btn btn-primary", name: "Get Started", style:"background-color: #478ac9;"%>
+        <% else %>
+            <%= button_to '/auth/events360', method: :post, data: { turbo: "false" }, class:"btn btn-primary" do %>
+                <span>Continue with Events360</span>
+            <% end %>
+        <% end %>
     </div>
     <div>
         <%= image_tag "home-preview.png", width: "350" %>

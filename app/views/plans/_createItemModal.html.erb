@@ -1,0 +1,171 @@
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label for="createItemWidth" class="col-form-label">Width (inch)</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" id="createItemWidth" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="createItemDepth" class="col-form-label">Depth (inch)</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" id="createItemDepth" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="createItemRotation" class="col-form-label">Rotation</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" id="createItemRotation" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="createItemDescription" class="col-form-label">Description</label>
+                    </div>
+                    <div class="col-auto">
+                        <input id="createItemDescription" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="createItemSetupStartTime" class="col-form-label">Setup Start</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" id="createItemSetupStartTime" class="form-control datetimepicker-input" />
+                    </div>
+                    <div class="col-auto">
+                        <label for="createItemSetupEndTime" class="col-form-label">Setup End</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" id="createItemSetupEndTime" class="form-control datetimepicker-input" />
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="createItemBreakdownStartTime" class="col-form-label">Breakdown Start</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" id="createItemBreakdownStartTime" class="form-control datetimepicker-input" />
+                    </div>
+                    <div class="col-auto">
+                        <label for="createItemBreakdownEndTime" class="col-form-label">Breakdown End</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" id="createItemBreakdownEndTime" class="form-control datetimepicker-input" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmCreateBtn" data-bs-dismiss="modal">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openCreateModal(item_type, item, x, y, ratio, selectedStepId, loadItems) {
+
+        // Show the delete confirmation modal
+        const createModal = new bootstrap.Modal(document.getElementById('createModal'));
+        createModal.show();
+
+        document.getElementById('createModalLabel').innerText = `Details: ${item.displayName}`;
+        document.getElementById('createItemWidth').value = item.width;
+        document.getElementById('createItemDepth').value = item.depth;
+        document.getElementById('createItemRotation').value = 0;
+
+        // Set the onclick function for the confirm button
+        document.getElementById('confirmCreateBtn').onclick = function() {
+            // Get the values from the modal
+            var width = document.getElementById('createItemWidth').value;
+            var depth = document.getElementById('createItemDepth').value;
+            var rotation = document.getElementById('createItemRotation').value;
+            var description = document.getElementById('createItemDescription').value;
+            var setupStartTime = document.getElementById('createItemSetupStartTime').value + ":00";
+            var setupEndTime = document.getElementById('createItemSetupEndTime').value + ":00";
+            var breakdownStartTime = document.getElementById('createItemBreakdownStartTime').value + ":00";
+            var breakdownEndTime = document.getElementById('createItemBreakdownEndTime').value + ":00";
+            var inch2feet = 1/12;
+
+            console.log(setupStartTime);
+
+            // Create the item
+            createItem({
+                type: item_type,
+                real_type: item.real_type,
+                name: item.displayName,
+                model: item.model,
+                
+                width: width,
+                length: item.length,
+                depth: depth,
+                rotation: rotation,
+                description: description,
+                setupStartTime: setupStartTime,
+                setupEndTime: setupEndTime,
+                breakdownStartTime: breakdownStartTime,
+                breakdownEndTime: breakdownEndTime,
+
+                xpos: x/(ratio)+inch2feet*width/2,
+                ypos: 0,
+                zpos: y/(ratio)+inch2feet*depth/2,
+            }, selectedStepId, loadItems);
+        };
+    };
+
+    function createItem(item, selectedStepId, loadItems){
+        // AJAX request to update the item with the step_id
+        fetch(`/items`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+          },
+          body: JSON.stringify({ item: {
+                name: item.name,
+                model: item.model,
+                width: item.width,
+                length: item.length,
+                depth: item.depth,
+                rotation: item.rotation,
+                description: item.description,
+                xpos: item.xpos,
+                ypos: item.ypos,
+                zpos: item.zpos,
+                step_id: selectedStepId,
+
+                setup_start_time: item.setupStartTime,
+                setup_end_time: item.setupEndTime,
+                breakdown_start_time: item.breakdownStartTime,
+                breakdown_end_time: item.breakdownEndTime,
+
+            } 
+          })
+        })
+        .then(data => {
+          // console.log('Item created successfully:', data);
+          loadItems(selectedStepId);
+        })
+        .catch((error) => {
+          console.error('Error updating item:', error);
+        });
+    }
+
+</script>
+

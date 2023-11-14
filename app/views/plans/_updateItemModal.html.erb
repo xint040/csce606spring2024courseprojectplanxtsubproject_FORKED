@@ -1,0 +1,198 @@
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label for="updateItemWidth" class="col-form-label">Width (inch)</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" id="updateItemWidth" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="updateItemDepth" class="col-form-label">Depth (inch)</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" id="updateItemDepth" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="updateItemRotation" class="col-form-label">Rotation</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" id="updateItemRotation" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="updateItemDescription" class="col-form-label">Description</label>
+                    </div>
+                    <div class="col-auto">
+                        <input id="updateItemDescription" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="updateItemStartTime" class="col-form-label">Setup Start</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" id="updateItemStartTime" class="form-control datetimepicker-input" />
+                    </div>
+                    <div class="col-auto">
+                        <label for="updateItemEndTime" class="col-form-label">Setup End</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" id="updateItemEndTime" class="form-control datetimepicker-input" />
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center" style="margin-top:1em">
+                    <div class="col-auto">
+                        <label for="updateItemBreakdownStartTime" class="col-form-label">Breakdown Start</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" id="updateItemBreakdownStartTime" class="form-control datetimepicker-input" />
+                    </div>
+                    <div class="col-auto">
+                        <label for="updateItemBreakdownEndTime" class="col-form-label">Breakdown End</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" id="updateItemBreakdownEndTime" class="form-control datetimepicker-input" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger me-auto" id="confirmDeleteBtn" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmUpdateBtn" data-bs-dismiss="modal">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openUpdateModal(item, selectedStepId, loadItems) {
+
+        // Show the delete confirmation modal
+        const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+        updateModal.show();
+
+        console.log(item);
+
+        document.getElementById('updateModalLabel').innerText = `Details: ${item.name}`;
+        document.getElementById('updateItemWidth').value = item.width;
+        document.getElementById('updateItemDepth').value = item.depth;
+        document.getElementById('updateItemRotation').value = item.rotation;
+        document.getElementById('updateItemDescription').value = item.description;
+        document.getElementById('updateItemStartTime').value = parseDateTime(item.setup_start_time);
+        document.getElementById('updateItemEndTime').value = parseDateTime(item.setup_end_time);
+        document.getElementById('updateItemBreakdownStartTime').value = parseDateTime(item.breakdown_start_time);
+        document.getElementById('updateItemBreakdownEndTime').value = parseDateTime(item.breakdown_end_time);
+
+
+        // Set the onclick function for the confirm button
+        document.getElementById('confirmUpdateBtn').onclick = function() {
+            // Get the values from the modal
+            var width = document.getElementById('updateItemWidth').value;
+            var depth = document.getElementById('updateItemDepth').value;
+            var rotation = document.getElementById('updateItemRotation').value;
+            var description = document.getElementById('updateItemDescription').value;
+            var setupStartTime = document.getElementById('updateItemStartTime').value + ":00";
+            var setupEndTime = document.getElementById('updateItemEndTime').value + ":00";
+            var breakdownStartTime = document.getElementById('updateItemBreakdownStartTime').value + ":00";
+            var breakdownEndTime = document.getElementById('updateItemBreakdownEndTime').value + ":00";
+            var inch2feet = 1/12;
+            // update the item
+            updateItem({      
+                id: item.id,          
+                width: width,
+                length: item.length,
+                depth: depth,
+                rotation: rotation,
+                description: description,
+                setupStartTime: setupStartTime,
+                setupEndTime: setupEndTime,
+                breakdownStartTime: breakdownStartTime,
+                breakdownEndTime: breakdownEndTime,
+            }, selectedStepId, loadItems);
+        };
+
+        document.getElementById('confirmDeleteBtn').onclick = function() {
+            deleteItem(item.id, selectedStepId, loadItems);
+        };
+    };
+
+    function updateItem(item, selectedStepId, loadItems){
+        // AJAX request to update the item with the step_id
+        fetch(`/items/${item.id}`, {
+          method: 'PUT',
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+          },
+          body: JSON.stringify({ item: {
+                width: item.width,
+                length: item.length,
+                depth: item.depth,
+                rotation: item.rotation,
+                description: item.description,
+                setup_start_time: item.setupStartTime,
+                setup_end_time: item.setupEndTime,
+                breakdown_start_time: item.breakdownStartTime,
+                breakdown_end_time: item.breakdownEndTime,
+            } 
+          })
+        })
+        .then(data => {
+            // console.log('Item updated successfully:', data);
+            loadItems(selectedStepId);
+        })
+        .catch((error) => {
+          console.error('Error updating item:', error);
+        });
+    }
+
+    function deleteItem(item_id, selectedStepId, loadItems){
+        // console.log("delete item: " + item_id);
+        // AJAX request to update the item with the step_id
+        fetch(`/items/${item_id}`, {
+          method: 'DELETE',
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+          }
+        })
+        .then(data => {
+          // console.log('Item deleted successfully:', data);
+          loadItems(selectedStepId);
+        })
+        .catch((error) => {
+          console.error('Error deleting item:', error);
+        });
+    }
+
+    function parseDateTime(isoDatetime, noSeconds=false){
+        if(isoDatetime == null){
+            return null;
+        }
+        let date = new Date(isoDatetime);
+
+        let dateTimeStr = date.toISOString().replace('T', ' ').slice(0, 19);
+
+        if(noSeconds){
+            dateTimeStr = dateTimeStr.slice(0, 16);
+        }
+        return dateTimeStr;
+    }
+
+</script>
+
