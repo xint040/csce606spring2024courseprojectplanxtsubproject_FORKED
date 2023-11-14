@@ -82,7 +82,7 @@
             </div>
             <div class="row g-3 align-items-center" style="margin-top:1em">
               <div class="col-12">
-                <label for="planDescription" class="col-form-label">Steps</label>
+                <p style="margin-bottom:0em">Steps</p>
               </div>
               <div class="col">
                 <div class="dropdown">
@@ -111,8 +111,10 @@
         <thead class="thead-light">
           <th style="vertical-align: middle;">Name</th>
           <th style="vertical-align: middle;">Item Type</th>
-          <th style="vertical-align: middle;">Start Time</th>
-          <th style="vertical-align: middle;">End Time</th>
+          <th style="vertical-align: middle;">Setup Start</th>
+          <th style="vertical-align: middle;">Setup End</th>
+          <th style="vertical-align: middle;">Breakdown Start</th>
+          <th style="vertical-align: middle;">Breakdown End</th>
         </thead>
         <tbody id="items-table-body">
           <!-- Table rows will be added dynamically -->
@@ -129,57 +131,10 @@
     </div>
   </div>
 
-  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row g-3 align-items-center">
-            <div class="col-auto">
-              <label for="itemWidth" class="col-form-label">Width (inch)</label>
-            </div>
-            <div class="col-auto">
-              <input type="number" id="itemWidth" class="form-control">
-            </div>
-          </div>
-          <div class="row g-3 align-items-center" style="margin-top:1em">
-            <div class="col-auto">
-              <label for="itemHeight" class="col-form-label">Height (inch)</label>
-            </div>
-            <div class="col-auto">
-              <input type="number" id="itemHeight" class="form-control">
-            </div>
-          </div>
-          <div class="row g-3 align-items-center" style="margin-top:1em">
-            <div class="col-auto">
-              <label for="itemRotation" class="col-form-label">Rotation</label>
-            </div>
-            <div class="col-auto">
-              <input type="number" id="itemRotation" class="form-control">
-            </div>
-          </div>
-          <div class="row g-3 align-items-center" style="margin-top:1em">
-            <div class="col-auto">
-              <label for="itemDescription" class="col-form-label">Description</label>
-            </div>
-            <div class="col-auto">
-              <input id="itemDescription" class="form-control">
-            </div>
-          </div>
-
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger me-auto" id="confirmDeleteBtn" data-bs-dismiss="modal">Delete</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" id="confirmUpdateBtn" data-bs-dismiss="modal">Update</button>
-        </div>
-      </div>
-  </div>
-
+  <%= render "plans/createItemModal" %>
+  <%= render "plans/updateItemModal" %>
+  
+</div>
 <%= javascript_include_tag "items" %>
 
 <script>
@@ -317,6 +272,7 @@
       clonedElement.setAttribute('item-name', item.name);
       clonedElement.setAttribute('item-model', item.model);
       // clonedElement.setAttribute('item-real-type', real_type);
+      clonedElement.setAttribute('item-rotation', item.rotation);
       clonedElement.setAttribute('item-width', item.width);
       clonedElement.setAttribute('item-depth', item.depth);
       clonedElement.setAttribute('item-xpos', item.xpos);
@@ -326,13 +282,16 @@
       // set width, height, rotation, description
       clonedElement.style.width = `${inch2feet* item.width*ratio}px`;
       clonedElement.style.height = `${inch2feet* item.depth*ratio}px`;
+      clonedElement.style.transform = `rotate(${item.rotation}deg)`;
       
       dropzone.appendChild(clonedElement);
       makeDraggable(clonedElement);
 
       // Add table row when new item is dragged and placed with newly generated ID
-      addTableRow(clonedElement.id, '', '');
+      addTableRow(clonedElement.id);
     }
+
+
 
     function handleDrop(e) {
       e.preventDefault();
@@ -350,47 +309,7 @@
       
       inch2feet = 1/12;
       if (!element.getAttribute('data-cloned')) {
-        // set attributes
-        var type = item_type;
-        var real_type = item.type;
-        var name = item.displayName;
-        var model = item.model;
-        var width = item.width;
-        var length = item.length;
-        var depth = item.depth;
-        var xpos = x/(ratio)+inch2feet*width/2;
-        var zpos = y/(ratio)+inch2feet*depth/2;
-
-        // AJAX request to update the item with the step_id
-        fetch(`/items`, {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
-          },
-          body: JSON.stringify({ item: {
-              name: name,
-              model: model,
-              width: width,
-              length: length,
-              depth: depth,
-              rotation: 0,
-              description: '',
-              xpos: xpos,
-              ypos: 0,
-              zpos: zpos,
-              step_id: selectedStepId 
-            } 
-          })
-        })
-        .then(data => {
-          console.log('Item created successfully:', data);
-          loadItems(currentStep);
-        })
-        .catch((error) => {
-          console.error('Error updating item:', error);
-        });
-        
+        openCreateModal(item_type, item, x, y, ratio, selectedStepId, loadItems);
       } else {
         element.style.position = 'absolute';
         element.style.left = `${x}px`;
@@ -442,62 +361,66 @@
     function handleRightClick(e) {
       e.preventDefault();
       const clickedElement = e.currentTarget;
+      var item_id = clickedElement.getAttribute('id');
 
-      // Show the delete confirmation modal
-      const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-      editModal.show();
-
-      document.getElementById('editModalLabel').innerText = `Details: ${clickedElement.getAttribute('item-name')}`;
-
+      var selected_item = items.find(item => item.id == item_id);
       
-      document.getElementById('itemWidth').value = clickedElement.getAttribute('item-width');
-      document.getElementById('itemHeight').value = clickedElement.getAttribute('item-depth');
+      openUpdateModal(selected_item, currentStep, loadItems);
+      // // Show the delete confirmation modal
+      // const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+      // editModal.show();
 
-      // Attach a one-time event listener to the "Delete" button in the modal
-      document.getElementById('confirmDeleteBtn').onclick = function() {
+      // document.getElementById('editModalLabel').innerText = `Details: ${clickedElement.getAttribute('item-name')}`;
 
-        fetch(`/items/${clickedElement.id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          }
-        }).then(response => {
-          if (response.ok) {
-            // Handle success
-            console.log("Item deleted successfully");
-            loadItems(currentStep);
-          } else {
-            // Handle error
-            console.error("Failed to delete item");
-          }
-        }).catch(error => {
-          // Handle network error
-          console.error("Network error:", error);
-        });
+      // document.getElementById('itemWidth').value = clickedElement.getAttribute('item-width');
+      // document.getElementById('itemHeight').value = clickedElement.getAttribute('item-depth');
 
-        // Call to removeTableRow function when item is deleted
-        // removeTableRow(clickedElement.id);
-        // dropzone.removeChild(clickedElement);
-        // items = items.filter(item => item.id != clickedElement.id);
-        
-    
-        // editModal.hide();
-      };
+      // // Attach a one-time event listener to the "Delete" button in the modal
+      // document.getElementById('confirmDeleteBtn').onclick = function() {
+
+      //   fetch(`/items/${clickedElement.id}`, {
+      //     method: 'DELETE',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      //     }
+      //   }).then(response => {
+      //     if (response.ok) {
+      //       // Handle success
+      //       console.log("Item deleted successfully");
+      //       loadItems(currentStep);
+      //     } else {
+      //       // Handle error
+      //       console.error("Failed to delete item");
+      //     }
+      //   }).catch(error => {
+      //     // Handle network error
+      //     console.error("Network error:", error);
+      //   });
+
+      // };
     }
     
     // Get the table body element
     const tableBody = document.getElementById('items-table-body');
     
     // Function to add a new row to the table
-    function addTableRow(itemId, startTime, endTime) {
+    function addTableRow(itemId) {
+      var item = items.find(item => item.id == itemId);
+      var setupStartTime = parseDateTime(item.setup_start_time, true);
+      var setupEndTime = parseDateTime(item.setup_end_time, true);
+      var breakdownStartTime = parseDateTime(item.breakdown_start_time, true);
+      var breakdownEndTime = parseDateTime(item.breakdown_end_time, true);
+
       const newRow = tableBody.insertRow();
       itemType = document.getElementById(itemId).getAttribute('item-name');
       newRow.innerHTML = `
         <td>item-${items.length}</td>
         <td>${itemType}</td>
-        <td>${startTime}</td>
-        <td>${endTime}</td>
+        <td>${setupStartTime}</td>
+        <td>${setupEndTime}</td>
+        <td>${breakdownStartTime}</td>
+        <td>${breakdownEndTime}</td>
       `;
     }
     
@@ -542,6 +465,7 @@
           const itemModel = item.getAttribute('item-model');
           const itemWidth = item.getAttribute('item-width');
           const itemDepth = item.getAttribute('item-depth');
+          const itemRotation = item.getAttribute('item-rotation');
           const itemXPos = parseFloat(item.getAttribute('item-xpos'));
           const itemZPos = parseFloat(item.getAttribute('item-zpos')); // very weird, zpos is the height in 3D, zpos is the y position in 3D
           snapshot.items[itemID] = {
@@ -551,7 +475,6 @@
             item_width: itemWidth,
             item_depth: itemDepth,
             item_rotation: itemRotation,
-            item_description: itemDescription,
             item_xpos: itemXPos,
             item_zpos: itemZPos
           };
@@ -627,7 +550,7 @@
       slider.min = startTime;
       slider.max = endTime;
       slider.value = startTime; // Set initial slider value to start time
-      console.log(stepElement);
+      // console.log(stepElement);
     };
 
 
