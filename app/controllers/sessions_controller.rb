@@ -1,13 +1,13 @@
 class SessionsController < ApplicationController
     def new; end
     def create
-      logger.info("TOP HERE")
       if Rails.env.production?
         @user = User.from_omniauth(request.env['omniauth.auth'])
         logger.info("IN PRODUCTION")
         if @user.present?
           session[:user_id] = @user.id
-          redirect_to plans_path, notice: 'Logged in buccessfully'
+          # redirect_to plans_path, notice: 'Logged in successfully'
+          redirect_to plans_path, notice: @user.id
           logger.info(@user.id)
         else
           flash.alert = "User not found."
