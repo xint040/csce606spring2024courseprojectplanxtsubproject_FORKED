@@ -39,7 +39,7 @@ class SessionsController < ApplicationController
       # deletes user session
       # session[:user_id] = nil 
       session.delete(:user_id)
-      # cookies.delete(:remember_token)
+      cookies.delete(:remember_token)
 
       reset_session
       redirect_to root_path, notice: 'Logged Out'
