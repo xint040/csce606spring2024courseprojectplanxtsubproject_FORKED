@@ -5,6 +5,9 @@ class User < ApplicationRecord
     validates :name, presence: true, uniqueness: true
     # validates email
     validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@[^@\s]+\z/, message: 'Invalid email' }
+    
+    # relationship with Floorplan
+    has_many :plans
 
     def self.from_omniauth(access_token)
         data = access_token.info
