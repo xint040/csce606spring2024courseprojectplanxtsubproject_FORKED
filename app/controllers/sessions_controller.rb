@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
           redirect_to sign_in_path, notice: 'Invalid username/email or password'
         end
       else
+        logger.info("BOTTOM HERE")
         user = User.find_by(email: params[:email_username])
         if !user.present?
             user = User.find_by(name: params[:email_username])
@@ -37,11 +38,7 @@ class SessionsController < ApplicationController
     
     def destroy
       # deletes user session
-      # session[:user_id] = nil 
-      session.delete(:user_id)
-      cookies.delete(:remember_token)
-
-      reset_session
+      session[:user_id] = nil 
       redirect_to root_path, notice: 'Logged Out'
     end
 end
