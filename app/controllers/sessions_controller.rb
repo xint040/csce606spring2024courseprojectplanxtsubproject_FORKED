@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
     def new; end
     def create
-      if !Rails.env.production?
+      if Rails.env.production?
         @user = User.from_omniauth(request.env['omniauth.auth'])
         console.log("HERE")
         if @user.present?
