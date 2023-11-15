@@ -1,9 +1,10 @@
 class SessionsController < ApplicationController
     def new; end
     def create
+      logger.info("TOP HERE")
       if Rails.env.production?
         @user = User.from_omniauth(request.env['omniauth.auth'])
-        logger.info("TOP HERE")
+        logger.info("IN PRODUCTION")
         if @user.present?
           session[:user_id] = @user.id
           redirect_to plans_path, notice: 'Logged in successfully'
