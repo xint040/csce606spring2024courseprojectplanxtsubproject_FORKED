@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
         logger.info("TOP HERE")
         if @user.present?
           session[:user_id] = @user.id
-          redirect_to blueprints_path, notice: 'Logged in successfully'
+          redirect_to plans_path, notice: 'Logged in successfully'
         else
           flash.alert = "User not found."
           flash.now[:alert] = 'Invalid request'
@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
           session[:user_id] = user.id
           user.updated_at = Time.now
           user.save
-          redirect_to blueprints_path, notice: 'Logged in successfully'
+          redirect_to plans_path, notice: 'Logged in successfully'
         else
           logger.info "wrong name or password"
           #flash.alert = "User not found."
