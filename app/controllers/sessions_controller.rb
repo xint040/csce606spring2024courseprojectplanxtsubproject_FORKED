@@ -37,8 +37,10 @@ class SessionsController < ApplicationController
     
     def destroy
       # deletes user session
-      # session[:user_id] = nil 
-      current_user.forget if current_user
+      session[:user_id] = nil 
+      # session.delete(:user_id)
+      # cookies.delete(:remember_token)
+
       reset_session
       redirect_to root_path, notice: 'Logged Out'
     end
