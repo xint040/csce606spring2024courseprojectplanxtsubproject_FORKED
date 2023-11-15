@@ -6,8 +6,7 @@ class SessionsController < ApplicationController
         logger.info("IN PRODUCTION")
         if @user.present?
           session[:user_id] = @user.id
-          # redirect_to plans_path, notice: 'Logged in successfully'
-          redirect_to plans_path, notice: @user.email
+          redirect_to plans_path, notice: 'Logged in successfully as ' + @user.email
           logger.info(@user.id)
         else
           flash.alert = "User not found."
