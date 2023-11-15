@@ -53,6 +53,11 @@
 <br/>
 <!--<%= link_to "Back", root_path, class:"btn btn-secondary"%>-->
 <%= button_to "Logout", logout_path, method: :delete, class:"btn btn-secondary"%>
+
+<% if Current.user && !current_page?('/')%>
+  Logged in as: <%= Current.user.name %>
+<% end %>
+                  
 </div>
 
 <style>
