@@ -37,8 +37,8 @@ class SessionsController < ApplicationController
     
     def destroy
       # deletes user session
-      session[:user_id] = nil 
-      # session.delete(:user_id)
+      # session[:user_id] = nil 
+      session.delete(:user_id)
       # cookies.delete(:remember_token)
 
       reset_session
