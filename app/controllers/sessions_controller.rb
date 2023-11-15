@@ -7,13 +7,13 @@ class SessionsController < ApplicationController
         if @user.present?
           session[:user_id] = @user.id
           redirect_to plans_path, notice: 'Logged in successfully'
+          logger.info(@user.id)
         else
           flash.alert = "User not found."
           flash.now[:alert] = 'Invalid request'
           redirect_to sign_in_path, notice: 'Invalid username/email or password'
         end
       else
-        logger.info("BOTTOM HERE")
         user = User.find_by(email: params[:email_username])
         if !user.present?
             user = User.find_by(name: params[:email_username])
