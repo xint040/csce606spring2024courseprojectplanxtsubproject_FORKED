@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
         else
           flash.alert = "User not found."
           flash.now[:alert] = 'Invalid request'
-          redirect_to sign_in_path, notice: 'Invalid username/email or password'
+          redirect_to blueprints_path, notice: 'Invalid username/email or password'
         end
       else
         user = User.find_by(email: params[:email_username])
@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
           session[:user_id] = user.id
           user.updated_at = Time.now
           user.save
-          redirect_to edit_page_path, notice: 'Logged in successfully'
+          redirect_to blueprints_path, notice: 'Logged in successfully'
         else
           logger.info "wrong name or password"
           #flash.alert = "User not found."
