@@ -38,6 +38,7 @@ class SessionsController < ApplicationController
     def destroy
       # deletes user session
       # session[:user_id] = nil 
+      current_user.forget if current_user
       reset_session
       redirect_to root_path, notice: 'Logged Out'
     end
