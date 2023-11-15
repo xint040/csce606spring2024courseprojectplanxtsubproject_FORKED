@@ -3,6 +3,7 @@ class SessionsController < ApplicationController
     def create
       if !Rails.env.production?
         @user = User.from_omniauth(request.env['omniauth.auth'])
+        console.log("HERE")
         if @user.present?
           session[:user_id] = @user.id
           redirect_to edit_page_path, notice: 'Logged in successfully'
@@ -28,6 +29,7 @@ class SessionsController < ApplicationController
           logger.info "wrong name or password"
           #flash.alert = "User not found."
           #flash.now[:alert] = 'Invalid email or password'
+          console.log("BOTTOM")
           redirect_to sign_in_path, notice: 'Invalid username/email or password'
           #render :new 
         end
