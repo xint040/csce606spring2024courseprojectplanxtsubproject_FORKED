@@ -1,7 +1,7 @@
 class PlansController < ApplicationController
   before_action :set_plan, only: %i[ show edit update destroy ]
   
-  def user.plans
+  def user_plans
     @user = current_user
     @plans = @user.plans
   end
