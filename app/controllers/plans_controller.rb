@@ -2,7 +2,7 @@ class PlansController < ApplicationController
   before_action :set_plan, only: %i[ show edit update destroy ]
   
   def user_plans
-    @user = current_user
+    @user = User.from_omniauth(request.env['omniauth.auth'])
     @plans = @user.plans
   end
 
