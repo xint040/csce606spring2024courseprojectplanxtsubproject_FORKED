@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   
   resources :plans do
     collection do
-      get 'user_plans', to:'plans#user_plans'
+      get 'plans', to:'plans#user_plans'
     end
     member do
       get 'floorplans2d'
