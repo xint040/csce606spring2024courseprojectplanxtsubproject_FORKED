@@ -1,5 +1,10 @@
 class PlansController < ApplicationController
   before_action :set_plan, only: %i[ show edit update destroy ]
+  
+  def user.plans
+    @user = current_user
+    @plans = @user.plans
+  end
 
   layout "layouts/empty", only: [:new] 
 
@@ -11,7 +16,7 @@ class PlansController < ApplicationController
 
   # GET /plans/1 or /plans/1.json
   def show
-    # redirect_to edit_plan_path(@plan)
+    redirect_to edit_plan_path(@plan)
   end
 
   # GET /plans/new
