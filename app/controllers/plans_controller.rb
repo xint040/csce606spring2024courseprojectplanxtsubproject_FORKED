@@ -127,6 +127,6 @@ class PlansController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def plan_params
-      params.require(:plan).permit(:name, :owner, :venue_length, :venue_width, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
+      params.require(:plan).permit(:name, :owner, :venue_length, :venue_width, :user_id, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
     end
 end
