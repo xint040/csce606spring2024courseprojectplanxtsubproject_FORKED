@@ -10,6 +10,7 @@ class PlansController < ApplicationController
 
   # GET /plans or /plans.json
   def index
+    logger.info Current.user.id
     @plans = Plan.all
     # @plans = current_user.plans
   end
