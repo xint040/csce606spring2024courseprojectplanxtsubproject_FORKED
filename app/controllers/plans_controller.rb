@@ -10,8 +10,8 @@ class PlansController < ApplicationController
 
   # GET /plans or /plans.json
   def index
-    omniauth_info = User.from_omniauth(request.env['omniauth.auth'])
-    logger.info "Omniauth info: #{omniauth_info}"
+    logger = Rails.logger || Logger.new(STDOUT)
+    logger.info User.from_omniauth(request.env['omniauth.auth'])
     @plans = Plan.all
     # @plans = current_user.plans
   end
