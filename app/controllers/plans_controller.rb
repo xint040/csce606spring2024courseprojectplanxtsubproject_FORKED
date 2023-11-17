@@ -10,7 +10,7 @@ class PlansController < ApplicationController
 
   # GET /plans or /plans.json
   def index
-    logger.info Current.user.id
+    logger.info User.from_omniauth(request.env['omniauth.auth'])
     @plans = Plan.all
     # @plans = current_user.plans
   end
