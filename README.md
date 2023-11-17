@@ -54,25 +54,6 @@ rake db:seed
   * Run `rails server` again to start app
   * Click preview, and click upper right to open a new browser tab to view the app
 
-
-### To deploy in production environment (local)
-* Prepare rails production environment
-  * Generate a secret key, `RAILS_ENV=production rake secret`
-  * `export SECRET_KEY_BASE=Your-key`
-  * check env var is set `echo $SECRET_KEY_BASE`
-  * Add `config.secret_key_base = ENV['SECRET_KEY_BASE']` to file `config/environments/production.rb`
-  
-* You may want to deploy to production and test it out before pushing to Heroku
-  * Create production databse `RAILS_ENV=production rake db:create`
-  * `RAILS_ENV=production rake db:schema:load DISABLE_DATABASE_ENVIRONMENT_CHECK=1`
-  * `RAILS_ENV=production rake db:migrate db:seed`
-
-* Make sure to set `config.public_file_server.enabled = true` in file `config/environments/production.rb`
-* Run `RAILS_ENV=production rails assets:precompile`
-* Start production server `RAILS_ENV=production rails s`
-
-* In case of bugs, you can check error messages in `log/production.log` 
-
 ### To deploy in production environment (Heroku)
 
 * Commit all your finished updates to the code, and push to the git repo 
