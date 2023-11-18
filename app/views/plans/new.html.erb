@@ -25,6 +25,7 @@
             <%= form.text_field :venue_width, class: "form-control", id: "Venue Width", placeholder: "Width" %>
             <!--#create hidden field for owner where value = session[:user_id] -->
             <%= form.text_field :owner, class: "form-control", id: "Owner", placeholder: "Owner" %>
+            <%= form.hidden_field :owner, value: session[:user_email] %>
           </div>
         </div>
 

@@ -12,7 +12,8 @@ class PlansController < ApplicationController
   # GET /plans or /plans.json
   def index
     # @plans = Plan.all
-    @plans = Plan.where(owner: "louis.ruffino@tamu.edu")
+    @plans = Plan.where(owner: session:[user_email]) 
+    # @plans = Plan.where(owner: session[:user_id])
     # @plans = current_user.plans
   end
 
