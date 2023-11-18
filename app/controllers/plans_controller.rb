@@ -10,7 +10,7 @@ class PlansController < ApplicationController
 
   # GET /plans or /plans.json
   def index
-    @plans = Plan.where(owner: current_user)
+    @plans = Plan.where(owner: user_id)
     # @plans = current_user.plans
   end
 
