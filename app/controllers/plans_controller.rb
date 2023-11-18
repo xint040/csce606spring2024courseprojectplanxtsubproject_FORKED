@@ -5,12 +5,14 @@ class PlansController < ApplicationController
   #   @user = User.from_omniauth(request.env['omniauth.auth'])
   #   @plans = @user.plans
   # end
+  
 
   layout "layouts/empty", only: [:new] 
 
   # GET /plans or /plans.json
   def index
-    @plans = Plan.all
+    # @plans = Plan.all
+    @plans = Plan.where(owner: "louis.ruffino@tamu.edu")
     # @plans = current_user.plans
   end
 
