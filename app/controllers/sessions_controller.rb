@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
         logger.info("IN PRODUCTION")
         if @user.present?
           session[:user_id] = @user.id
+          # session[:]
           redirect_to plans_path, notice: 'Logged in successfully as ' + @user.email
           logger.info(@user.id)
         else
