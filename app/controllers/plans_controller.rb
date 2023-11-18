@@ -85,7 +85,7 @@ class PlansController < ApplicationController
   # POST /plans or /plans.json
   def create
     @plan = Plan.new(plan_params)
-
+    puts plan_params
     respond_to do |format|
       if @plan.save
         format.html { redirect_to plans_path, notice: "Plan was successfully created." }
@@ -100,7 +100,7 @@ class PlansController < ApplicationController
   def update
     respond_to do |format|
       if @plan.update(plan_params)
-        puts plan_params
+        
         format.html { redirect_to plans_path, notice: "Plan was successfully updated." }
         format.json { render :show, status: :ok, location: @plan }
       # else # Currently doesn't handle error cases
