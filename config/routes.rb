@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   get 'blueprints', to: 'blueprints#index'
   
   resources :plans do
+    # collection do
+    #   get 'plans', to:'plans#user_plans'
+    # end
     member do
       get 'floorplans2d'
     end
