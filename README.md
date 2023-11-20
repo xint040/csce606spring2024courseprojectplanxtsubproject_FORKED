@@ -12,7 +12,7 @@ cd Fall2023-PlaNXT
 ### Setup the environment 
 Verify you have Ruby, Rails, and Heroku CLI installed
 
-* Check your Ruby version. If no ruby, follow this [instruction](doc/install_ruby.md).
+* Check your Ruby version. If no ruby, follow this [instruction](docs/install_ruby.md).
 * Check your Rails version. If no rails, run `gem install rails`.
 * Check your Bundler version. If bundle -v fails, run gem install bundler to install it. (Normally, though, installing the rails gem will also install bundler.)
 * Verify [the heroku command line tool](https://devcenter.heroku.com/articles/heroku-cli) has been installed in the development environment. If not, follow the [instructions](https://devcenter.heroku.com/articles/heroku-cli#install-with-ubuntu-debian-apt-get) to install it.
