@@ -105,7 +105,7 @@ To do this, go to https://events360.herokuapp.com/users and login as the admin u
 1. Go to Application Management Tab -> New Application
 
 2. Fill in the information like this: 
-<img width="996" alt="Screenshot 2023-11-20 at 9 20 57 AM" src="https://github.com/CSCE-606-Event360/Fall2023-PlaNXT/assets/32810188/22ad9f79-0776-4428-b051-6133c4f61a29">
+<img width="980" alt="Screenshot 2023-11-20 at 10 16 57 AM" src="https://github.com/CSCE-606-Event360/Fall2023-PlaNXT/assets/32810188/eca69a45-65db-493a-8077-6c14f5464aa9">
 
 3. After create the application, you will get an **UID** and **Secret** Token
 
