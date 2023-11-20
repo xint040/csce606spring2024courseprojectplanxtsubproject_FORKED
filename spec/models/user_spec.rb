@@ -22,8 +22,9 @@ RSpec.describe User, type: :model do
 
     it 'returns an existing user if the email already exists' do
       # Create a user manually without FactoryBot
-      existing_user = User.create(email: 'test@example.com', name: 'Test')
+      existing_user = User.create(email: 'test@example.com', name: 'Test', password: 'password', password_confirmation: 'password')
 
+      # puts existing_user.errors.full_messages
       expect do
         user = described_class.from_omniauth(OpenStruct.new(info: access_token_data))
         expect(user.email).to eq(existing_user.email)

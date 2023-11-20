@@ -14,7 +14,7 @@ class User < ApplicationRecord
         email = data['email']
         name = data['name']
         password = SecureRandom.urlsafe_base64(20).tr('lIO0', 'sxyz')
-    
+        
         # User.find_or_create_by(email:)
         where(email: email).first_or_create do |user|
             user.email          = email

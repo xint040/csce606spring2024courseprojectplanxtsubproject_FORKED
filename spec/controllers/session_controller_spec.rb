@@ -14,10 +14,10 @@ RSpec.describe SessionsController, type: :controller do
         context 'when in production environment' do
             before do
                 allow(Rails.env).to receive(:production?).and_return(true)
+                request.env['omniauth.auth'] = omniauth_auth
             end
     
             it 'logs in the user and redirects to plans_path on successful authentication' do
-                allow(request.env['omniauth.auth']).to receive(:info).and_return(email: 'user@example.com', name: 'John Doe')
                 user = User.new(
                     email: 'user@example.com',
                     name: 'John Doe',
@@ -33,7 +33,6 @@ RSpec.describe SessionsController, type: :controller do
             end
     
             it 'redirects to sign_in_path with an alert message on authentication failure' do
-                allow(request.env['omniauth.auth']).to receive(:omniauth_auth).and_return(omniauth_auth)
                 allow(User).to receive(:from_omniauth).and_return(nil)
     
                 post :create, params: { provider: 'event360' }
