@@ -1,6 +1,6 @@
 Given('the following plans exist:') do |table|
   table.hashes.each do |plan|
-    Plan.create plan
+    plan_ = Plan.create(plan)
   end
 end
 

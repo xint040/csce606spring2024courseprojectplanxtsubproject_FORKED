@@ -3,9 +3,12 @@
 Feature: Drag and Drop items to the canvas
 
 Background:
+Given I am on the "home" page
+When I click on the "Get Started" button
+Then I should be on the "plans" page
 Given the following plans exist:
     | name        | owner   | venue_length     | venue_width |
-    | My Plan     | user    | 100               | 100         |
+    | My Plan     | test@email.com    | 100               | 100         |
 When I add a step for "My Plan" with the following details:
 | start_date | start_time       | end_time         |
 | 2021-04-01 | 2021-04-01 10:00 | 2021-04-01 11:00 |

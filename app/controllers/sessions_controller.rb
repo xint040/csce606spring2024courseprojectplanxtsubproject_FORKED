@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
         end
       else
         logger.info("NOT IN PRODUCTION")
-        @user = User.new(name: "Dummy User", email: "test")
+        @user = User.new(name: "Dummy User", email: "test@email.com")
         session[:user_email] = @user.email
         redirect_to plans_path, notice: 'Logged in successfully'
       end
