@@ -103,9 +103,12 @@ When goes to the deployment website and click the "Continue with Event360" butto
     
 To do this, go to https://events360.herokuapp.com/users and login as the admin user.
 1. Go to Application Management Tab -> New Application
+
 2. Fill in the information like this: 
 <img width="996" alt="Screenshot 2023-11-20 at 9 20 57 AM" src="https://github.com/CSCE-606-Event360/Fall2023-PlaNXT/assets/32810188/22ad9f79-0776-4428-b051-6133c4f61a29">
+
 3. After create the application, you will get an **UID** and **Secret** Token
+
 4. Add thoses variable to the deployed app's Config Vars:
 <img width="809" alt="Screenshot 2023-11-20 at 9 23 22 AM" src="https://github.com/CSCE-606-Event360/Fall2023-PlaNXT/assets/32810188/253341d8-1e05-4469-ac40-5dfe072071bf">
 
