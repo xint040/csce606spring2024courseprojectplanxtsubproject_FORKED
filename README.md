@@ -12,7 +12,7 @@ cd Fall2023-PlaNXT
 ### Setup the environment 
 Verify you have Ruby, Rails, and Heroku CLI installed
 
-* Check your Ruby version. If no ruby, follow this [instruction](https://github.com/Morris88826/CSCE-606-SOFTWARE-ENGINEERING/blob/main/PA1/README.md).
+* Check your Ruby version. If no ruby, follow this [instruction](doc/install_ruby.md).
 * Check your Rails version. If no rails, run `gem install rails`.
 * Check your Bundler version. If bundle -v fails, run gem install bundler to install it. (Normally, though, installing the rails gem will also install bundler.)
 * Verify [the heroku command line tool](https://devcenter.heroku.com/articles/heroku-cli) has been installed in the development environment. If not, follow the [instructions](https://devcenter.heroku.com/articles/heroku-cli#install-with-ubuntu-debian-apt-get) to install it.
@@ -53,7 +53,8 @@ In order to have the cucumber test be able to trigger javascript events, one hav
 We have to manually download the correct version of the chromedriver. Follow this link to download the chromedriver: https://googlechromelabs.github.io/chrome-for-testing/#stable
 
 Under stable, choose the corresponding OS you have:
-![Screenshot 2023-11-20 at 8.43.37 AM](https://hackmd.io/_uploads/BJg0eeY4a.png)
+<img width="1256" alt="Screenshot 2023-11-20 at 8 43 37 AM" src="https://github.com/CSCE-606-Event360/Fall2023-PlaNXT/assets/32810188/5a32cd03-e603-41ac-bf80-e69331c44cbf">
+
 
 ##### Step 2
 Setup the chromedriver
@@ -103,12 +104,10 @@ When goes to the deployment website and click the "Continue with Event360" butto
 To do this, go to https://events360.herokuapp.com/users and login as the admin user.
 1. Go to Application Management Tab -> New Application
 2. Fill in the information like this: 
-    ![Screenshot 2023-11-20 at 9.20.57 AM](https://hackmd.io/_uploads/Bk4lseY4a.png)
+<img width="996" alt="Screenshot 2023-11-20 at 9 20 57 AM" src="https://github.com/CSCE-606-Event360/Fall2023-PlaNXT/assets/32810188/22ad9f79-0776-4428-b051-6133c4f61a29">
 3. After create the application, you will get an **UID** and **Secret** Token
 4. Add thoses variable to the deployed app's Config Vars:
-    ![Screenshot 2023-11-20 at 9.23.22 AM](https://hackmd.io/_uploads/Hkd8oxYEp.png)
-
-
+<img width="809" alt="Screenshot 2023-11-20 at 9 23 22 AM" src="https://github.com/CSCE-606-Event360/Fall2023-PlaNXT/assets/32810188/253341d8-1e05-4469-ac40-5dfe072071bf">
 
 ## Contacts
 Email the team if you have any questions:
