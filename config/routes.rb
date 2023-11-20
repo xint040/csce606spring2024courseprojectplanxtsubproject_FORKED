@@ -16,12 +16,16 @@ Rails.application.routes.draw do
   get 'blueprints', to: 'blueprints#index'
   
   resources :plans do
+    # collection do
+    #   get 'plans', to:'plans#user_plans'
+    # end
     member do
       get 'floorplans2d'
     end
   end
   
   # user sign up and login
+  get 'sessions', to: 'sessions#create'
   get 'sign_in', to: 'sessions#new'
   delete 'logout', to: 'sessions#destroy'
   get '/auth/events360/callback', to: 'sessions#create'

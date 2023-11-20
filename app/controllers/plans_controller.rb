@@ -1,11 +1,21 @@
 class PlansController < ApplicationController
   before_action :set_plan, only: %i[ show edit update destroy ]
+  
+  # def user_plans
+  #   @user = User.from_omniauth(request.env['omniauth.auth'])
+  #   @plans = @user.plans
+  # end
+  
 
   layout "layouts/empty", only: [:new] 
 
   # GET /plans or /plans.json
   def index
-    @plans = Plan.all
+    # @plans = Plan.all
+    # Only display plans of the logged in user
+    puts "test"
+    puts session[:user_email]
+    @plans = Plan.where(owner: session[:user_email])
   end
 
   # GET /plans/1 or /plans/1.json
@@ -79,7 +89,7 @@ class PlansController < ApplicationController
   # POST /plans or /plans.json
   def create
     @plan = Plan.new(plan_params)
-
+    puts plan_params
     respond_to do |format|
       if @plan.save
         format.html { redirect_to plans_path, notice: "Plan was successfully created." }
@@ -94,6 +104,7 @@ class PlansController < ApplicationController
   def update
     respond_to do |format|
       if @plan.update(plan_params)
+        
         format.html { redirect_to plans_path, notice: "Plan was successfully updated." }
         format.json { render :show, status: :ok, location: @plan }
       # else # Currently doesn't handle error cases
@@ -121,6 +132,7 @@ class PlansController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def plan_params
+      # params.require(:plan).permit(:name, :owner, :venue_length, :venue_width, :user_email, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
       params.require(:plan).permit(:name, :owner, :venue_length, :venue_width, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
     end
 end
