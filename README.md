@@ -55,6 +55,9 @@ rake db:seed
   * Click preview, and click upper right to open a new browser tab to view the app
 
 ### To deploy in production environment (Heroku)
+* NOTE: This app relies on a 3rd party authentication system
+  * To deploy a personal version of this app in production you must authenticate your apps web address on the Event360 central login platform
+  * Log in using admin credentials to https://events360.herokuapp.com/ -> "Application Management" -> "New Application"
 
 * Commit all your finished updates to the code, and push to the git repo 
 * Prepare rails production environment as shown above
