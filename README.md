@@ -90,13 +90,17 @@ rake db:seed
 
 <br/>
 
-### To run cucumber test
+### To run cucumber test / RSPEC
 ```console
 RAILS_ENV=test rails server
 ```
 
 ```console
 RAILS_ENV=test rake cucumber
+```
+
+```console
+RSPEC
 ```
 
 
