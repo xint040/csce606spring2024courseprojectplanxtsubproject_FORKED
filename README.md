@@ -1,155 +1,116 @@
 # CSCE606 - Project PlaNXT
 
-**Team Fall 2023**
-
-[[Database](https://dbdiagram.io/d/PlaNXT-65177c28ffbf5169f0c4bcaf)]
-
-[[FashioNXT Git Repo](https://github.com/FashioNXT/planxt)]
-
-[[Deployed App on Heroku](https://planxt-refactor-f6a82d467f0e.herokuapp.com)]
+Team Fall 2023
 
 
-
-Instructions given below are based on Cloud9 environment. However, you can use your own machine for develop and testing. The app is deployed on Heroku for production.
-
-### To run App in development environment
-
-* Install ruby-3.2.0 using Ruby version manager
-  * `rvm get stable`
-  * `rvm install "ruby-3.2.0"`
-  * `rvm use 3.2.0`
-
-* Install PostgreSQL
-  * `sudo apt-get update`
-  * `sudo apt-get install postgresql postgresql-contrib libpq-dev`
-  * PostgreSQL may require to create a role to allow rails to connect to the Postgre database. In AWS cloud9 ubuntu system, we executed `sudo -u postgres createuser --interactive ubuntu`
-
-* Clone the latest git repo
-  * `git clone https://github.com/FashioNXT/planxt`
-
-* Bundle install
-  * `bundle install`
-  * `bin/rails db:environment:set RAILS_ENV=development`
-
-* Create and migrate database
-```console
-rake db:create
+## Get Started
 ```
-```console
-rake db:schema:load
+## Clone the repository 
+git clone https://github.com/CSCE-606-Event360/Fall2023-PlaNXT.git
+cd Fall2023-PlaNXT
 ```
-```console
-rake db:migrate
+### Setup the environment 
+Verify you have Ruby, Rails, and Heroku CLI installed
+
+* Check your Ruby version. If no ruby, follow this [instruction](https://github.com/Morris88826/CSCE-606-SOFTWARE-ENGINEERING/blob/main/PA1/README.md).
+* Check your Rails version. If no rails, run `gem install rails`.
+* Check your Bundler version. If bundle -v fails, run gem install bundler to install it. (Normally, though, installing the rails gem will also install bundler.)
+* Verify [the heroku command line tool](https://devcenter.heroku.com/articles/heroku-cli) has been installed in the development environment. If not, follow the [instructions](https://devcenter.heroku.com/articles/heroku-cli#install-with-ubuntu-debian-apt-get) to install it.
+
+In terminal:
 ```
-```console
-rake db:seed
-```
-
-* Start server in local development environment
-  * `rails server`
-
-* To preview the web app in Cloud9
-  * Click preview, open in new tab
-  * If you will get “IP address mismatch” error, open file `/config/environments/development.rb`, add/update `config.hosts << "YOUR_ADDRESS"`, you can find "YOUR_ADDRESS" from the error message
-  * Run `rails server` again to start app
-  * Click preview, and click upper right to open a new browser tab to view the app
-
-### To deploy in production environment (Heroku)
-* NOTE: This app relies on a 3rd party authentication system
-  * To deploy a personal version of this app in production you must authenticate your apps web address on the Event360 central login platform
-  * Log in using admin credentials to https://events360.herokuapp.com/ -> "Application Management" -> "New Application"
-
-* Commit all your finished updates to the code, and push to the git repo 
-* Prepare rails production environment as shown above
-
-* Install Heroku CLI
-  * `npm install -g heroku`
-
-* Now, the App is deployed to the FashioNXT Heroku Account
-  * You can link you cloned git repo to the Heroku Account using `heroku git:remote -a example-app` or following instructions given [here](https://devcenter.heroku.com/articles/git#for-an-existing-app)
-  * You may need to log in to Heroku first. Contact the client asking for the username and password. You will probably need 2-factor authentication.
-* You can push your new commits from the Git to Heroku git repo by `git push heroku main`, the App will automatically be rebuilt to reflect the changes.
-* You can check Heroku production logs to analyze bugs using `heroku logs`
-
-<br/>
-
-* If you want to deploy to personal Heroku account:
-  * Register a Heroku account
-  * Log into Heroku with `heroku login -i`, enter your email
-  * If multi-factor authentication is enabled, login the Heroku webpage and get the API key as password to enter in CLI
-  * Create an app with `heroku create planxt`
-  * Push code to App repo on Heroku, `git push heroku main`
-  * Migrate database on Heroku, `heroku run rake db:schema:load db:migrate`
-  * App is deployed to Heroku, go to the website and test it out
-
-
-<br/>
-
-* In case the App is not working correctly in Heroku
-  <!-- * Go to Heroku website, `reset the database`  -->
-  * `heroku config:set RAILS_ENV=production`
-  * then run `heroku run rake db:schema:load db:migrate` 
-  * Try again, if still have issues, go to Heroku website and reset the database, then repeate tha above steps
-
-<br/>
-
-### To run cucumber test / RSPEC
-```console
-RAILS_ENV=test rails server
-```
-
-```console
-RAILS_ENV=test rake cucumber
-```
-
-```console
-RSPEC
+ruby -v &&\
+rails -v &&\
+bundle -v &&\
+heroku -v
 ```
 
 
-<br/>
 
-### Contacts:
- * Email the team if you have any questions:
- * Mu-Ruei Tseng: mtseng@tamu.edu
- * Louis Ruffino: louis.ruffino@tamu.edu
+## To run App in development environment
+```
+## install the gem and setup the database
+bundle install
+rails db:migrate
 
----
-**(Content below are from the Team Spring 2022)**
+## start server
+rails s
+```
 
-Environment:
+### Problems
+1. If Bundler complains that the wrong Ruby version is installed,
 
-* Ruby version - 3.1.0
+    * rvm: verify that rvm is installed (for example, rvm --version) and run rvm list to see which Ruby versions are available and rvm use <version> to make a particular version active. If no versions satisfying the Gemfile dependency are installed, you can run rvm install <version> to install a new version, then rvm use <version> to use it.
+    
+    * rbenv: verify that rbenv is installed (for example, rbenv --version) and run rbenv versions to see which Ruby versions are available and rbenv local <version> to make a particular version active. If no versions satisfying the Gemfile dependency are installed, you can run rbenv install <version> to install a new version, then rbenv local <version> to use it.
+    
+    Then you can try bundle install again.
 
-* Rails version - v7.0.2.2
+### Run Tests
+#### Cucumber
+In order to have the cucumber test be able to trigger javascript events, one have to make sure that selenium is installed. Here is the approach of doing it:
+##### Step 1
+We have to manually download the correct version of the chromedriver. Follow this link to download the chromedriver: https://googlechromelabs.github.io/chrome-for-testing/#stable
 
-* Configuration
+Under stable, choose the corresponding OS you have:
+![Screenshot 2023-11-20 at 8.43.37 AM](https://hackmd.io/_uploads/BJg0eeY4a.png)
 
-* Database creation
+##### Step 2
+Setup the chromedriver
+<b>Mac</b>
+After downloading the chromedriver, unzip the folder and move the chromedriver executable file to the /usr/local/bin folder.
+```
+# assume you are in the unzip folder dir
+mv chromedriver /usr/local/bin
+```
+After moving chromedriver in the **/usr/local/bin** dir, one can start running the cucumber test
+* If you face “Error: “chromedriver” cannot be opened because the developer cannot be verified. Unable to launch the chrome browser“, you need to go to usr/local/bin folder and right-click chromeDriver file and open it. After this step, re-run your tests, chrome driver will work.
+    
+<b>Windows</b>
+1. After the ChromeDriver executable file is extracted and moved to the desired location, copy that location to set its path in System’s environment variables (the path where the chromedriver.exe is put).
 
-* Database initialization
+2. Add the path in the Environment Variables
+    
+    
+##### Step 3
+run cucumber test
+```
+rails cucumber
+```
+#### Rspec
+```
+rspec
+```
 
-* How to run the test suite
+## To deploy in production environment (Heroku)
+In your heroku account, create a new app.
+    
+In your project terminal:
+```
+heroku login
+    
+git init
+heroku git:remote -a <project_name>
 
-* Services (job queues, cache servers, search engines, etc.)
+# deploy
+git add .
+git commit -m "my first commit"
+git push heroku main
+heroku run rails db:migrate
+```
+When goes to the deployment website and click the "Continue with Event360" button, it will shows an error page. This is because you have connected your deployed app to the CRM system.
+    
+To do this, go to https://events360.herokuapp.com/users and login as the admin user.
+1. Go to Application Management Tab -> New Application
+2. Fill in the information like this: 
+    ![Screenshot 2023-11-20 at 9.20.57 AM](https://hackmd.io/_uploads/Bk4lseY4a.png)
+3. After create the application, you will get an **UID** and **Secret** Token
+4. Add thoses variable to the deployed app's Config Vars:
+    ![Screenshot 2023-11-20 at 9.23.22 AM](https://hackmd.io/_uploads/Hkd8oxYEp.png)
 
-* Deployment instructions
 
-Unit Test:
 
-1 "test add a new item"
- test add a new item into the database. This could add a new item into the fixtures of database and check if it works  
-2 "check data plan1 with id 1" 
- "plan1" is a sample data that already exist in the original fixtures of database. This would test the database lookup.
-
-API:
-
-PlanModel:
-
- Read: GET /plan_models_json/:id
- 
- New: POST /plan_models_json
- 
- Update: POST /plan_models_json/:id
- 
- Delete: DELETE /plan_models_json/:id
+## Contacts
+Email the team if you have any questions:
+* Mu-Ruei Tseng: mtseng@tamu.edu
+* Louis Ruffino: louis.ruffino@tamu.edu
