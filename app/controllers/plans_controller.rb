@@ -13,8 +13,6 @@ class PlansController < ApplicationController
   def index
     # @plans = Plan.all
     # Only display plans of the logged in user
-    puts "test"
-    puts session[:user_email]
     @plans = Plan.where(owner: session[:user_email])
   end
 
@@ -89,7 +87,6 @@ class PlansController < ApplicationController
   # POST /plans or /plans.json
   def create
     @plan = Plan.new(plan_params)
-    puts plan_params
     respond_to do |format|
       if @plan.save
         format.html { redirect_to plans_path, notice: "Plan was successfully created." }

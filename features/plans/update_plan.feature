@@ -2,10 +2,13 @@
 Feature: Update a new plan
 
 Background:
+Given I am on the "home" page
+When I click on the "Get Started" button
+Then I should be on the "plans" page
 Given the following plans exist:
     | name        | owner   | venue_length     | venue_width |
-    | My Plan     | user    | 10               | 10          |
-    | My Plan 2   | user    | 20               | 20          |
+    | My Plan     | test@email.com    | 10               | 10          |
+    | My Plan 2   | test@email.com    | 20               | 20          |
 
     Scenario: Update an existed plan
         Given I am on the "plans" page
