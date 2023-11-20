@@ -25,10 +25,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_20_000305) do
     t.integer "step_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "breakdown_start_time"
-    t.datetime "breakdown_end_time"
     t.datetime "setup_start_time"
     t.datetime "setup_end_time"
+    t.datetime "breakdown_start_time"
+    t.datetime "breakdown_end_time"
   end
 
   create_table "plans", force: :cascade do |t|

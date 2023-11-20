@@ -16,8 +16,10 @@ class SessionsController < ApplicationController
         end
       else
         logger.info("NOT IN PRODUCTION")
-        @user = User.new(name: "Dummy User", email: "dummy@example.com")
+        @user = User.new(name: "Dummy User", email: "test")
         session[:user_email] = @user.email
+        puts "test"
+        puts session[:user_email]
         # user = User.find_by(email: params[:email_username])
         # if !user.present?
         #     user = User.find_by(name: params[:email_username])

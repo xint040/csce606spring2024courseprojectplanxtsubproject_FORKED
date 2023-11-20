@@ -13,6 +13,8 @@ class PlansController < ApplicationController
   def index
     # @plans = Plan.all
     # Only display plans of the logged in user
+    puts "test"
+    puts session[:user_email]
     @plans = Plan.where(owner: session[:user_email])
   end
 
