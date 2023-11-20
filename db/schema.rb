@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_15_053955) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_20_000305) do
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.string "model"
@@ -38,7 +38,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_15_053955) do
     t.float "venue_width"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.index ["user_id"], name: "index_plans_on_user_id"
   end
 

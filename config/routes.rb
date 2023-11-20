@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   end
   
   # user sign up and login
+  get 'sessions', to: 'sessions#create'
   get 'sign_in', to: 'sessions#new'
   delete 'logout', to: 'sessions#destroy'
   get '/auth/events360/callback', to: 'sessions#create'
