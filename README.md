@@ -109,6 +109,11 @@ RSPEC
 
 <br/>
 
+### Contacts:
+ * Email the team if you have any questions:
+ * Mu-Ruei Tseng: mtseng@tamu.edu
+ * Louis Ruffino: louis.ruffino@tamu.edu
+
 ---
 **(Content below are from the Team Spring 2022)**
 
