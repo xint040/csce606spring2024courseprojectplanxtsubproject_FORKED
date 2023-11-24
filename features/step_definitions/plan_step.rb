@@ -44,6 +44,7 @@ end
 
 Then('I fill in {string} with {double}') do |string, double|
   fill_in(string, with: double)
+  sleep(1)
 end
 
 Then('I should see {string} in the list of plans') do |string|

@@ -111,6 +111,9 @@ class PlansController < ApplicationController
   end
 
   def update_plan_with_steps
+    if plan_params[:steps_attributes].nil?
+      return @plan.update(plan_params)
+    end
     steps_attributes = plan_params[:steps_attributes].to_unsafe_h
 
     steps_attributes.each do |key, step_params|
