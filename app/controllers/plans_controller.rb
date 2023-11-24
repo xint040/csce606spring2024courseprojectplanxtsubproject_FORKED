@@ -100,15 +100,33 @@ class PlansController < ApplicationController
   # PATCH/PUT /plans/1 or /plans/1.json
   def update
     respond_to do |format|
-      if @plan.update(plan_params)
-        
-        format.html { redirect_to plans_path, notice: "Plan was successfully updated." }
+      if update_plan_with_steps
+        format.html { redirect_to plans_path, notice: 'Plan was successfully updated.' }
         format.json { render :show, status: :ok, location: @plan }
-      # else # Currently doesn't handle error cases
-      #   format.html { render :edit, status: :unprocessable_entity }
-      #   format.json { render json: @plan.errors, status: :unprocessable_entity }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @plan.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def update_plan_with_steps
+    steps_attributes = plan_params[:steps_attributes].to_unsafe_h
+
+    steps_attributes.each do |key, step_params|
+      %i[start_time end_time break1_start_time break1_end_time break2_start_time break2_end_time].each do |attr|
+        step_params[attr] = combine_date_and_time(step_params[:start_date], step_params[attr])
+      end
+    end
+
+    @plan.update(plan_params.merge(steps_attributes: steps_attributes))
+  end
+
+  def combine_date_and_time(date, time)
+    return nil if date.blank? || time.blank?
+    DateTime.parse("#{date} #{time} #{Time.zone.now.strftime("%Z")}")
+  rescue ArgumentError
+    nil # Handle invalid date-time formats gracefully
   end
 
   # DELETE /plans/1 or /plans/1.json
