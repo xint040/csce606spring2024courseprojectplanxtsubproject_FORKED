@@ -44,7 +44,8 @@
     </div>
     <div class="col-6 dropzone-container">
       <div id="dropzone"></div>
-      <input type="range"  class="slider" id="myRange" style="width: 80%" >
+      <input type="range"  class="slider" id="myRange" style="width: 80%"  >
+      <p id="rangeValue">Plan time: </p>
     </div>
     <div class="accordion-container col-3">
       <!-- Plan Deteil -->
@@ -91,8 +92,9 @@
                     <% @plan.steps.each do |step| %>
                       <% start_minutes = step.start_time.hour * 60 + step.start_time.min %>
                       <% end_minutes = step.end_time.hour * 60 + step.end_time.min %>
-                      <button class="dropdown-item" type="button" data-id=<%= step.id %> data-start="<%= start_minutes %>" data-end="<%= end_minutes %>">
-                        <%= step.start_date.to_s + " " + step.start_time.strftime('%I:%M %p') + "~" + step.end_time.strftime('%I:%M %p') %>
+                      <% start_date =  step.start_date%>
+                      <button class="dropdown-item" type="button" data-id=<%= step.id %> data-start="<%= start_minutes %>" data-end="<%= end_minutes %>" data-start-time="<%= step.start_time%>">
+                        <%= step.start_time.strftime('%Y-%m-%d %H:%M') + "~" + step.end_time.strftime('%H:%M') %>
                       </button>
                     <% end %>
                   </ul>
@@ -142,6 +144,7 @@
     var ratio = 1;
     var currentStep = -1;
     var items = [];
+    var current_time = new Date();
 
     window.generateItems = generateItems;
     $(document).ready(function() {
@@ -215,6 +218,13 @@
           }
         }
         items.push(item);
+
+        if (item['setup_start_time'] != null){
+          var setupStartTime = parseDateTime(item['setup_start_time'], true);
+          console.log(setupStartTime);
+        }
+
+        console.log(current_time);
         createItem(droppedElementId, item);
       }
     }
@@ -366,39 +376,6 @@
       var selected_item = items.find(item => item.id == item_id);
       
       openUpdateModal(selected_item, currentStep, loadItems);
-      // // Show the delete confirmation modal
-      // const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-      // editModal.show();
-
-      // document.getElementById('editModalLabel').innerText = `Details: ${clickedElement.getAttribute('item-name')}`;
-
-      // document.getElementById('itemWidth').value = clickedElement.getAttribute('item-width');
-      // document.getElementById('itemHeight').value = clickedElement.getAttribute('item-depth');
-
-      // // Attach a one-time event listener to the "Delete" button in the modal
-      // document.getElementById('confirmDeleteBtn').onclick = function() {
-
-      //   fetch(`/items/${clickedElement.id}`, {
-      //     method: 'DELETE',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      //     }
-      //   }).then(response => {
-      //     if (response.ok) {
-      //       // Handle success
-      //       console.log("Item deleted successfully");
-      //       loadItems(currentStep);
-      //     } else {
-      //       // Handle error
-      //       console.error("Failed to delete item");
-      //     }
-      //   }).catch(error => {
-      //     // Handle network error
-      //     console.error("Network error:", error);
-      //   });
-
-      // };
     }
     
     // Get the table body element
@@ -504,6 +481,8 @@
         combobox.value = firstStep;
         updateSlider(dropdownItems[0]);
         currentStep = parseInt(dropdownItems[0].getAttribute('data-id'));
+        console.log(dropdownItems[0].getAttribute('data-start'));
+        console.log(dropdownItems[0].getAttribute('data-start-time'));
       }
     }
 
@@ -545,14 +524,38 @@
 
     // Function to update slider based on the step selected
     function updateSlider(stepElement){
-      const startTime = parseInt(stepElement.getAttribute('data-start'), 10);
-      const endTime = parseInt(stepElement.getAttribute('data-end'), 10);
+      const startTime = parseInt(stepElement.getAttribute('data-start'));
+      const endTime = parseInt(stepElement.getAttribute('data-end'));
       slider.min = startTime;
       slider.max = endTime;
       slider.value = startTime; // Set initial slider value to start time
-      // console.log(stepElement);
+      updateTime(slider.value, stepElement.getAttribute('data-start-time'));
     };
 
+
+    // Function to update the date displayed based on the slider value
+    function updateTime(value, start_time){
+      var date = new Date(start_time);
+      var month = date.getMonth() + 1;
+      var day = date.getDate();
+      var year = date.getFullYear();
+
+
+      date.setMinutes(value);
+      var hour = date.getHours();
+      var minute = date.getMinutes();
+      var ampm = hour >= 12 ? 'pm' : 'am';
+      hour = hour % 12;
+      hour = hour ? hour : 12; // the hour '0' should be '12'
+      minute = minute < 10 ? '0'+minute : minute;
+      var strTime = year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ' ' + ampm;
+      document.getElementById('rangeValue').innerHTML = "Plan time: " + strTime;
+    }
+
+    slider.oninput = function() {
+      start_time = document.querySelector('.dropdown-item[data-id="' + currentStep + '"]').getAttribute('data-start-time');
+      updateTime(slider.value, start_time);
+    };
 
     // Event listener for combobox selections
     dropdownItems.forEach((item) => {
