@@ -1,10 +1,18 @@
 class UpdateTime < ActiveRecord::Migration[7.0]
   def change
-    change_column :steps, :start_time, :datetime
-    change_column :steps, :end_time, :datetime
-    change_column :steps, :break1_start_time, :datetime
-    change_column :steps, :break1_end_time, :datetime
-    change_column :steps, :break2_start_time, :datetime
-    change_column :steps, :break2_end_time, :datetime
+
+    remove_column :steps, :start_time
+    remove_column :steps, :end_time
+    remove_column :steps, :break1_start_time
+    remove_column :steps, :break1_end_time
+    remove_column :steps, :break2_start_time
+    remove_column :steps, :break2_end_time
+
+    add_column :steps, :start_time, :datetime
+    add_column :steps, :end_time, :datetime
+    add_column :steps, :break1_start_time, :datetime
+    add_column :steps, :break1_end_time, :datetime
+    add_column :steps, :break2_start_time, :datetime
+    add_column :steps, :break2_end_time, :datetime
   end
 end
