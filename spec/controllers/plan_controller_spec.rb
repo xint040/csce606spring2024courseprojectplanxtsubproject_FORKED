@@ -71,16 +71,18 @@ RSpec.describe PlansController, type: :controller do
                     owner: 'Morris', 
                     venue_length: 100, 
                     venue_width: 100 ,
-                    steps_attributes: [
-                        {start_date: '2021-01-01', 
-                        start_time: '10:00:00', 
-                        end_time: '11:00:00', 
-                        break1_start_time: '10:30:00', 
-                        break1_end_time: '10:45:00',
-                        break2_start_time: '10:30:00', 
-                        break2_end_time: '10:45:00' 
+                    steps_attributes: {
+                        "0": 
+                        {
+                            start_date: '2021-01-01', 
+                            start_time: '10:00:00', 
+                            end_time: '11:00:00', 
+                            break1_start_time: '10:30:00', 
+                            break1_end_time: '10:45:00',
+                            break2_start_time: '10:30:00', 
+                            break2_end_time: '10:45:00' 
                         }
-                    ]
+                    }
                 }
             }
 
