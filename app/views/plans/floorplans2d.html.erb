@@ -529,20 +529,23 @@
       slider.min = startTime;
       slider.max = endTime;
       slider.value = startTime; // Set initial slider value to start time
-      updateTime(slider.value, stepElement.getAttribute('data-start-time'));
+      updateTime(slider.value - slider.min, stepElement.getAttribute('data-start-time'));
     };
 
+    function addMinutesToDate(date, minutes) {
+        return new Date(date.getTime() + minutes * 60000);
+    }
 
     // Function to update the date displayed based on the slider value
     function updateTime(value, start_time){
       var date = new Date(start_time);
-      var month = date.getMonth() + 1;
-      var day = date.getDate();
-      var year = date.getFullYear();
+      var month = date.getUTCMonth() + 1;
+      var day = date.getUTCDate();
+      var year = date.getUTCFullYear();
 
+      date = addMinutesToDate(date, value);
 
-      date.setMinutes(value);
-      var hour = date.getHours();
+      var hour = date.getUTCHours();
       var minute = date.getMinutes();
       var ampm = hour >= 12 ? 'pm' : 'am';
       hour = hour % 12;
@@ -554,7 +557,7 @@
 
     slider.oninput = function() {
       start_time = document.querySelector('.dropdown-item[data-id="' + currentStep + '"]').getAttribute('data-start-time');
-      updateTime(slider.value, start_time);
+      updateTime(slider.value - slider.min, start_time);
     };
 
     // Event listener for combobox selections
