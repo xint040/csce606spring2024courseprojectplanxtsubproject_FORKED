@@ -1,6 +1,8 @@
 class PlansController < ApplicationController
   before_action :set_plan, only: %i[ show edit update destroy ]
   
+  before_action :require_user_logged_in!, unless: -> { !Rails.env.production? }
+  
   # def user_plans
   #   @user = User.from_omniauth(request.env['omniauth.auth'])
   #   @plans = @user.plans
