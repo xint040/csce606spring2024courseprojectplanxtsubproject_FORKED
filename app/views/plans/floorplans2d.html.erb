@@ -219,13 +219,15 @@
         }
         items.push(item);
 
-        if (item['setup_start_time'] != null){
-          var setupStartTime = parseDateTime(item['setup_start_time'], true);
-          console.log(setupStartTime);
-        }
+        if (item['setup_start_time'] != null && item['setup_end_time'] != null){
+          setupStartT = new Date(parseDateTime(item['setup_start_time'], true));
+          setupEndT = new Date(parseDateTime(item['setup_end_time'], true));
+          current_time = new Date(current_time);
 
-        console.log(current_time);
-        createItem(droppedElementId, item);
+          if (setupEndT <= current_time){
+            createItem(droppedElementId, item);
+          }
+        }
       }
     }
 
@@ -481,8 +483,6 @@
         combobox.value = firstStep;
         updateSlider(dropdownItems[0]);
         currentStep = parseInt(dropdownItems[0].getAttribute('data-id'));
-        console.log(dropdownItems[0].getAttribute('data-start'));
-        console.log(dropdownItems[0].getAttribute('data-start-time'));
       }
     }
 
@@ -544,20 +544,20 @@
       var year = date.getUTCFullYear();
 
       date = addMinutesToDate(date, value);
-
+      
       var hour = date.getUTCHours();
       var minute = date.getMinutes();
-      var ampm = hour >= 12 ? 'pm' : 'am';
-      hour = hour % 12;
-      hour = hour ? hour : 12; // the hour '0' should be '12'
+
       minute = minute < 10 ? '0'+minute : minute;
-      var strTime = year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ' ' + ampm;
+      var strTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+      current_time = strTime;
       document.getElementById('rangeValue').innerHTML = "Plan time: " + strTime;
     }
 
     slider.oninput = function() {
       start_time = document.querySelector('.dropdown-item[data-id="' + currentStep + '"]').getAttribute('data-start-time');
       updateTime(slider.value - slider.min, start_time);
+      loadItems(currentStep);
     };
 
     // Event listener for combobox selections
