@@ -1,6 +1,8 @@
 class PlansController < ApplicationController
   before_action :set_plan, only: %i[ show edit update destroy ]
   
+  before_action :require_user_logged_in!, unless: -> { !Rails.env.production? }
+  
   # def user_plans
   #   @user = User.from_omniauth(request.env['omniauth.auth'])
   #   @plans = @user.plans
@@ -151,6 +153,6 @@ class PlansController < ApplicationController
     # Only allow a list of trusted parameters through.
     def plan_params
       # params.require(:plan).permit(:name, :owner, :venue_length, :venue_width, :user_email, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
-      params.require(:plan).permit(:name, :owner, :venue_length, :venue_width, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
+      params.require(:plan).permit(:name, :owner, :timezone, :venue_length, :venue_width, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
     end
 end

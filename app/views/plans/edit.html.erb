@@ -12,6 +12,13 @@
           </div>
         </div>
 
+        <div class="form-group justify-content-md-center" style="display:flex">
+          <label class="col-form-label"><b>Timezone</b></label>
+          <div class="col-sm-4" style="margin-left:1em">
+            <%= form.select :timezone, ActiveSupport::TimeZone.us_zones.map { |tz| [tz.name, tz.name] }, { selected: @plan.timezone }, { class: 'form-control' } %>
+          </div>
+        </div>
+
         <div style="margin-top:1em">
           <b>Event Days: Setup through Breakdown</b>
         </div>

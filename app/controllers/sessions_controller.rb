@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
         else
           flash.alert = "User not found."
           flash.now[:alert] = 'Invalid request'
-          redirect_to sign_in_path, notice: 'Invalid username/email or password'
+          redirect_to root_path, notice: 'Invalid username/email or password'
         end
       else
         logger.info("NOT IN PRODUCTION")
