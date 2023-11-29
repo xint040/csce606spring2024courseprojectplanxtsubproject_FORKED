@@ -193,6 +193,39 @@
     }
 
 
+    function showItems(step_id){
+
+      // clear all dropped items
+      const droppedItems = document.querySelectorAll('[data-cloned="true"]');
+      droppedItems.forEach(item => {
+        item.remove();
+      });
+
+      for( item of items){
+        var droppedElementId = "item-"
+        for(let itemType in itemTemplates){
+          if (itemTemplates[itemType].displayName == item.name){
+            droppedElementId += itemType;
+            break;
+          }
+        }
+
+        if (item['setup_start_time'] != null && item['setup_end_time'] != null && item['breakdown_start_time'] != null && item['breakdown_end_time'] != null){
+          setupStartT = new Date(parseDateTime(item['setup_start_time'], true));
+          setupEndT = new Date(parseDateTime(item['setup_end_time'], true));
+          breakdownStartT = new Date(parseDateTime(item['breakdown_start_time'], true));
+          breakdownEndT = new Date(parseDateTime(item['breakdown_end_time'], true));
+
+          current_time = new Date(current_time);
+
+          if (setupStartT <= current_time && current_time <= breakdownEndT){
+            createItem(droppedElementId, item);
+          }
+        }
+      }
+    }
+
+
     async function loadItems(stepId) {
       // clear all items
       items.length = 0;
@@ -200,12 +233,6 @@
       // clear all table rows
       const tableBody = document.getElementById('items-table-body');
       tableBody.innerHTML = '';
-
-      // clear all dropped items
-      const droppedItems = document.querySelectorAll('[data-cloned="true"]');
-      droppedItems.forEach(item => {
-        item.remove();
-      });
 
       var _items = await searchItemsByStep(stepId);
 
@@ -218,17 +245,11 @@
           }
         }
         items.push(item);
-
-        if (item['setup_start_time'] != null && item['setup_end_time'] != null){
-          setupStartT = new Date(parseDateTime(item['setup_start_time'], true));
-          setupEndT = new Date(parseDateTime(item['setup_end_time'], true));
-          current_time = new Date(current_time);
-
-          if (setupEndT <= current_time){
-            createItem(droppedElementId, item);
-          }
-        }
+        // Add table row when new item is dragged and placed with newly generated ID
+        addTableRow(item.id);
       }
+
+      showItems(stepId);
     }
 
     function generateItems() {
@@ -299,8 +320,6 @@
       dropzone.appendChild(clonedElement);
       makeDraggable(clonedElement);
 
-      // Add table row when new item is dragged and placed with newly generated ID
-      addTableRow(clonedElement.id);
     }
 
 
@@ -385,6 +404,7 @@
     
     // Function to add a new row to the table
     function addTableRow(itemId) {
+
       var item = items.find(item => item.id == itemId);
       var setupStartTime = parseDateTime(item.setup_start_time, true);
       var setupEndTime = parseDateTime(item.setup_end_time, true);
@@ -392,10 +412,10 @@
       var breakdownEndTime = parseDateTime(item.breakdown_end_time, true);
 
       const newRow = tableBody.insertRow();
-      itemType = document.getElementById(itemId).getAttribute('item-name');
+
       newRow.innerHTML = `
         <td>item-${items.length}</td>
-        <td>${itemType}</td>
+        <td>${item.name}</td>
         <td>${setupStartTime}</td>
         <td>${setupEndTime}</td>
         <td>${breakdownStartTime}</td>
@@ -557,7 +577,7 @@
     slider.oninput = function() {
       start_time = document.querySelector('.dropdown-item[data-id="' + currentStep + '"]').getAttribute('data-start-time');
       updateTime(slider.value - slider.min, start_time);
-      loadItems(currentStep);
+      showItems(currentStep);
     };
 
     // Event listener for combobox selections
