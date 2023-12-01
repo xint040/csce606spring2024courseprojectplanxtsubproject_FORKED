@@ -105,9 +105,6 @@ class PlansController < ApplicationController
       if update_plan_with_steps
         format.html { redirect_to plans_path, notice: 'Plan was successfully updated.' }
         format.json { render :show, status: :ok, location: @plan }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @plan.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -130,8 +127,6 @@ class PlansController < ApplicationController
   def combine_date_and_time(date, time)
     return nil if date.blank? || time.blank?
     DateTime.parse("#{date} #{time} #{Time.zone.now.strftime("%Z")}")
-  rescue ArgumentError
-    nil # Handle invalid date-time formats gracefully
   end
 
   # DELETE /plans/1 or /plans/1.json

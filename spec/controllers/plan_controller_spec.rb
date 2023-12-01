@@ -98,6 +98,26 @@ RSpec.describe PlansController, type: :controller do
             expect(plan1.steps.last.break2_end_time.strftime('%H:%M:%S')).to eq('10:45:00')
             expect(response).to redirect_to(plans_path)
         end
+
+        it 'updates a plan without step' do
+            put :update, params: { 
+                id: plan1.id, 
+                plan: { 
+                    name: 'Test5', 
+                    owner: 'Morris', 
+                    venue_length: 120, 
+                    venue_width: 120 ,
+                    steps_attributes: nil
+                }
+            }
+
+            plan1.reload
+            expect(plan1.name).to eq('Test5')
+            expect(plan1.owner).to eq('Morris')
+            expect(plan1.venue_length).to eq(120)
+            expect(plan1.venue_width).to eq(120)
+            expect(response).to redirect_to(plans_path)
+        end
     end
 
     # add tests for floorplans2d
@@ -130,5 +150,4 @@ RSpec.describe PlansController, type: :controller do
             expect(response).to redirect_to(blueprints_path)
         end
     end
-
 end

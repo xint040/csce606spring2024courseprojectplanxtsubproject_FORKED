@@ -37,7 +37,7 @@ RSpec.describe SessionsController, type: :controller do
     
                 post :create, params: { provider: 'event360' }
     
-                expect(response).to redirect_to(sign_in_path)
+                expect(response).to redirect_to(root_path)
                 expect(flash[:alert]).to eq('Invalid request')
             end
         end
