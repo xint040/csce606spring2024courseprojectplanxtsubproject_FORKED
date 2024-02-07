@@ -85,7 +85,17 @@ rspec
 
 ## To deploy in production environment (Heroku)
 In your heroku account, create a new app.
-    
+
+Deploy the github repo to heroku itself. 
+    under the deploy tab click github and connect
+    go to manual deploy and choose the main branch to deploy 
+    press deploy branch
+    press view
+    skip next section to the final section of the readme
+
+
+Just keeping the steps below just in case but it does not work for Alex 
+
 In your project terminal:
 ```
 heroku login
