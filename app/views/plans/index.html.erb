@@ -4,7 +4,12 @@
   <div style="display:flex; ">
     <h1>Plans Management</h1>
     <%= link_to "Create a new plan", new_plan_path, class:"btn btn-primary", style:"margin:auto;margin-right:0;background-color: #478ac9;"%>
-    <button class="btn btn-primary" style="margin:auto;margin-left:1em; margin-right:0;background-color: #478ac9;">Import an existing plan</button>
+    
+    <%= form_tag({controller: 'plans', action: 'upload_existing_plan'}, multipart: true) do %>
+      <%= file_field_tag 'plan_file', class: "btn btn-primary", style:"margin:auto;margin-right:0;background-color: #478ac9" %>
+    <% end %>
+</div>
+
   </div>
   <table class="table" style="margin-top: 2em;">
   <thead style="background-color:#478ac9; ">

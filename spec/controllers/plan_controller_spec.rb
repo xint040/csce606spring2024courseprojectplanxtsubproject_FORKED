@@ -150,4 +150,25 @@ RSpec.describe PlansController, type: :controller do
             expect(response).to redirect_to(blueprints_path)
         end
     end
+
+
+    # test for submit button
+    describe PlansController, type: :controller do
+    describe 'POST #upload_existing_plan' do
+        it 'uploads an existing plan file' do
+        # Mock any necessary behavior
+        
+        # Simulate a request to the controller action
+        post :upload_existing_plan, params: { plan_file: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'dummy.pdf'), 'application/pdf') }
+
+        
+        # Add expectations for the controller action behavior
+        # For example, you could expect a redirect or a specific response
+        expect(response).to have_http_status(:redirect)
+        end
+    end
+    end
+
+
+
 end

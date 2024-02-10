@@ -7,8 +7,15 @@ class PlansController < ApplicationController
   #   @user = User.from_omniauth(request.env['omniauth.auth'])
   #   @plans = @user.plans
   # end
+
+  def upload_existing_plan
+    # Process the uploaded file
   
 
+    # Redirect to a different page upon successful file upload
+    redirect_to plans_path, notice: 'File uploaded successfully.'
+  end
+  
   layout "layouts/empty", only: [:new] 
 
   # GET /plans or /plans.json
