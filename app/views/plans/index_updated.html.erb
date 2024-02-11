@@ -1,7 +1,12 @@
 <p style="color: green"><%= notice %></p>
 
+
+<div style="text-align: center; margin-bottom: 20px;">
+  <h2 style="color: black;">Plans Management</h2>
+</div>
+
 <div style="display:flex; justify-content: flex-end; align-items: center; gap: 10px;">
-  <%= link_to "Create a new plan", new_plan_path, class:"btn btn-primary", style:"background-color: #478ac9; height: 38px;"%>
+  <%= link_to "Create a new plan", new_plan_path, class:"btn btn-primary", style:"background-color: #478ac9; height: 38px;" %>
   
   <%= form_tag({controller: 'plans', action: 'upload_existing_plan'}, multipart: true) do %>
     <%= file_field_tag 'plan_file', class: "btn", style:"background-color: #478ac9; height: 38px;" %>
