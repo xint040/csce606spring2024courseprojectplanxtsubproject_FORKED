@@ -103,9 +103,9 @@ class PlansController < ApplicationController
     respond_to do |format|
       if @plan.save
         format.html { redirect_to plans_path, notice: "Plan was successfully created." }
-      # else # Currently doesn't handle error cases
-      #   format.html { render :new, status: :unprocessable_entity }
-      #   format.json { render json: @plan.errors, status: :unprocessable_entity }
+      else
+        # If the plan cannot be saved due to invalid parameters, render the new template
+        format.html { render :new }
       end
     end
   end
@@ -161,11 +161,10 @@ class PlansController < ApplicationController
       csv << ['Plan attributes', 'Item attributes']
 
       @plans.each do |plan|
-        plan_values = plan.attributes.values.join(', ')
-        plan_items = @items.select { |item| item.step_id == plan.id }
-        plan_items_values = plan_items.map { |item| item.attributes.values.join(', ') }
-
-        csv << [plan_values, plan_items_values]
+        plan_items = @items.select { |item| item.step.plan_id == plan.id }
+        plan_items.each do |item|
+          csv << [plan.attributes.values.join(', '), item.attributes.values.join(', ')]
+        end
       end
     end
 
@@ -174,6 +173,7 @@ class PlansController < ApplicationController
 
     render plain: csv_data
   end
+  
 
   
 

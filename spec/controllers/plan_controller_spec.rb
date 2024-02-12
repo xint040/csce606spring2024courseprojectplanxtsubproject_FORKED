@@ -3,39 +3,44 @@
 require 'rails_helper'
 
 RSpec.describe PlansController, type: :controller do
-    Plan.destroy_all
 
-    plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
-    plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
+    describe "GET #download_all_data" do
+    it "responds with a CSV file containing all plan and item data" do
+      plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
+      plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
+      step1 = FactoryBot.create(:step, plan: plan1) # Create a step associated with the plan using FactoryBot
+      item1 = FactoryBot.create(:item, name: "Item 1", step: step1) # Associate the item with the step using FactoryBot
+      step2 = FactoryBot.create(:step, plan: plan2) # Create a step associated with the second plan
+      item2 = FactoryBot.create(:item, name: "Item 2", step: step2) # Associate another item with the second plan
+  
+      # Trigger the download_all_data action
+      get :download_all_data
+  
+      # Verify response
+      expect(response.content_type).to eq('text/csv')
+      expect(response.headers['Content-Disposition']).to include('attachment; filename=all_data.csv')
+  
+      # Verify CSV data
+      csv_data = CSV.parse(response.body)
+      expect(csv_data.size).to eq(3) # Header + data from plan1 + data from plan2
+      expect(csv_data[0]).to eq(['Plan attributes', 'Item attributes'])
+      expect(csv_data[1].join(",")).to include("Test1", "Morris", "100", "100", "Item 1") # change this if we change the attributes
+      expect(csv_data[2].join(",")).to include("Test2", "Morris", "100", "100", "Item 2") # change this if we change the attributes
+    end
+  end
+    
+  Plan.destroy_all
+
+  plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
+  plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
 
 
-
-    #describe 'when downloading all data' do
-        #it 'generates a CSV file with all plan and item data' do
-          # Create test data: plans and associated items
-          #FactoryBot.create(:item, name: 'Item 1', model: 'Model 1', plan: plan1)
-          #FactoryBot.create(:item, name: 'Item 2', model: 'Model 2', plan: plan1)
-          #FactoryBot.create(:item, name: 'Item 3', model: 'Model 3', plan: plan2)
-    
-          # Make GET request to download all data
-          #get :download_all_data
-    
-          # Expect response to be successful
-          #expect(response).to have_http_status(:success)
-    
-          # Parse CSV data from response body
-          #csv_data = CSV.parse(response.body)
-    
-          # Check CSV headers
-          #expect(csv_data[0]).to contain_exactly('Plan Id', 'Plan Name', 'Plan Owner', 'Plan Venue Length', 'Plan Venue Width', 'Item Id', 'Item Name', 'Item Model', 'Item Plan Id')
-    
-          # Check CSV data
-          #expect(csv_data[1]).to contain_exactly(plan1.id.to_s, 'Test1', 'Morris', '100', '100', '', '', '', '')
-          #expect(csv_data[2]).to contain_exactly('', '', '', '', '', plan1.items[0].id.to_s, 'Item 1', 'Model 1', plan1.id.to_s)
-          #expect(csv_data[3]).to contain_exactly('', '', '', '', '', plan1.items[1].id.to_s, 'Item 2', 'Model 2', plan1.id.to_s)
-          #expect(csv_data[4]).to contain_exactly(plan2.id.to_s, 'Test2', 'Morris', '100', '100', plan2.items[0].id.to_s, 'Item 3', 'Model 3', plan2.id.to_s)
-        #end
-      #end
+  describe 'when trying to view the home page' do
+    it 'shows the home page' do
+      get :index
+      expect(response).to render_template('index')
+    end
+  end
     
     describe 'when trying to view the home page' do
         it 'shows the home page' do
