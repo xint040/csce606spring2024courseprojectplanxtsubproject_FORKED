@@ -12,7 +12,7 @@ class ItemsController < ApplicationController
     end
     
   end
-
+  
   # search for items by step_id
   def search
     @items = Item.where(step_id: params[:step_id])
@@ -33,6 +33,11 @@ class ItemsController < ApplicationController
     respond_to do |format|
       format.json { head :no_content }
     end
+  end
+
+  # Retrieves all items from the database and assigns them to the instance variable @items to be used in plans_contrroller to download all data.
+  def index
+    @items = Item.all
   end
 
   private

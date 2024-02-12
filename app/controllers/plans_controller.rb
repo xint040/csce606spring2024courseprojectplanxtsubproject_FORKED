@@ -1,4 +1,7 @@
 class PlansController < ApplicationController
+  require 'csv'
+
+
   before_action :set_plan, only: %i[ show edit update destroy ]
   
   before_action :require_user_logged_in!, unless: -> { !Rails.env.production? }
@@ -147,6 +150,33 @@ class PlansController < ApplicationController
     end
   end
 
+
+  # Method to download all plan and item data as a CSV file
+  def download_all_data
+    @plans = Plan.all
+    @items = Item.all
+
+    # Generate CSV with plan and item data
+    csv_data = CSV.generate do |csv|
+      csv << ['Plan attributes', 'Item attributes']
+
+      @plans.each do |plan|
+        plan_values = plan.attributes.values.join(', ')
+        plan_items = @items.select { |item| item.step_id == plan.id }
+        plan_items_values = plan_items.map { |item| item.attributes.values.join(', ') }
+
+        csv << [plan_values, plan_items_values]
+      end
+    end
+
+    headers["Content-Type"] = "text/csv"
+    headers["Content-Disposition"] = "attachment; filename=all_data.csv"
+
+    render plain: csv_data
+  end
+
+  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_plan
@@ -158,4 +188,5 @@ class PlansController < ApplicationController
       # params.require(:plan).permit(:name, :owner, :venue_length, :venue_width, :user_email, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
       params.require(:plan).permit(:name, :owner, :timezone, :venue_length, :venue_width, steps_attributes: [:id, :start_date, :start_time, :end_time, :break1_start_time, :break1_end_time, :break2_start_time, :break2_end_time, :_destroy])
     end
+
 end

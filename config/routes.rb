@@ -26,7 +26,15 @@ Rails.application.routes.draw do
   
   # config/routes.rb
 
-# config/routes.rb
+  #resources :plans do
+   # collection do
+    #  get 'download_all_data'
+    #end
+  #end
+
+  get 'download_all_data', to: 'plans#download_all_data', as: 'download_all_data'
+
+  # config/routes.rb
   post '/upload_existing_plan', to: 'plans#upload_existing_plan' # Defines a route for the upload_existing_plan action on plans controller.
 
 

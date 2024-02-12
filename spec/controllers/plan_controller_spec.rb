@@ -7,6 +7,35 @@ RSpec.describe PlansController, type: :controller do
 
     plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
     plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
+
+
+
+    #describe 'when downloading all data' do
+        #it 'generates a CSV file with all plan and item data' do
+          # Create test data: plans and associated items
+          #FactoryBot.create(:item, name: 'Item 1', model: 'Model 1', plan: plan1)
+          #FactoryBot.create(:item, name: 'Item 2', model: 'Model 2', plan: plan1)
+          #FactoryBot.create(:item, name: 'Item 3', model: 'Model 3', plan: plan2)
+    
+          # Make GET request to download all data
+          #get :download_all_data
+    
+          # Expect response to be successful
+          #expect(response).to have_http_status(:success)
+    
+          # Parse CSV data from response body
+          #csv_data = CSV.parse(response.body)
+    
+          # Check CSV headers
+          #expect(csv_data[0]).to contain_exactly('Plan Id', 'Plan Name', 'Plan Owner', 'Plan Venue Length', 'Plan Venue Width', 'Item Id', 'Item Name', 'Item Model', 'Item Plan Id')
+    
+          # Check CSV data
+          #expect(csv_data[1]).to contain_exactly(plan1.id.to_s, 'Test1', 'Morris', '100', '100', '', '', '', '')
+          #expect(csv_data[2]).to contain_exactly('', '', '', '', '', plan1.items[0].id.to_s, 'Item 1', 'Model 1', plan1.id.to_s)
+          #expect(csv_data[3]).to contain_exactly('', '', '', '', '', plan1.items[1].id.to_s, 'Item 2', 'Model 2', plan1.id.to_s)
+          #expect(csv_data[4]).to contain_exactly(plan2.id.to_s, 'Test2', 'Morris', '100', '100', plan2.items[0].id.to_s, 'Item 3', 'Model 3', plan2.id.to_s)
+        #end
+      #end
     
     describe 'when trying to view the home page' do
         it 'shows the home page' do
