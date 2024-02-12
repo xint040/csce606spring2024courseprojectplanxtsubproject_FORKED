@@ -18,7 +18,7 @@ RSpec.describe PlansController, type: :controller do
   
       # Verify response
       expect(response.content_type).to eq('text/csv')
-      expect(response.headers['Content-Disposition']).to include('attachment; filename=all_data.csv')
+      expect(response.headers['Content-Disposition']).to include('attachment; filename=floorplan.csv')
   
       # Verify CSV data
       csv_data = CSV.parse(response.body)

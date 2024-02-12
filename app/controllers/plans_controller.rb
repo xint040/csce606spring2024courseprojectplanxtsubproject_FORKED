@@ -169,7 +169,7 @@ class PlansController < ApplicationController
     end
 
     headers["Content-Type"] = "text/csv"
-    headers["Content-Disposition"] = "attachment; filename=all_data.csv"
+    headers["Content-Disposition"] = "attachment; filename=floorplan.csv"
 
     render plain: csv_data
   end
