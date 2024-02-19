@@ -32,6 +32,12 @@ Rails.application.routes.draw do
     #end
   #end
 
+  resources :plans do
+    member do
+      post 'upload_existing_plan'
+    end
+  end
+
   get 'download_all_data', to: 'plans#download_all_data', as: 'download_all_data'
 
   # config/routes.rb

@@ -1,31 +1,17 @@
 <p style="color: green"><%= notice %></p>
 
+
 <div style="text-align: center; margin-bottom: 20px;">
-  <h1>Plans Management</h1>
+  <h2 style="color: black;">Plans Management</h2>
 </div>
 
-<div style="display: flex; justify-content: flex-end; gap: 10px; align-items: center;">
-  <%= link_to "Create a new plan", new_plan_path, class: "btn btn-primary", style: "background-color: #478ac9; height: 38px;" %>
+<div style="display:flex; justify-content: flex-end; align-items: center; gap: 10px;">
+  <%= link_to "Create a new plan", new_plan_path, class:"btn btn-primary", style:"background-color: #478ac9; height: 38px;" %>
   
   <%= form_tag({controller: 'plans', action: 'upload_existing_plan'}, multipart: true) do %>
-    <label for="plan_file" class="btn btn-primary" style="background-color: #478ac9; height: 38px;">
-      Choose File
-      <%= file_field_tag 'plan_file', id: 'plan_file', style: "display: none;" %>
-    </label>
-    <span id="file-name" style="line-height: 38px;">No file chosen</span>
+    <%= file_field_tag 'plan_file', class: "btn btn-primary", style:"background-color: #478ac9; height: 38px; color: white; border-radius: 5px; padding: 5px 10px; font-size: 14px;" %>
   <% end %>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var fileInput = document.getElementById('plan_file');
-    var fileNameDisplay = document.getElementById('file-name');
-    
-    fileInput.addEventListener('change', function() {
-      fileNameDisplay.textContent = this.files.length > 0 ? this.files[0].name : 'No file chosen';
-    });
-  });
-</script>
 
 
 

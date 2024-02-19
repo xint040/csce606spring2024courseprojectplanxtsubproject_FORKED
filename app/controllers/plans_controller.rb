@@ -11,13 +11,75 @@ class PlansController < ApplicationController
   #   @plans = @user.plans
   # end
 
+  # Method to upload an existing plan from a CSV file
   def upload_existing_plan
     # Process the uploaded file
-  
-
-    # Redirect to a different page upon successful file upload
-    redirect_to plans_path, notice: 'File uploaded successfully.'
+    uploaded_file = params[:file]
+    if uploaded_file.present? && uploaded_file.respond_to?(:read)
+      file_contents = uploaded_file.read
+      CSV.parse(file_contents, headers: true) do |row|
+        # Extract plan attributes from the CSV row
+        plan_attributes = row["Plan attributes"].split(", ")
+        plan_params = {
+          name: plan_attributes[1],
+          owner: plan_attributes[2],
+          venue_length: plan_attributes[3].to_f,
+          venue_width: plan_attributes[4].to_f,
+          timezone: plan_attributes[6]
+        }
+        @plan = Plan.new(plan_params)
+        if @plan.save
+          # Extract item attributes from the CSV row and associate them with the plan
+          item_attributes = row["Item attributes"].split(", ")
+          item_params = {
+            name: item_attributes[1],
+            model: item_attributes[2],
+            width: item_attributes[3].to_f,
+            length: item_attributes[5].to_f,
+            depth: item_attributes[4].to_f,
+            rotation: item_attributes[6].to_f,
+            xpos: item_attributes[8].to_f,
+            ypos: item_attributes[9].to_f,
+            zpos: item_attributes[10].to_f,
+            step_id: @plan.steps.first.id, # Assuming there's at least one step for each plan
+            setup_start_time: Time.parse(item_attributes[13]),
+            setup_end_time: Time.parse(item_attributes[14]),
+            breakdown_start_time: Time.parse(item_attributes[15]),
+            breakdown_end_time: Time.parse(item_attributes[16])
+          }
+          @plan.items.create(item_params)
+        end
+      end
+      # Redirect to a different page upon successful file upload
+      redirect_to plans_path, notice: 'File uploaded successfully.'
+    else
+      # Handle invalid file upload
+      redirect_to plans_path, alert: 'Please upload a valid file.'
+    end
   end
+
+  def generate_floorplan(plan)
+    # Extract plan dimensions
+    venue_length = plan.venue_length
+    venue_width = plan.venue_width
+  
+    # Extract item positions and dimensions
+    items = plan.items
+    item_data = items.map do |item|
+      {
+        name: item.name,
+        model: item.model,
+        xpos: item.xpos,
+        ypos: item.ypos,
+        zpos: item.zpos,
+        width: item.width,
+        length: item.length,
+        depth: item.depth,
+        rotation: item.rotation
+      }
+    end
+  end
+  
   
   layout "layouts/empty", only: [:new] 
 
