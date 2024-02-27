@@ -23,15 +23,13 @@ class SessionsController < ApplicationController
     end
     
     def destroy
-      # Redirect to another web app for logout
-      
       # Clear the user's session (if necessary)
       session[:user_id] = nil 
-      # new code line 30 - wise
-      #redirect_to 'https://events360.herokuapp.com/logout', status: :see_other, notice: 'Redirecting you to log out of everything...', allow_other_host: true
-      # original code
-      #redirect_to root_path, notice: 'Logged Out' # log out of plannxt
+    
+      # Redirect to another web app for logout
+      #redirect_to 'https://events360.herokuapp.com/logout', status: :see_other
     end
+    
     
     
 end

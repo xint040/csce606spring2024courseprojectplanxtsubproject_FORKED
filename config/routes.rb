@@ -48,7 +48,8 @@ Rails.application.routes.draw do
   get '/auth/events360/callback', to: 'sessions#create'
   get 'sessions', to: 'sessions#create'
   get 'sign_in', to: 'sessions#new'
-  delete 'logout', to: 'sessions#destroy'
+  delete '/logout', to: 'sessions#destroy'
+
 
   #original code was this -wise
 
