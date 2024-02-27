@@ -58,6 +58,22 @@
           null
         ]
       },
+      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/channels/application_cable/channel.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/channels/application_cable/connection.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          null
+        ]
+      },
       "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/controllers/application_controller.rb": {
         "lines": [
           1,
@@ -467,6 +483,17 @@
           null
         ]
       },
+      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/jobs/application_job.rb": {
+        "lines": [
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
       "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/mailers/application_mailer.rb": {
         "lines": [
           1,
@@ -525,41 +552,8 @@
           1,
           null
         ]
-      },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/channels/application_cable/channel.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/channels/application_cable/connection.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/jobs/application_job.rb": {
-        "lines": [
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          0
-        ],
-        "branches": {
-        }
       }
     },
-    "timestamp": 1709051455
+    "timestamp": 1709054725
   }
 }
