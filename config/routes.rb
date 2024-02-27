@@ -51,11 +51,4 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
 
-  #original code was this -wise
-
-  #get 'sessions', to: 'sessions#create'
-  #get 'sign_in', to: 'sessions#new'
-  #delete 'logout', to: 'sessions#destroy'
-  #get '/auth/events360/callback', to: 'sessions#create'
-
 end
