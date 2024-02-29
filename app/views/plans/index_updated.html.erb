@@ -9,7 +9,7 @@
   <%= link_to "Create a new plan", new_plan_path, class:"btn btn-primary", style:"background-color: #478ac9; height: 38px;" %>
   
   <%= form_tag({controller: 'plans', action: 'upload_existing_plan'}, multipart: true) do %>
-    <%= file_field_tag 'plan_file', class: "btn btn-primary", style:"background-color: #478ac9; height: 38px; color: white; border-radius: 5px; padding: 5px 10px; font-size: 14px;" %>
+    <%= file_field_tag 'plan_file', class: "btn", style:"background-color: #478ac9; height: 38px;" %>
   <% end %>
 </div>
 
@@ -62,7 +62,7 @@
 <h3>Total <%=@plans.length%> plans</h3>
 <br/>
 <!--<%= link_to "Back", root_path, class:"btn btn-secondary"%>-->
-<%= link_to "Logout", "https://events360.herokuapp.com/logout", method: :delete, class: "btn btn-secondary" %>
+<%= button_to "Logout", logout_path, method: :delete, class:"btn btn-secondary"%>
 </div>
 
 <style>

@@ -3,10 +3,57 @@
 require 'rails_helper'
 
 RSpec.describe PlansController, type: :controller do
-    Plan.destroy_all
 
-    plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
-    plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
+    describe "GET #download_all_data" do
+    it "responds with a CSV file containing all plan and item data" do
+      plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
+      plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
+      step1 = FactoryBot.create(:step, plan: plan1) # Create a step associated with the plan using FactoryBot
+      item1 = FactoryBot.create(:item, name: "Item 1", step: step1) # Associate the item with the step using FactoryBot
+      step2 = FactoryBot.create(:step, plan: plan2) # Create a step associated with the second plan
+      item2 = FactoryBot.create(:item, name: "Item 2", step: step2) # Associate another item with the second plan
+  
+      # Trigger the download_all_data action
+      get :download_all_data
+  
+      # Verify response
+      expect(response.content_type).to eq('text/csv')
+      expect(response.headers['Content-Disposition']).to include('attachment; filename=floorplan.csv')
+  
+      # Verify CSV data
+      csv_data = CSV.parse(response.body)
+      expect(csv_data.size).to eq(3) # Header + data from plan1 + data from plan2
+      expect(csv_data[0]).to eq(['Plan attributes', 'Item attributes'])
+      expect(csv_data[1].join(",")).to include("Test1", "Morris", "100", "100", "Item 1") # change this if we change the attributes
+      expect(csv_data[2].join(",")).to include("Test2", "Morris", "100", "100", "Item 2") # change this if we change the attributes
+    end
+        it "responds with a CSV file containing all plan and item data even if there are no plans" do
+      Plan.destroy_all # Ensure no plans exist
+      
+      get :download_all_data
+
+      expect(response.content_type).to eq('text/csv')
+      expect(response.headers['Content-Disposition']).to include('attachment; filename=floorplan.csv')
+
+      csv_data = CSV.parse(response.body)
+      expect(csv_data.size).to eq(1) # Only header
+      expect(csv_data[0]).to eq(['Plan attributes', 'Item attributes'])
+    end
+
+  end
+    
+  Plan.destroy_all
+
+  plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
+  plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
+
+
+  describe 'when trying to view the home page' do
+    it 'shows the home page' do
+      get :index
+      expect(response).to render_template('index')
+    end
+  end
     
     describe 'when trying to view the home page' do
         it 'shows the home page' do
@@ -150,4 +197,20 @@ RSpec.describe PlansController, type: :controller do
             expect(response).to redirect_to(blueprints_path)
         end
     end
+
+    # test for submit button
+    describe PlansController, type: :controller do
+        describe 'POST #upload_existing_plan' do
+            it 'uploads an existing plan file' do
+            # Mock any necessary behavior
+            
+            # Simulate a request to the controller action
+            post :upload_existing_plan, params: { plan_file: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'dummy.pdf'), 'application/pdf') }
+            
+            # Add expectations for the controller action behavior
+            # For example, you could expect a redirect or a specific response
+            expect(response).to have_http_status(:redirect)
+            end
+        end
+        end 
 end

@@ -24,9 +24,31 @@ Rails.application.routes.draw do
     end
   end
   
+  # config/routes.rb
+
+  #resources :plans do
+   # collection do
+    #  get 'download_all_data'
+    #end
+  #end
+
+  resources :plans do
+    member do
+      post 'upload_existing_plan'
+    end
+  end
+
+  get 'download_all_data', to: 'plans#download_all_data', as: 'download_all_data'
+
+  # config/routes.rb
+  post '/upload_existing_plan', to: 'plans#upload_existing_plan' # Defines a route for the upload_existing_plan action on plans controller.
+
+
   # user sign up and login
+  get '/auth/events360/callback', to: 'sessions#create'
   get 'sessions', to: 'sessions#create'
   get 'sign_in', to: 'sessions#new'
-  delete 'logout', to: 'sessions#destroy'
-  get '/auth/events360/callback', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
+
 end

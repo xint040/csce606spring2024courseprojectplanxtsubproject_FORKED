@@ -23,8 +23,13 @@ class SessionsController < ApplicationController
     end
     
     def destroy
-      # deletes user session
+      # Clear the user's session (if necessary)
       session[:user_id] = nil 
-      redirect_to root_path, notice: 'Logged Out'
+    
+      # Redirect to another web app for logout
+      #redirect_to 'https://events360.herokuapp.com/logout', status: :see_other
     end
+    
+    
+    
 end
