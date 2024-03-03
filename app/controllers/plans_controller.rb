@@ -217,9 +217,12 @@ class PlansController < ApplicationController
   def download_all_data
     @plans = Plan.includes(steps: :items).all
   
+    # initiate a hash
+    item_counts = Hash.new(0)
+  
     # Generate CSV with plan and item data
     csv_data = CSV.generate(headers: true) do |csv|
-      # Define your headers here
+      # Define headers
       csv << ['Plan ID', 'Plan Name', 'Venue Length', 'Venue Width', 'Plan Created At', 'Plan Updated At', 'Timezone', 
               'Step ID', 'Step Start Time', 'Step End Time', 'Step Break1 Start Time', 'Step Break1 End Time', 'Step Break2 Start Time', 'Step Break2 End Time',
               'Item Name', 'Item Model', 'Item Width', 'Item Length', 'Item Depth', 'Item Rotation', 'Item X Position', 'Item Y Position', 'Item Z Position',
@@ -228,12 +231,22 @@ class PlansController < ApplicationController
       @plans.each do |plan|
         plan.steps.each do |step|
           step.items.each do |item|
+            
             csv << [plan.id, plan.name, plan.venue_length, plan.venue_width, plan.created_at, plan.updated_at, plan.timezone, 
                     step.id, step.start_time, step.end_time, step.break1_start_time, step.break1_end_time, step.break2_start_time, step.break2_end_time,
                     item.name, item.model, item.width, item.length, item.depth, item.rotation, item.xpos, item.ypos, item.zpos,
                     item.setup_start_time, item.setup_end_time, item.breakdown_start_time, item.breakdown_end_time]
+  
+            # summarize the amout of item
+            item_counts[item.name] += 1
           end
         end
+      end
+  
+      csv << []
+      csv << ['Item Name', 'Count']
+      item_counts.each do |name, count|
+        csv << [name, count]
       end
     end
   
