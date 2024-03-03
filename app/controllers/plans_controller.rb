@@ -215,25 +215,29 @@ class PlansController < ApplicationController
 
   # Method to download all plan and item data as a CSV file
   def download_all_data
-    @plans = Plan.all
-    @items = Item.all
-
+    @plans = Plan.includes(steps: :items).all
+  
     # Generate CSV with plan and item data
-    csv_data = CSV.generate do |csv|
-      csv << ['Plan attributes', 'Item attributes']
-
+    csv_data = CSV.generate(headers: true) do |csv|
+      # Define your headers here
+      csv << ['Plan ID', 'Plan Name', 'Venue Length', 'Venue Width', 'Plan Created At', 'Plan Updated At', 'Timezone', 
+              'Step ID', 'Step Start Time', 'Step End Time', 'Step Break1 Start Time', 'Step Break1 End Time', 'Step Break2 Start Time', 'Step Break2 End Time',
+              'Item Name', 'Item Model', 'Item Width', 'Item Length', 'Item Depth', 'Item Rotation', 'Item X Position', 'Item Y Position', 'Item Z Position',
+              'Item Setup Start Time', 'Item Setup End Time', 'Item Breakdown Start Time', 'Item Breakdown End Time']
+  
       @plans.each do |plan|
-        plan_items = @items.select { |item| item.step.plan_id == plan.id }
-        plan_items.each do |item|
-          csv << [plan.attributes.values.join(', '), item.attributes.values.join(', ')]
+        plan.steps.each do |step|
+          step.items.each do |item|
+            csv << [plan.id, plan.name, plan.venue_length, plan.venue_width, plan.created_at, plan.updated_at, plan.timezone, 
+                    step.id, step.start_time, step.end_time, step.break1_start_time, step.break1_end_time, step.break2_start_time, step.break2_end_time,
+                    item.name, item.model, item.width, item.length, item.depth, item.rotation, item.xpos, item.ypos, item.zpos,
+                    item.setup_start_time, item.setup_end_time, item.breakdown_start_time, item.breakdown_end_time]
+          end
         end
       end
     end
-
-    headers["Content-Type"] = "text/csv"
-    headers["Content-Disposition"] = "attachment; filename=floorplan.csv"
-
-    render plain: csv_data
+  
+    send_data csv_data, filename: "plans_and_items_#{Date.today}.csv"
   end
   
 

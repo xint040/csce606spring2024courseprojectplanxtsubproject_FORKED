@@ -1,16 +1,26 @@
 <p style="color: green"><%= notice %></p>
 
-
 <div style="text-align: center; margin-bottom: 20px;">
   <h2 style="color: black;">Plans Management</h2>
 </div>
 
 <div style="display:flex; justify-content: flex-end; align-items: center; gap: 10px;">
-  <%= link_to "Create a new plan", new_plan_path, class:"btn btn-primary", style:"background-color: #478ac9; height: 38px;" %>
+  <%= link_to "Create a new plan", new_plan_path, class: "btn btn-primary", style: "background-color: #478ac9; height: 38px;" %>
   
-  <%= form_tag({controller: 'plans', action: 'upload_existing_plan'}, multipart: true) do %>
-    <%= file_field_tag 'plan_file', class: "btn btn-primary", style:"background-color: #478ac9; height: 38px; color: white; border-radius: 5px; padding: 5px 10px; font-size: 14px;" %>
-  <% end %>
+  <a href="#" id="upload_link" class="btn btn-primary" style="background-color: #478AC9; height: 38px; color: white; border-radius: 5px; padding: 5px 10px; font-size: 14px;">Upload File</a>
+  <form id="upload_form" action="/plans/upload_existing_plan" method="post" enctype="multipart/form-data" style="display:none;">
+      <input type="file" name="plan_file" id="plan_file">
+  </form>
+  <script>
+    document.getElementById('upload_link').addEventListener('click', function() {
+      document.getElementById('plan_file').click();
+    });
+    document.getElementById('plan_file').addEventListener('change', function() {
+      if (this.files.length > 0) {
+        document.getElementById('upload_form').submit();
+      }
+    });
+  </script>
 </div>
 
 
