@@ -84,3 +84,7 @@ Then('I should see {string} to have {int} step\(s)') do |string, int|
   plan = Plan.find_by(name:string)
   expect(plan.steps.count).to eq(int)
 end
+
+Then('I should be on the Event360 user page') do
+  expect(page).to have_current_path("https://events360.herokuapp.com/logout")
+end

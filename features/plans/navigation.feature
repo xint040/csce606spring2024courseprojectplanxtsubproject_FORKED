@@ -12,7 +12,7 @@ Given the following plans exist:
     Scenario: Navigate to home page
         Given I am on the "plans" page
         When I click on the "Logout" button
-        Then I should be on the "home" page
+        Then I should be on the Event360 user page
 
     Scenario: Navigate to create new plan page
         Given I am on the "plans" page
