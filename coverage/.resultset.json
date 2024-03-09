@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/lib/omniauth/strategies/events360.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/lib/omniauth/strategies/events360.rb": {
         "lines": [
           1,
           null,
@@ -33,40 +33,32 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/helpers/application_helper.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/helpers/application_helper.rb": {
         "lines": [
           1,
           null,
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/helpers/items_helper.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/helpers/items_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/helpers/plans_helper.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/helpers/plans_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/helpers/steps_helper.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/helpers/steps_helper.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/channels/application_cable/channel.rb": {
-        "lines": [
-          1,
-          1,
-          null,
-          null
-        ]
-      },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/channels/application_cable/connection.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/channels/application_cable/channel.rb": {
         "lines": [
           1,
           1,
@@ -74,13 +66,21 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/controllers/application_controller.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/channels/application_cable/connection.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "C:/Users/Admin/Spring2024-PlaNXT/app/controllers/application_controller.rb": {
         "lines": [
           1,
           1,
           1,
           null,
-          38,
+          39,
           null,
           1,
           null,
@@ -89,7 +89,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/controllers/blueprints_controller.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/controllers/blueprints_controller.rb": {
         "lines": [
           1,
           1,
@@ -103,7 +103,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/controllers/home_controller.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/controllers/home_controller.rb": {
         "lines": [
           1,
           1,
@@ -111,7 +111,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/controllers/items_controller.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/controllers/items_controller.rb": {
         "lines": [
           1,
           1,
@@ -168,7 +168,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/controllers/plans_controller.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/controllers/plans_controller.rb": {
         "lines": [
           1,
           1,
@@ -176,7 +176,7 @@
           null,
           1,
           null,
-          19,
+          20,
           null,
           null,
           null,
@@ -387,25 +387,42 @@
           null,
           null,
           1,
-          2,
-          2,
+          3,
           null,
           null,
-          2,
-          2,
+          3,
           null,
-          2,
-          12,
+          null,
+          3,
+          null,
+          3,
+          null,
+          null,
+          null,
+          null,
+          3,
+          7,
+          3,
+          null,
           4,
-          2,
           null,
           null,
           null,
           null,
-          2,
-          2,
           null,
-          2,
+          4,
+          null,
+          null,
+          null,
+          null,
+          3,
+          3,
+          3,
+          4,
+          null,
+          null,
+          null,
+          3,
           null,
           null,
           null,
@@ -426,7 +443,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/models/plan.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/models/plan.rb": {
         "lines": [
           1,
           1,
@@ -435,7 +452,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/controllers/sessions_controller.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/controllers/sessions_controller.rb": {
         "lines": [
           1,
           1,
@@ -474,7 +491,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/jobs/application_job.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/jobs/application_job.rb": {
         "lines": [
           1,
           null,
@@ -485,7 +502,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/mailers/application_mailer.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/mailers/application_mailer.rb": {
         "lines": [
           1,
           1,
@@ -498,7 +515,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/models/user.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/models/user.rb": {
         "lines": [
           1,
           null,
@@ -530,14 +547,14 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/models/application_record.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/models/application_record.rb": {
         "lines": [
           1,
           1,
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/models/step.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/models/step.rb": {
         "lines": [
           1,
           1,
@@ -546,7 +563,7 @@
           null
         ]
       },
-      "/Users/alexwise/Documents/606/PlaNXT/main/wise_branch/Spring2024-PlaNXT/app/models/item.rb": {
+      "C:/Users/Admin/Spring2024-PlaNXT/app/models/item.rb": {
         "lines": [
           1,
           1,
@@ -554,6 +571,6 @@
         ]
       }
     },
-    "timestamp": 1709950004
+    "timestamp": 1709955150
   }
 }
