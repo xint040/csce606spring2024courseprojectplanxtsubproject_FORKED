@@ -3,22 +3,9 @@
 # newer version of cucumber-rails. Consider adding your own code to a new file
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
-require 'bundler/setup'
+
+
 require 'cucumber/rails'
-require 'selenium-webdriver'
-require 'webdrivers'
-
-driver = Selenium::WebDriver.for :chrome  # no need to specify driver_path
-
-Capybara.default_driver = :rack_test
-Capybara.javascript_driver = :selenium_chrome
-
-# frozen_string_literal: true
-
-# Capybara defaults to CSS3 selectors rather than XPath.
-# If you'd prefer to use XPath, just uncomment this line and adjust any
-# selectors in your step definitions to use the XPath syntax.
-# Capybara.default_selector = :xpath
 
 # By default, any exception happening in your Rails application will bubble up
 # to Cucumber so that your scenario will fail. This is a different from how
@@ -64,4 +51,3 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
-
