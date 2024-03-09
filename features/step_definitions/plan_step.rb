@@ -62,7 +62,9 @@ Given('I am on the {string} page') do |string|
     expect(current_path).to eq('/plans/new')
   elsif string == 'home'
     visit(root_path)
-    expect(current_path).to eq('/')
+    expect(current_path).to eq('/') # Update the expected path to "/"
+  elsif string == 'logout'
+    expect(current_path).to eq('https://events360.herokuapp.com/logout')
   else
     visit(string)
     expect(current_path).to eq('/'+string)
@@ -73,7 +75,9 @@ Then('I should be on the {string} page') do |string|
   if string == 'new plan'
     expect(current_path).to eq('/plans/new')
   elsif string == 'home'
-    expect(current_path).to eq('/')
+    expect(current_path).to eq('/') # Update the expected path to "/"
+  #elsif string == 'Logout'
+    #expect(current_path).to eq('https://events360.herokuapp.com/logout')
   else
     expect(current_path).to eq('/'+string)
   end

@@ -4,6 +4,8 @@ Background:
 Given I am on the "home" page
 When I click on the "Get Started" button
 Then I should be on the "plans" page
+
+
 Given the following plans exist:
     | name        | owner   | venue_length     | venue_width |
     | My Plan     | test@email.com    | 10               | 10          |
