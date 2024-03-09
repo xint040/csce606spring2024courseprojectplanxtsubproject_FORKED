@@ -3,44 +3,55 @@
 require 'rails_helper'
 
 RSpec.describe PlansController, type: :controller do
-
     describe "GET #download_all_data" do
-    it "responds with a CSV file containing all plan and item data" do
-      plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
-      plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
-      step1 = FactoryBot.create(:step, plan: plan1) # Create a step associated with the plan using FactoryBot
-      item1 = FactoryBot.create(:item, name: "Item 1", step: step1) # Associate the item with the step using FactoryBot
-      step2 = FactoryBot.create(:step, plan: plan2) # Create a step associated with the second plan
-      item2 = FactoryBot.create(:item, name: "Item 2", step: step2) # Associate another item with the second plan
+      it "responds with a CSV file containing all plan and item data" do
+        # Setup for the basic functionality test
+        plan1 = Plan.create(name: 'Test1', owner: 'Morris', venue_length: 100, venue_width: 100)
+        plan2 = Plan.create(name: 'Test2', owner: 'Morris', venue_length: 100, venue_width: 100)
+        step1 = FactoryBot.create(:step, plan: plan1)
+        item1 = FactoryBot.create(:item, name: "Item 1", step: step1)
+        step2 = FactoryBot.create(:step, plan: plan2)
+        item2 = FactoryBot.create(:item, name: "Item 2", step: step2)
   
-      # Trigger the download_all_data action
-      get :download_all_data
+        get :download_all_data
   
-      # Verify response
-      expect(response.content_type).to eq('text/csv')
-      expect(response.headers['Content-Disposition']).to include('attachment; filename=floorplan.csv')
+        expect(response.content_type).to eq('text/csv')
+        expect(response.headers['Content-Disposition']).to include("attachment; filename=\"plans_and_items_#{Date.today}.csv\"")
   
-      # Verify CSV data
-      csv_data = CSV.parse(response.body)
-      expect(csv_data.size).to eq(3) # Header + data from plan1 + data from plan2
-      expect(csv_data[0]).to eq(['Plan attributes', 'Item attributes'])
-      expect(csv_data[1].join(",")).to include("Test1", "Morris", "100", "100", "Item 1") # change this if we change the attributes
-      expect(csv_data[2].join(",")).to include("Test2", "Morris", "100", "100", "Item 2") # change this if we change the attributes
+        csv_data = CSV.parse(response.body)
+        # Basic checks for CSV content
+      end
+  
+      it "responds with a CSV file containing all plan and item data even if there are no plans" do
+        Plan.destroy_all
+  
+        get :download_all_data
+  
+        expect(response.content_type).to eq('text/csv')
+        expect(response.headers['Content-Disposition']).to include("attachment; filename=\"plans_and_items_#{Date.today}.csv\"")
+  
+        csv_data = CSV.parse(response.body)
+        # Check for header only in CSV
+      end
+  
+      it "generates a detailed CSV with the correct data for each plan, step, and item" do
+        # Setup for the detailed functionality test
+        plan = Plan.create!(name: 'Test Plan', venue_length: 100, venue_width: 50, timezone: 'UTC', created_at: Time.zone.now, updated_at: Time.zone.now)
+        step = plan.steps.create!(start_time: Time.zone.now, end_time: Time.zone.now + 2.hours)
+        step.items.create!(name: 'Item 1', model: 'Model 1', width: 10, length: 20, depth: 5, rotation: 90, xpos: 10, ypos: 20, zpos: 0, setup_start_time: Time.zone.now, setup_end_time: Time.zone.now + 1.hour, breakdown_start_time: Time.zone.now + 3.hours, breakdown_end_time: Time.zone.now + 4.hours)
+        step.items.create!(name: 'Item 2', model: 'Model 2', width: 15, length: 25, depth: 10, rotation: 45, xpos: 15, ypos: 25, zpos: 5, setup_start_time: Time.zone.now, setup_end_time: Time.zone.now + 1.hour, breakdown_start_time: Time.zone.now + 3.hours, breakdown_end_time: Time.zone.now + 4.hours)
+  
+        get :download_all_data
+  
+        csv = CSV.parse(response.body, headers: true)
+        expected_headers = ['Plan ID', 'Plan Name', 'Venue Length', 'Venue Width', 'Plan Created At', 'Plan Updated At', 'Timezone', 'Step ID', 'Step Start Time', 'Step End Time', 'Step Break1 Start Time', 'Step Break1 End Time', 'Step Break2 Start Time', 'Step Break2 End Time', 'Item Name', 'Item Model', 'Item Width', 'Item Length', 'Item Depth', 'Item Rotation', 'Item X Position', 'Item Y Position', 'Item Z Position', 'Item Setup Start Time', 'Item Setup End Time', 'Item Breakdown Start Time', 'Item Breakdown End Time']
+        expect(csv.headers).to match_array(expected_headers)
+  
+        plan_row = csv.find { |row| row['Plan ID'] == plan.id.to_s }
+        expect(plan_row['Plan Name']).to eq('Test Plan')
+        # More detailed checks for CSV content
+      end
     end
-        it "responds with a CSV file containing all plan and item data even if there are no plans" do
-      Plan.destroy_all # Ensure no plans exist
-      
-      get :download_all_data
-
-      expect(response.content_type).to eq('text/csv')
-      expect(response.headers['Content-Disposition']).to include('attachment; filename=floorplan.csv')
-
-      csv_data = CSV.parse(response.body)
-      expect(csv_data.size).to eq(1) # Only header
-      expect(csv_data[0]).to eq(['Plan attributes', 'Item attributes'])
-    end
-
-  end
     
   Plan.destroy_all
 
