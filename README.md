@@ -3,7 +3,7 @@
 Team Spring 2024  
 
 
-Heroku link: https://planxt.herokuapp.com  
+Spring 2024 Heroku link: https://planxt.herokuapp.com  
 
 Spring 2024 PlaNXT code climate report: https://codeclimate.com/github/CSCE-606-Event360/Spring2024-PlaNXT  
 
