@@ -62,7 +62,9 @@ Given('I am on the {string} page') do |string|
     expect(current_path).to eq('/plans/new')
   elsif string == 'home'
     visit(root_path)
-    expect(current_path).to eq('/')
+    expect(current_path).to eq('/') # Update the expected path to "/"
+  elsif string == 'logout'
+    expect(current_path).to eq('https://events360.herokuapp.com/logout')
   else
     visit(string)
     expect(current_path).to eq('/'+string)
@@ -73,7 +75,9 @@ Then('I should be on the {string} page') do |string|
   if string == 'new plan'
     expect(current_path).to eq('/plans/new')
   elsif string == 'home'
-    expect(current_path).to eq('/')
+    expect(current_path).to eq('/') # Update the expected path to "/"
+  #elsif string == 'Logout'
+    #expect(current_path).to eq('https://events360.herokuapp.com/logout')
   else
     expect(current_path).to eq('/'+string)
   end
@@ -83,4 +87,8 @@ end
 Then('I should see {string} to have {int} step\(s)') do |string, int|
   plan = Plan.find_by(name:string)
   expect(plan.steps.count).to eq(int)
+end
+
+Then('I should be on the Event360 user page') do
+  expect(page).to have_current_path("https://events360.herokuapp.com/logout")
 end
