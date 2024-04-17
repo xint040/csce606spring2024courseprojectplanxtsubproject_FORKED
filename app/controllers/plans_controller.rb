@@ -110,8 +110,9 @@ class PlansController < ApplicationController
   end
   
   def preview3d
-    snapshot_data_json = params[:snapshot_data]
-    snapshot_data = JSON.parse(snapshot_data_json)
+ #   snapshot_data_json = params[:snapshot_data]
+ #   snapshot_data = JSON.parse(snapshot_data_json)
+
 
     scaler = 31.4
     json_content = JSON.parse(File.read(Rails.root.join('lib', 'design.room3d')))
@@ -135,6 +136,23 @@ class PlansController < ApplicationController
         "y" => snapshot_data["venue_length"] * scaler,
       }
     }
+
+
+    @plan.steps.each do |eachstepforthisplan|
+      
+      eachstepforthisplan.items.each do |eachitemforthisstep|
+
+
+
+
+
+
+
+
+
+
+
+
 
     # Add items to the floorplan
     snapshot_data["items"].each do |item, values|
