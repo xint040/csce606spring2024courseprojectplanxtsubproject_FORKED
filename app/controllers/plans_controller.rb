@@ -110,8 +110,8 @@ class PlansController < ApplicationController
   end
   
   def preview3d
- #   snapshot_data_json = params[:snapshot_data]
- #   snapshot_data = JSON.parse(snapshot_data_json)
+    snapshot_data_json = params[:snapshot_data]
+    snapshot_data = JSON.parse(snapshot_data_json)
 
 
     scaler = 31.4
@@ -137,21 +137,28 @@ class PlansController < ApplicationController
       }
     }
 
-
-    @plan.steps.each do |eachstepforthisplan|
-      
+    #Append the corresponding 2d data to the corresponding 3d data visualization.
+    @plan.steps.each do |eachstepforthisplan|   
       eachstepforthisplan.items.each do |eachitemforthisstep|
-
-
-
-
-
-
-
-
-
-
-
+         json_content["items"].append({
+            "item_name" => eachitemforthisstep.item_name,
+            "model_url" => eachitemforthisstep.item_model,
+            "xpos" => eachitemforthisstep.xpos.to_f,
+            "ypos" => 0,
+            "zpos" => eachitemforthisstep.zpos.to_f,
+            "rotation" => eachitemforthisstep.rotation.to_f,
+            "scale_x" => eachitemforthisstep.scale_x.to_f,
+            "scale_y" => eachitemforthisstep.scale_y.to_f,
+            "scale_z" => eachitemforthisstep.scale_z.to_f,
+            "fixed" => false,
+            "setup_start_time" => eachitemforthisstep.setup_start_time,
+            "setup_end_time" => eachitemforthisstep.setup_end_time,
+            "breakdown_start_time" => eachitemforthisstep.breakdown_start_time,
+            "breakdown_end_time" => eachitemforthisstep.breakdown_start_time,
+            "step_id" => eachitemforthisstep.step_id.to_i
+      })
+      end
+    end
 
 
     # Add items to the floorplan
